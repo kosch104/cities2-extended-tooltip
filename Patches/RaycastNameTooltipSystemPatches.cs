@@ -17,9 +17,11 @@ using Game.UI.Tooltip;
 using Game.Vehicles;
 using Game.Zones;
 using HarmonyLib;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using static Colossal.AssetPipeline.Diagnostic.Report;
 
 namespace ExtendedTooltip.Patches
 {
@@ -135,7 +137,7 @@ namespace ExtendedTooltip.Patches
 
                     StringTooltip employeeTooltip = new()
                     {
-                        icon = "Media/Game/Icons/Commuter.svg",
+                        icon = "Media/Game/Icons/Workers.svg",
                         value = "Employees: " + employeeCount + "/" + maxEmployees,
                         color = employeeCountPercentage <= 90 ? TooltipColor.Warning : TooltipColor.Success,
                     };
@@ -200,10 +202,7 @@ namespace ExtendedTooltip.Patches
             // Company resource section
             if (m_EntityManager.TryGetBuffer(companyEntity, true, out DynamicBuffer<Game.Economy.Resources> _) && m_EntityManager.TryGetComponent(companyEntityPrefab, out IndustrialProcessData industrialProcessData))
             {
-                StringTooltip companyOutputTooltip = new()
-                {
-                    color = TooltipColor.Info,
-                };
+                StringTooltip companyOutputTooltip = new();
 
                 if (m_EntityManager.HasComponent<ServiceAvailable>(companyEntity))
                 {
