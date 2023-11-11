@@ -22,6 +22,8 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 using static Colossal.AssetPipeline.Diagnostic.Report;
+using static Colossal.IO.AssetDatabase.AtlasFrame;
+using Student = Game.Buildings.Student;
 
 namespace ExtendedTooltip.Patches
 {
@@ -100,7 +102,7 @@ namespace ExtendedTooltip.Patches
                     StringTooltip efficiencyTooltip = new()
                     {
                         icon = "Media/Game/Icons/CompanyProfit.svg",
-                        value = "Efficiency: " + efficiency,
+                        value = "Efficiency: " + efficiency + "%",
                         color = efficiency <= 99 ? TooltipColor.Warning : TooltipColor.Success,
                     };
                     tooltipGroup.children.Add(efficiencyTooltip);
@@ -137,12 +139,34 @@ namespace ExtendedTooltip.Patches
 
                     StringTooltip employeeTooltip = new()
                     {
-                        icon = "Media/Game/Icons/Workers.svg",
+                        icon = "Media/Game/Icons/Commuter.svg",
                         value = "Employees: " + employeeCount + "/" + maxEmployees,
                         color = employeeCountPercentage <= 90 ? TooltipColor.Warning : TooltipColor.Success,
                     };
                     tooltipGroup.children.Add(employeeTooltip);
                 }
+            }
+
+            // Add student info if available
+            int studentCount = 0;
+            int studentCapacity = 0;
+            if (UpgradeUtils.TryGetCombinedComponent(m_EntityManager, selectedEntity, prefab, out SchoolData schoolData))
+            {
+                studentCapacity = schoolData.m_StudentCapacity;
+            }
+            if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Student> studentsBuffer))
+            {
+                studentCount = studentsBuffer.Length;
+            }
+
+            if (studentCapacity > 0)
+            {
+                StringTooltip studentTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Workers.svg",
+                    value = "Students: " + studentCount + "/" + studentCapacity,
+                };
+                tooltipGroup.children.Add(studentTooltip);
             }
 
             if (CompanyUIUtils.HasCompany(m_EntityManager, selectedEntity, prefab, out Entity company))
