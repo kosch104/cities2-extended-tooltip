@@ -1,4 +1,5 @@
 ﻿using Colossal.Entities;
+using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Citizens;
 using Game.Common;
@@ -17,6 +18,7 @@ using Game.UI.Tooltip;
 using Game.Vehicles;
 using Game.Zones;
 using HarmonyLib;
+using System;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -29,6 +31,7 @@ namespace ExtendedTooltip.Patches
     {
         private static EntityManager m_EntityManager;
         private static PrefabSystem m_PrefabSystem;
+        private static CustomTranslationSystem m_CustomTranslationSystem;
 
         /// <summary>
         /// This patch is responsible for creating the extended tooltip.
@@ -46,6 +49,7 @@ namespace ExtendedTooltip.Patches
 
             m_EntityManager = __instance.World.EntityManager;
             m_PrefabSystem = __instance.World.GetOrCreateSystemManaged<PrefabSystem>();
+            m_CustomTranslationSystem = __instance.World.GetOrCreateSystemManaged<CustomTranslationSystem>();
 
             if (m_ToolSystem.activeTool == m_DefaultTool && m_ToolRaycastSystem.GetRaycastResult(out var result) && 
                 (m_EntityManager.HasComponent<Building>(result.m_Owner) || m_EntityManager.HasComponent<Game.Routes.TransportStop>(result.m_Owner)
@@ -163,16 +167,30 @@ namespace ExtendedTooltip.Patches
                 condition = condition / 10f * 100f;
                 condition = 100f - condition / buffer.Length;
 
+                // 1 = km , 0 = m
+                int lengthFormat = length >= 1000 ? 1 : 0;
+                string finalLength = (length >= 1000 ? math.round(length / 1000) : math.round(length)).ToString();
                 StringTooltip lengthTooltip = new()
                 {
                     icon = "Media/Game/Icons/OutsideConnections.svg",
-                    value = "Length: " + (length >= 1000 ? math.round(length) / 1000 + " km" : math.round(length) + " m"),
+                    value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LINE_VISUALIZER_LENGTH", "Length") + ": " +
+                    m_CustomTranslationSystem.GetLocalGameTranslation(
+                        lengthFormat == 1 ? "Common.VALUE_KILOMETER" : "Common.VALUE_METER",
+                        lengthFormat == 1 ? " km" : " m",
+                        "{SIGN}", "",
+                        "{VALUE}", finalLength
+                    )
                 };
 
                 StringTooltip upkeepTooltip = new()
                 {
                     icon = "Media/Game/Icons/ServiceUpkeep.svg",
-                    value = "Upkeep: " + math.round(upkeep) + " /month",
+                    value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.UPKEEP", "Upkeep") + ": " +
+                    m_CustomTranslationSystem.GetLocalGameTranslation(
+                        "Common.VALUE_MONEY_PER_MONTH", upkeep.ToString() + " /month",
+                        "{SIGN}", "",
+                        "{VALUE}", upkeep.ToString()
+                    ),
                 };
 
                 tooltipGroup.children.Add(lengthTooltip);
@@ -190,7 +208,7 @@ namespace ExtendedTooltip.Patches
                     StringTooltip efficiencyTooltip = new()
                     {
                         icon = "Media/Game/Icons/CompanyProfit.svg",
-                        value = "Efficiency: " + efficiency + "%",
+                        value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EFFICIENCY", "Efficiency") + ": " + efficiency + "%",
                         color = efficiency <= 99 ? TooltipColor.Warning : TooltipColor.Success,
                     };
                     tooltipGroup.children.Add(efficiencyTooltip);
@@ -228,7 +246,7 @@ namespace ExtendedTooltip.Patches
                     StringTooltip employeeTooltip = new()
                     {
                         icon = "Media/Game/Icons/Commuter.svg",
-                        value = "Employees: " + employeeCount + "/" + maxEmployees,
+                        value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EMPLOYEES", "Employees") + ": " + employeeCount + "/" + maxEmployees,
                         color = employeeCountPercentage <= 90 ? TooltipColor.Warning : TooltipColor.Success,
                     };
                     tooltipGroup.children.Add(employeeTooltip);
@@ -249,10 +267,11 @@ namespace ExtendedTooltip.Patches
 
             if (studentCapacity > 0)
             {
+                string studentsTitle = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EDUCATION_STUDENTS", "Students");
                 StringTooltip studentTooltip = new()
                 {
                     icon = "Media/Game/Icons/Workers.svg",
-                    value = "Students: " + studentCount + "/" + studentCapacity,
+                    value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EDUCATION_STUDENTS", "Students") + ": " + studentCount + "/" + studentCapacity,
                     color = (studentCount * 100 / studentCapacity) <= 50 ? TooltipColor.Success : (studentCount * 100 / studentCapacity) <= 75 ? TooltipColor.Warning : TooltipColor.Error,
                 };
                 tooltipGroup.children.Add(studentTooltip);
@@ -288,22 +307,20 @@ namespace ExtendedTooltip.Patches
             // Happiness
             int happinessValue = citizen.Happiness;
             CitizenHappinessKey happinessKey = (CitizenHappinessKey)CitizenUtils.GetHappinessKey(happinessValue);
-            var happinessStringBuilder = CachedLocalizedStringBuilder<CitizenHappinessKey>.Id((CitizenHappinessKey t) => $"SelectedInfoPanel.CITIZEN_HAPPINESS_TITLE[{t:G}]");
             StringTooltip happinessTooltip = new()
             {
                 icon = "Media/Game/Icons/" + happinessKey.ToString() + ".svg",
-                value = happinessStringBuilder[happinessKey],
+                value = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_HAPPINESS_TITLE[${happinessKey}]", happinessKey.ToString()) + $" ({happinessValue})",
                 color = happinessValue < 50 ? TooltipColor.Error : happinessValue < 75 ? TooltipColor.Warning : TooltipColor.Success
             };
             tooltipGroup.children.Add(happinessTooltip);
 
             // Education
             CitizenEducationKey educationKey = CitizenUIUtils.GetEducation(citizen);
-            var educationStringBuilder = CachedLocalizedStringBuilder<CitizenEducationKey>.Id((CitizenEducationKey t) => $"SelectedInfoPanel.CITIZEN_EDUCATION[{t:G}]");
             StringTooltip educationTooltip = new()
             {
                 icon = "Media/Game/Icons/Education.svg",
-                value = educationStringBuilder[educationKey],
+                value = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_EDUCATION[${educationKey}]", educationKey.ToString()) + $" ({citizen.GetEducationLevel()})",
                 color = TooltipColor.Info,
             };
             tooltipGroup.children.Add(educationTooltip);
@@ -321,7 +338,7 @@ namespace ExtendedTooltip.Patches
                 {
                     Resource outputResource = industrialProcessData.m_Output.m_Resource;
                     companyOutputTooltip.icon = "Media/Game/Resources/" + outputResource.ToString() + ".svg";
-                    companyOutputTooltip.value = "Sells: " + outputResource.ToString();
+                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_SELLS", "Sells") + ": " + outputResource.ToString();
                     tooltipGroup.children.Add(companyOutputTooltip);
 
                     return;
@@ -331,7 +348,7 @@ namespace ExtendedTooltip.Patches
                 {
                     Resource outputResource = industrialProcessData.m_Output.m_Resource;
                     companyOutputTooltip.icon = "Media/Game/Resources/" + outputResource.ToString() + ".svg";
-                    companyOutputTooltip.value = "Produces: " + outputResource.ToString();
+                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_PRODUCES", "Produces") + ": " + outputResource.ToString();
                     tooltipGroup.children.Add(companyOutputTooltip);
 
                     return;
@@ -341,7 +358,7 @@ namespace ExtendedTooltip.Patches
                 {
                     Resource outputResource = industrialProcessData.m_Output.m_Resource;
                     companyOutputTooltip.icon = "Media/Game/Resources/" + outputResource.ToString() + ".svg";
-                    companyOutputTooltip.value = "Produces: " + outputResource.ToString();
+                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_PRODUCES", "Produces") + ": " + outputResource.ToString();
                     tooltipGroup.children.Add(companyOutputTooltip);
 
                     return;
@@ -352,7 +369,7 @@ namespace ExtendedTooltip.Patches
                     StorageCompanyData componentData = m_EntityManager.GetComponentData<StorageCompanyData>(companyEntityPrefab);
                     Resource outputResource = componentData.m_StoredResources;
                     companyOutputTooltip.icon = "Media/Game/Resources/" + outputResource.ToString() + ".svg";
-                    companyOutputTooltip.value = "Stores: " + outputResource.ToString();
+                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_STORES", "Stores") + ": " + outputResource.ToString();
                     tooltipGroup.children.Add(companyOutputTooltip);
 
                     return;
@@ -452,26 +469,6 @@ namespace ExtendedTooltip.Patches
             tooltipGroup.position = math.round(new float2(mousePosition.x, Screen.height - mousePosition.y) + kTooltipPointerDistance);
 
             return tooltipGroup;
-        }
-
-        private static TooltipColor CalculateTooltipColorByValue(int value)
-        {
-            if (value <= 50)
-            {
-                return TooltipColor.Error;
-            }
-            else if (value <= 99)
-            {
-                return TooltipColor.Warning;
-            }
-            else if (value == 100)
-            {
-                return TooltipColor.Info;
-            }
-            else
-            {
-                return TooltipColor.Success;
-            }
         }
     }
 }
