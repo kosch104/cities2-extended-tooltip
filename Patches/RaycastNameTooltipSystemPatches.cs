@@ -86,7 +86,6 @@ namespace ExtendedTooltip.Patches
 
         private static void CreateExtendedTooltip(Entity selectedEntity, Entity prefab, ref TooltipGroup tooltipGroup)
         {
-
             // Add citizen info if available
             if (m_EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
             {
@@ -102,8 +101,9 @@ namespace ExtendedTooltip.Patches
                 float bestCondition = 100f;
                 float condition = 0f;
                 float upkeep = 0f;
-                float[] volume = new float[5];
-                float[] flow = new float[5];
+                
+                //float[] volume = new float[5];
+                //float[] flow = new float[5];
 
                 DynamicBuffer<AggregateElement> buffer = m_EntityManager.GetBuffer<AggregateElement>(selectedEntity, true);
                 for (int i = 0; i < buffer.Length; i++)
@@ -112,7 +112,9 @@ namespace ExtendedTooltip.Patches
                     if (m_EntityManager.TryGetComponent(edge, out Road road) && m_EntityManager.TryGetComponent(edge, out Curve curve))
                     {
                         length += curve.m_Length;
-                        float4 @float = (road.m_TrafficFlowDistance0 + road.m_TrafficFlowDistance1) * 16f;
+
+                        // Still need some work
+                        /*float4 @float = (road.m_TrafficFlowDistance0 + road.m_TrafficFlowDistance1) * 16f;
                         float4 float2 = NetUtils.GetTrafficFlowSpeed(road) * 100f;
                         volume[0] += @float.x * 4f / 24f;
                         volume[1] += @float.y * 4f / 24f;
@@ -121,7 +123,7 @@ namespace ExtendedTooltip.Patches
                         flow[0] += float2.x;
                         flow[1] += float2.y;
                         flow[2] += float2.z;
-                        flow[3] += float2.w;
+                        flow[3] += float2.w;*/
                     }
 
                     if (m_EntityManager.TryGetComponent(edge, out NetCondition netCondition))
@@ -152,7 +154,8 @@ namespace ExtendedTooltip.Patches
                     }
                 }
 
-                volume[0] /= buffer.Length;
+                // Traffic volume and flow need some work
+                /*volume[0] /= buffer.Length;
                 volume[1] /= buffer.Length;
                 volume[2] /= buffer.Length;
                 volume[3] /= buffer.Length;
@@ -161,7 +164,8 @@ namespace ExtendedTooltip.Patches
                 flow[1] /= buffer.Length;
                 flow[2] /= buffer.Length;
                 flow[3] /= buffer.Length;
-                flow[4] = flow[0];
+                flow[4] = flow[0];*/
+
                 bestCondition = 100f - bestCondition / 10f * 100f;
                 worstCondition = 100f - worstCondition / 10f * 100f;
                 condition = condition / 10f * 100f;
@@ -181,6 +185,7 @@ namespace ExtendedTooltip.Patches
                         "{VALUE}", finalLength
                     )
                 };
+                tooltipGroup.children.Add(lengthTooltip);
 
                 StringTooltip upkeepTooltip = new()
                 {
@@ -192,9 +197,18 @@ namespace ExtendedTooltip.Patches
                         "{VALUE}", upkeep.ToString()
                     ),
                 };
-
-                tooltipGroup.children.Add(lengthTooltip);
                 tooltipGroup.children.Add(upkeepTooltip);
+
+                int finalAvgCondition = Convert.ToInt16(math.round(condition));
+                int finalWorstCondition = Convert.ToInt16(math.round(worstCondition));
+                int finalBestCondition = Convert.ToInt16(math.round(bestCondition));
+                StringTooltip conditionTooltip = new()
+                {
+                    icon = "Media/Game/Icons/RoadsServices.svg",
+                    value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.ROAD_CONDITION", "Condition") + ": ~" + finalAvgCondition + $"% ({finalWorstCondition}% - {finalBestCondition}%)",
+                    color = finalAvgCondition < 66 ? TooltipColor.Error : finalAvgCondition < 85 ? TooltipColor.Warning : finalAvgCondition < 95 ? TooltipColor.Info : TooltipColor.Success,
+                };
+                tooltipGroup.children.Add(conditionTooltip);
 
                 return;
             }
@@ -348,7 +362,7 @@ namespace ExtendedTooltip.Patches
                 {
                     Resource outputResource = industrialProcessData.m_Output.m_Resource;
                     companyOutputTooltip.icon = "Media/Game/Resources/" + outputResource.ToString() + ".svg";
-                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_PRODUCES", "Produces") + ": " + outputResource.ToString();
+                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_PRODUCES", "Produces") + ": " + m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{outputResource}]", outputResource.ToString());
                     tooltipGroup.children.Add(companyOutputTooltip);
 
                     return;
@@ -358,7 +372,7 @@ namespace ExtendedTooltip.Patches
                 {
                     Resource outputResource = industrialProcessData.m_Output.m_Resource;
                     companyOutputTooltip.icon = "Media/Game/Resources/" + outputResource.ToString() + ".svg";
-                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_PRODUCES", "Produces") + ": " + outputResource.ToString();
+                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_PRODUCES", "Produces") + ": " + m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{outputResource}]", outputResource.ToString());
                     tooltipGroup.children.Add(companyOutputTooltip);
 
                     return;
@@ -369,7 +383,7 @@ namespace ExtendedTooltip.Patches
                     StorageCompanyData componentData = m_EntityManager.GetComponentData<StorageCompanyData>(companyEntityPrefab);
                     Resource outputResource = componentData.m_StoredResources;
                     companyOutputTooltip.icon = "Media/Game/Resources/" + outputResource.ToString() + ".svg";
-                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_STORES", "Stores") + ": " + outputResource.ToString();
+                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_STORES", "Stores") + ": " + m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{outputResource}]", outputResource.ToString());
                     tooltipGroup.children.Add(companyOutputTooltip);
 
                     return;
@@ -377,7 +391,6 @@ namespace ExtendedTooltip.Patches
             }
         }
 
-        // Token: 0x0600457B RID: 17787 RVA: 0x00288094 File Offset: 0x00286294
         public static float GetEfficiency(DynamicBuffer<Efficiency> buffer)
         {
             float num = 1f;
