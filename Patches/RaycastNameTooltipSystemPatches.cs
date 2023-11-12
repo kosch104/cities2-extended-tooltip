@@ -17,12 +17,9 @@ using Game.UI.Tooltip;
 using Game.Vehicles;
 using Game.Zones;
 using HarmonyLib;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-using static Colossal.AssetPipeline.Diagnostic.Report;
-using static Colossal.IO.AssetDatabase.AtlasFrame;
 using Student = Game.Buildings.Student;
 
 namespace ExtendedTooltip.Patches
@@ -90,6 +87,97 @@ namespace ExtendedTooltip.Patches
             if (m_EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
             {
                 CreateExtendedTooltipForCitizen(selectedEntity, citizen, ref tooltipGroup);
+                return;
+            }
+
+            // Road info if available
+            if (m_EntityManager.HasComponent<AggregateElement>(selectedEntity))
+            {
+                float length = 0f;
+                float worstCondition = 0f;
+                float bestCondition = 100f;
+                float condition = 0f;
+                float upkeep = 0f;
+                float[] volume = new float[5];
+                float[] flow = new float[5];
+
+                DynamicBuffer<AggregateElement> buffer = m_EntityManager.GetBuffer<AggregateElement>(selectedEntity, true);
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    Entity edge = buffer[i].m_Edge;
+                    if (m_EntityManager.TryGetComponent(edge, out Road road) && m_EntityManager.TryGetComponent(edge, out Curve curve))
+                    {
+                        length += curve.m_Length;
+                        float4 @float = (road.m_TrafficFlowDistance0 + road.m_TrafficFlowDistance1) * 16f;
+                        float4 float2 = NetUtils.GetTrafficFlowSpeed(road) * 100f;
+                        volume[0] += @float.x * 4f / 24f;
+                        volume[1] += @float.y * 4f / 24f;
+                        volume[2] += @float.z * 4f / 24f;
+                        volume[3] += @float.w * 4f / 24f;
+                        flow[0] += float2.x;
+                        flow[1] += float2.y;
+                        flow[2] += float2.z;
+                        flow[3] += float2.w;
+                    }
+
+                    if (m_EntityManager.TryGetComponent(edge, out NetCondition netCondition))
+                    {
+                        float2 wear = netCondition.m_Wear;
+                        if (wear.x > worstCondition)
+                        {
+                            worstCondition = wear.x;
+                        }
+                        if (wear.y > worstCondition)
+                        {
+                            worstCondition = wear.y;
+                        }
+                        if (wear.x < bestCondition)
+                        {
+                            bestCondition = wear.x;
+                        }
+                        if (wear.y < bestCondition)
+                        {
+                            bestCondition = wear.y;
+                        }
+                        condition += math.csum(wear) * 0.5f;
+                    }
+
+                    if (m_EntityManager.TryGetComponent(edge, out PrefabRef prefabRef) && m_EntityManager.TryGetComponent(prefabRef.m_Prefab, out PlaceableNetData placeableNetData))
+                    {
+                        upkeep += placeableNetData.m_DefaultUpkeepCost;
+                    }
+                }
+
+                volume[0] /= buffer.Length;
+                volume[1] /= buffer.Length;
+                volume[2] /= buffer.Length;
+                volume[3] /= buffer.Length;
+                volume[4] = volume[0];
+                flow[0] /= buffer.Length;
+                flow[1] /= buffer.Length;
+                flow[2] /= buffer.Length;
+                flow[3] /= buffer.Length;
+                flow[4] = flow[0];
+                bestCondition = 100f - bestCondition / 10f * 100f;
+                worstCondition = 100f - worstCondition / 10f * 100f;
+                condition = condition / 10f * 100f;
+                condition = 100f - condition / buffer.Length;
+
+                StringTooltip lengthTooltip = new()
+                {
+                    icon = "Media/Game/Icons/OutsideConnections.svg",
+                    value = "Length: " + (length >= 1000 ? math.round(length) / 1000 + " km" : math.round(length) + " m"),
+                };
+
+                StringTooltip upkeepTooltip = new()
+                {
+                    icon = "Media/Game/Icons/ServiceUpkeep.svg",
+                    value = "Upkeep: " + math.round(upkeep) + " /month",
+                };
+
+                tooltipGroup.children.Add(lengthTooltip);
+                tooltipGroup.children.Add(upkeepTooltip);
+
                 return;
             }
 
@@ -165,6 +253,7 @@ namespace ExtendedTooltip.Patches
                 {
                     icon = "Media/Game/Icons/Workers.svg",
                     value = "Students: " + studentCount + "/" + studentCapacity,
+                    color = (studentCount * 100 / studentCapacity) <= 50 ? TooltipColor.Success : (studentCount * 100 / studentCapacity) <= 75 ? TooltipColor.Warning : TooltipColor.Error,
                 };
                 tooltipGroup.children.Add(studentTooltip);
             }
