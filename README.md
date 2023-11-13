@@ -23,6 +23,8 @@ Shows the following information on tooltips:
 If you need any help or are you interested in modding yourself?
 Join our discord community: [https://discord.gg/M9rgRtGcRa](https://discord.gg/M9rgRtGcRa)
 
+## Pictures
+
 ### Citizen Tooltip
 ![Citizen Tooltip](https://i.ibb.co/8mCPZNc/Screenshot-2023-11-12-011304.png)
 - Activity
