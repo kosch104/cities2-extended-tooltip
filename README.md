@@ -3,7 +3,11 @@
 This mod adds new informations to the mouse hover tooltip of several entities to the game.
 If you want anything added to the tooltip, please let me know and open an issue.
 
-### Current features
+## Installation
+Simply download the latest release from the [releases page](https://github.com/89pleasure/cities2-extended-tooltip/releases)
+and extract it to your `Cities Skylines II /bepinex/plugins` folder.
+
+## Current features
 Shows the following information on tooltips:
 - Overall Efficiency
 - Company employees current/max
@@ -14,6 +18,10 @@ Shows the following information on tooltips:
 - Schools students current/max
 - Roads upkeep
 - Roads lengths
+
+## Community
+If you need any help or are you interested in modding yourself?
+Join our discord community: [https://discord.gg/M9rgRtGcRa](https://discord.gg/M9rgRtGcRa)
 
 ### Citizen Tooltip
 ![Citizen Tooltip](https://i.ibb.co/8mCPZNc/Screenshot-2023-11-12-011304.png)
@@ -37,7 +45,3 @@ Shows the following information on tooltips:
 ![Road Tooltip](https://i.ibb.co/fvPCKtB/Screenshot-2023-11-12-011357.png)
 - Length
 - Upkeep /month
-
-## Installation
-Simply download the latest release from the [releases page](https://github.com/89pleasure/cities2-extended-tooltip/releases)
-and extract it to your `Cities Skylines II /bepinex/plugins` folder.
