@@ -1,4 +1,5 @@
-﻿using Colossal.Entities;
+﻿using Colossal.Collections;
+using Colossal.Entities;
 using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Citizens;
@@ -19,6 +20,8 @@ using Game.Vehicles;
 using Game.Zones;
 using HarmonyLib;
 using System;
+using System.Linq;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -73,7 +76,7 @@ namespace ExtendedTooltip.Patches
                 AdjustTargets(ref entity, ref prefab);
 
                 // Extended Tooltip Mod
-                CreateExtendedTooltip(entity, prefab, ref tooltipGroup);
+                CreateExtendedTooltips(entity, prefab, ref tooltipGroup);
 
                 defaultTooltip.icon = m_ImageSystem.GetInstanceIcon(entity, prefab);
                 defaultTooltip.entity = entity;
@@ -84,7 +87,7 @@ namespace ExtendedTooltip.Patches
             return false;
         }
 
-        private static void CreateExtendedTooltip(Entity selectedEntity, Entity prefab, ref TooltipGroup tooltipGroup)
+        private static void CreateExtendedTooltips(Entity selectedEntity, Entity prefab, ref TooltipGroup tooltipGroup)
         {
             // Add citizen info if available
             if (m_EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
@@ -109,7 +112,7 @@ namespace ExtendedTooltip.Patches
                 for (int i = 0; i < buffer.Length; i++)
                 {
                     Entity edge = buffer[i].m_Edge;
-                    if (m_EntityManager.TryGetComponent(edge, out Road road) && m_EntityManager.TryGetComponent(edge, out Curve curve))
+                    if (m_EntityManager.TryGetComponent(edge, out Road _) && m_EntityManager.TryGetComponent(edge, out Curve curve))
                     {
                         length += curve.m_Length;
 
@@ -210,7 +213,7 @@ namespace ExtendedTooltip.Patches
                 };
                 tooltipGroup.children.Add(conditionTooltip);
 
-                return;
+                return; // don't have any other info. No need to check for other components
             }
 
             // Add efficiency if available
@@ -227,6 +230,27 @@ namespace ExtendedTooltip.Patches
                     };
                     tooltipGroup.children.Add(efficiencyTooltip);
                 }
+            }
+
+            // Add residential info if available
+            int residentCount = 0;
+            int householdCount = 0;
+            int maxHouseholds = 0;
+            int petsCount = 0;
+            if (CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, selectedEntity, prefab))
+            {
+                string finalHouseholds = (maxHouseholds > 1 ? $"{householdCount}/{maxHouseholds} {m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.HOUSEHOLDS", "Households")} | " : "");
+                string residentsCountString = (residentCount > 0 ? residentCount.ToString() : "-");
+                string finalResidents =$"{residentsCountString} {m_CustomTranslationSystem.GetLocalGameTranslation("Properties.ADJUST_HAPPINESS_MODIFIER_TARGET[Residents]", "Residents")}";
+                string petsCountString = (petsCount > 0 ? petsCount.ToString() : "-");
+                string finalPets = petsCount > 0 ? $" | {petsCountString} {(petsCount > 1 ? m_CustomTranslationSystem.GetTranslation("extendedtooltip.pets", "Pets") : m_CustomTranslationSystem.GetTranslation("extendedtooltip.pet"))}" : "";
+                StringTooltip householdTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Household.svg",
+                    value = finalHouseholds + finalResidents + finalPets,
+                    color = (householdCount * 100 / maxHouseholds) < 50 ? TooltipColor.Error : (householdCount * 100 / maxHouseholds) < 80 ? TooltipColor.Warning : TooltipColor.Success
+                };
+                tooltipGroup.children.Add(householdTooltip);
             }
 
             // Service, commercial, offices and industrial buildings have employees
@@ -281,10 +305,9 @@ namespace ExtendedTooltip.Patches
 
             if (studentCapacity > 0)
             {
-                string studentsTitle = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EDUCATION_STUDENTS", "Students");
                 StringTooltip studentTooltip = new()
                 {
-                    icon = "Media/Game/Icons/Workers.svg",
+                    icon = "Media/Game/Icons/Population.svg",
                     value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EDUCATION_STUDENTS", "Students") + ": " + studentCount + "/" + studentCapacity,
                     color = (studentCount * 100 / studentCapacity) <= 50 ? TooltipColor.Success : (studentCount * 100 / studentCapacity) <= 75 ? TooltipColor.Warning : TooltipColor.Error,
                 };
@@ -303,6 +326,54 @@ namespace ExtendedTooltip.Patches
                 !m_EntityManager.HasComponent<Abandoned>(selectedEntity) &&
                 !m_EntityManager.HasComponent<Destroyed>(selectedEntity) &&
                 (!CompanyUIUtils.HasCompany(m_EntityManager, selectedEntity, selectedPrefab, out Entity entity) || entity != Entity.Null);
+        }
+
+        private static bool CreateTooltipsForResidentialProperties(
+            ref int residentCount,
+            ref int householdCount,
+            ref int maxHouseholds,
+            ref int petsCount,
+            Entity entity,
+            Entity prefab
+        ) {
+            bool flag = false;
+            bool isAbondened = m_EntityManager.HasComponent<Abandoned>(entity);
+            bool hasBuildingPropertyData = m_EntityManager.TryGetComponent(prefab, out BuildingPropertyData buildingPropertyData);
+            bool hasResidentialProperties = buildingPropertyData.m_ResidentialProperties > 0;
+
+            // Only check for residents if the building is not abandoned and has residential properties
+            if (!isAbondened && hasBuildingPropertyData && hasResidentialProperties)
+            {
+                flag = true;
+                maxHouseholds += buildingPropertyData.m_ResidentialProperties;
+                if (m_EntityManager.TryGetBuffer(entity, true, out DynamicBuffer<Renter> renterBuffer))
+                {
+                    for (int i = 0; i < renterBuffer.Length; i++)
+                    {
+                        Entity renter = renterBuffer[i].m_Renter;
+                        if (m_EntityManager.TryGetBuffer(renter, true, out DynamicBuffer<HouseholdCitizen> householdCitizenBuffer))
+                        {
+                            householdCount++;
+                            for (int j = 0; j < householdCitizenBuffer.Length; j++)
+                            {
+                                // Is not in death routine
+                                if (!CitizenUtils.IsCorpsePickedByHearse(m_EntityManager, householdCitizenBuffer[j].m_Citizen))
+                                {
+                                    residentCount++;
+                                }
+                            }
+
+                            // Woof
+                            if (m_EntityManager.TryGetBuffer(renter, true, out DynamicBuffer<HouseholdAnimal> animalBuffer))
+                            {
+                                petsCount += animalBuffer.Length;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return flag;
         }
 
         private static void CreateExtendedTooltipForCitizen(Entity entity, Citizen citizen, ref TooltipGroup tooltipGroup)
@@ -352,7 +423,7 @@ namespace ExtendedTooltip.Patches
                 {
                     Resource outputResource = industrialProcessData.m_Output.m_Resource;
                     companyOutputTooltip.icon = "Media/Game/Resources/" + outputResource.ToString() + ".svg";
-                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_SELLS", "Sells") + ": " + outputResource.ToString();
+                    companyOutputTooltip.value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_SELLS", "Sells") + ": " + m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{outputResource}]", outputResource.ToString());
                     tooltipGroup.children.Add(companyOutputTooltip);
 
                     return;
