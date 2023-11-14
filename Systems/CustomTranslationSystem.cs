@@ -88,7 +88,7 @@ namespace ExtendedTooltip.Systems
                     string placeholder = vars[i];
                     string value = vars[i + 1];
 
-                    translation = translation.Replace(placeholder, value);
+                    translation = translation.Replace("{" + placeholder + "}", value);
                 }
 
                 return translation;

@@ -20,8 +20,6 @@ using Game.Vehicles;
 using Game.Zones;
 using HarmonyLib;
 using System;
-using System.Linq;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -104,7 +102,7 @@ namespace ExtendedTooltip.Patches
                 float bestCondition = 100f;
                 float condition = 0f;
                 float upkeep = 0f;
-                
+
                 //float[] volume = new float[5];
                 //float[] flow = new float[5];
 
@@ -115,7 +113,6 @@ namespace ExtendedTooltip.Patches
                     if (m_EntityManager.TryGetComponent(edge, out Road _) && m_EntityManager.TryGetComponent(edge, out Curve curve))
                     {
                         length += curve.m_Length;
-
                         // Still need some work
                         /*float4 @float = (road.m_TrafficFlowDistance0 + road.m_TrafficFlowDistance1) * 16f;
                         float4 float2 = NetUtils.GetTrafficFlowSpeed(road) * 100f;
@@ -181,23 +178,19 @@ namespace ExtendedTooltip.Patches
                 {
                     icon = "Media/Game/Icons/OutsideConnections.svg",
                     value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LINE_VISUALIZER_LENGTH", "Length") + ": " +
-                    m_CustomTranslationSystem.GetLocalGameTranslation(
-                        lengthFormat == 1 ? "Common.VALUE_KILOMETER" : "Common.VALUE_METER",
-                        lengthFormat == 1 ? " km" : " m",
-                        "{SIGN}", "",
-                        "{VALUE}", finalLength
-                    )
+                    m_CustomTranslationSystem.GetLocalGameTranslation(lengthFormat == 1 ? "Common.VALUE_KILOMETER" : "Common.VALUE_METER", lengthFormat == 1 ? " km" : " m", "SIGN", "","VALUE", finalLength)
                 };
                 tooltipGroup.children.Add(lengthTooltip);
 
+                int finalUpkeep = Convert.ToInt16(upkeep);
                 StringTooltip upkeepTooltip = new()
                 {
                     icon = "Media/Game/Icons/ServiceUpkeep.svg",
                     value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.UPKEEP", "Upkeep") + ": " +
                     m_CustomTranslationSystem.GetLocalGameTranslation(
-                        "Common.VALUE_MONEY_PER_MONTH", upkeep.ToString() + " /month",
-                        "{SIGN}", "",
-                        "{VALUE}", upkeep.ToString()
+                        "Common.VALUE_MONEY_PER_MONTH", finalUpkeep.ToString() + " /month",
+                        "SIGN", "",
+                        "VALUE", finalUpkeep.ToString()
                     ),
                 };
                 tooltipGroup.children.Add(upkeepTooltip);
@@ -232,6 +225,74 @@ namespace ExtendedTooltip.Patches
                 }
             }
 
+            // Add info for parks if available
+            if (m_EntityManager.HasComponent<Game.Buildings.Park>(selectedEntity))
+            {
+                int maintenance = 0;
+                if (UpgradeUtils.TryGetCombinedComponent(m_EntityManager, selectedEntity, prefab, out ParkData parkData))
+                {
+                    Game.Buildings.Park componentData = m_EntityManager.GetComponentData<Game.Buildings.Park>(selectedEntity);
+                    maintenance = Mathf.CeilToInt(math.select(componentData.m_Maintenance / (float)parkData.m_MaintenancePool, 0f, parkData.m_MaintenancePool == 0) * 100f);
+                }
+
+                StringTooltip parkTooltip = new()
+                {
+                    icon = "Media/Game/Icons/ParkMaintenance.svg",
+                    value = $"{m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.PARK_MAINTENANCE", "Maintenence")}: {maintenance}%",
+                    color = (maintenance) <= 40 ? TooltipColor.Error : (maintenance) <= 60 ? TooltipColor.Warning : TooltipColor.Success,
+                };
+                tooltipGroup.children.Add(parkTooltip);
+            }
+
+            // Add parking space info if available
+            if (m_EntityManager.HasComponent<Game.Buildings.ParkingFacility>(selectedEntity))
+            {
+                int laneCount = 0;
+                int parkingCapacity = 0;
+                int parkedCars = 0;
+                int parkingFee = 0;
+
+                if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Game.Net.SubLane> dynamicBuffer))
+                {
+                    CheckParkingLanes(dynamicBuffer, ref laneCount, ref parkingCapacity, ref parkedCars, ref parkingFee);
+                }
+                if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Game.Net.SubNet> dynamicBuffer2))
+                {
+                    CheckParkingLanes(dynamicBuffer2, ref laneCount, ref parkingCapacity, ref parkedCars, ref parkingFee);
+                }
+                if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Game.Objects.SubObject> dynamicBuffer3))
+                {
+                    CheckParkingLanes(dynamicBuffer3, ref laneCount, ref parkingCapacity, ref parkedCars, ref parkingFee);
+                }
+                if (laneCount != 0)
+                {
+                    parkingFee /= laneCount;
+                }
+                if (parkingCapacity < 0)
+                {
+                    parkingCapacity = 0;
+                }
+
+                int parkingOccupationPercentage = parkedCars == 0 ? 0 : Convert.ToInt16(math.round(parkedCars * 100 / parkingCapacity));
+
+                StringTooltip parkingFeesTooltip = new()
+                {
+                    icon = "Media/Game/Icons/ServiceFees.svg",
+                    value = $"{m_CustomTranslationSystem.GetLocalGameTranslation("Policy.TITLE[Lot Parking Fee]")}: {m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY", "€", "SIGN", "", "VALUE", parkingFee.ToString())}",
+                };
+                StringTooltip parkingOccupationTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Traffic.svg",
+                    value = $"{m_CustomTranslationSystem.GetTranslation("extendedtooltip.parkinglots.utilization", "Utilization")}: {parkingOccupationPercentage}% [{parkedCars}/{parkingCapacity}]",
+                    color = (parkingOccupationPercentage <= 75) ? TooltipColor.Success : (parkingOccupationPercentage <= 90) ? TooltipColor.Warning : TooltipColor.Error,
+                };
+
+                tooltipGroup.children.Add(parkingOccupationTooltip);
+                tooltipGroup.children.Add(parkingFeesTooltip);
+
+                return; // don't have any other info. No need to check for other components
+            }
+
             // Add residential info if available
             int residentCount = 0;
             int householdCount = 0;
@@ -239,16 +300,12 @@ namespace ExtendedTooltip.Patches
             int petsCount = 0;
             if (CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, selectedEntity, prefab))
             {
-                string finalHouseholds = (maxHouseholds > 1 ? $"{householdCount}/{maxHouseholds} {m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.HOUSEHOLDS", "Households")} | " : "");
-                string residentsCountString = (residentCount > 0 ? residentCount.ToString() : "-");
-                string finalResidents =$"{residentsCountString} {m_CustomTranslationSystem.GetLocalGameTranslation("Properties.ADJUST_HAPPINESS_MODIFIER_TARGET[Residents]", "Residents")}";
-                string petsCountString = (petsCount > 0 ? petsCount.ToString() : "-");
-                string finalPets = petsCount > 0 ? $" | {petsCountString} {(petsCount > 1 ? m_CustomTranslationSystem.GetTranslation("extendedtooltip.pets", "Pets") : m_CustomTranslationSystem.GetTranslation("extendedtooltip.pet"))}" : "";
+                BuildHouseholdCitizenInfo(householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
                 StringTooltip householdTooltip = new()
                 {
                     icon = "Media/Game/Icons/Household.svg",
-                    value = finalHouseholds + finalResidents + finalPets,
-                    color = (householdCount * 100 / maxHouseholds) < 50 ? TooltipColor.Error : (householdCount * 100 / maxHouseholds) < 80 ? TooltipColor.Warning : TooltipColor.Success
+                    value = finalInfoString,
+                    color = householdCount == 0 ? TooltipColor.Info : (householdCount * 100 / maxHouseholds) < 50 ? TooltipColor.Error : (householdCount * 100 / maxHouseholds) < 80 ? TooltipColor.Warning : TooltipColor.Success
                 };
                 tooltipGroup.children.Add(householdTooltip);
             }
@@ -279,13 +336,13 @@ namespace ExtendedTooltip.Patches
                     WorkplaceComplexity complexity = m_EntityManager.GetComponentData<WorkplaceData>(renterPrefab).m_Complexity;
                     EmploymentData workplacesData = EmploymentData.GetWorkplacesData(workProvider.m_MaxWorkers, buildingLevel, complexity);
                     maxEmployees += workplacesData.total;
-                    int employeeCountPercentage = (int)math.round(100 * employeeCount / maxEmployees);
+                    int employeeCountPercentage = employeeCount == 0 ? 0 : (int)math.round(100 * employeeCount / maxEmployees);
 
                     StringTooltip employeeTooltip = new()
                     {
                         icon = "Media/Game/Icons/Commuter.svg",
                         value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EMPLOYEES", "Employees") + ": " + employeeCount + "/" + maxEmployees,
-                        color = employeeCountPercentage <= 90 ? TooltipColor.Warning : TooltipColor.Success,
+                        color = (employeeCountPercentage == 0) ? TooltipColor.Info : (employeeCountPercentage <= 90) ? TooltipColor.Warning : TooltipColor.Success,
                     };
                     tooltipGroup.children.Add(employeeTooltip);
                 }
@@ -309,7 +366,7 @@ namespace ExtendedTooltip.Patches
                 {
                     icon = "Media/Game/Icons/Population.svg",
                     value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EDUCATION_STUDENTS", "Students") + ": " + studentCount + "/" + studentCapacity,
-                    color = (studentCount * 100 / studentCapacity) <= 50 ? TooltipColor.Success : (studentCount * 100 / studentCapacity) <= 75 ? TooltipColor.Warning : TooltipColor.Error,
+                    color = (studentCount == 0) ? TooltipColor.Info : (studentCount * 100 / studentCapacity) <= 50 ? TooltipColor.Success : (studentCount * 100 / studentCapacity) <= 75 ? TooltipColor.Warning : TooltipColor.Error,
                 };
                 tooltipGroup.children.Add(studentTooltip);
             }
@@ -462,6 +519,40 @@ namespace ExtendedTooltip.Patches
             }
         }
 
+        public static void BuildHouseholdCitizenInfo(int households, int maxHouseholds, int residents, int pets, out string finalInfoString)
+        {
+            // Households
+            string householdsLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.HOUSEHOLDS", "Households");
+            string householdsValue = $"{households}/{maxHouseholds}";
+
+            // Residents
+            string residentsLabel = m_CustomTranslationSystem.GetLocalGameTranslation("Properties.ADJUST_HAPPINESS_MODIFIER_TARGET[Residents]", "Residents");
+            string residentsValue = residents.ToString();
+            
+            // Pets
+            string petsValue = pets.ToString();
+            string petsLabel = pets > 1 ? m_CustomTranslationSystem.GetTranslation("extendedtooltip.pets", "Pets") : m_CustomTranslationSystem.GetTranslation("extendedtooltip.pet");
+
+            // If residential building is > low density (only 1 household) show the household label only
+            if (maxHouseholds > 1)
+            {
+                if (pets > 0)
+                {
+                    finalInfoString = $"{householdsValue} {householdsLabel} [{residentsValue} {residentsLabel}, {petsValue} {petsLabel}]";
+                    return;
+                }
+                finalInfoString = $"{householdsValue} {householdsLabel} [{residentsValue} {residentsLabel}]";
+            } else // low densitiy housing only has 1 household
+            {
+                if (pets > 0)
+                {
+                    finalInfoString = $"{residentsValue} {residentsLabel} [{petsValue} {petsLabel}]";
+                    return;
+                }
+                finalInfoString = $"{residentsValue} {residentsLabel}";
+            }
+        }
+
         public static float GetEfficiency(DynamicBuffer<Efficiency> buffer)
         {
             float num = 1f;
@@ -490,6 +581,79 @@ namespace ExtendedTooltip.Patches
                 }
             }
             return entity;
+        }
+
+        // Token: 0x060022EF RID: 8943 RVA: 0x00104CE8 File Offset: 0x00102EE8
+        private static void CheckParkingLanes(DynamicBuffer<Game.Objects.SubObject> subObjects, ref int laneCount, ref int parkingCapacity, ref int parkedCars, ref int parkingFee)
+        {
+            for (int i = 0; i < subObjects.Length; i++)
+            {
+                Entity subObject = subObjects[i].m_SubObject;
+                if (m_EntityManager.TryGetBuffer(subObject, true, out DynamicBuffer<Game.Net.SubLane> dynamicBuffer))
+                {
+                    CheckParkingLanes(dynamicBuffer, ref laneCount, ref parkingCapacity, ref parkedCars, ref parkingFee);
+                }
+                DynamicBuffer<Game.Objects.SubObject> dynamicBuffer2;
+                if (m_EntityManager.TryGetBuffer(subObject, true, out dynamicBuffer2))
+                {
+                    CheckParkingLanes(dynamicBuffer2, ref laneCount, ref parkingCapacity, ref parkedCars, ref parkingFee);
+                }
+            }
+        }
+
+        private static void CheckParkingLanes(DynamicBuffer<Game.Net.SubNet> subNets, ref int laneCount, ref int parkingCapacity, ref int parkedCars, ref int parkingFee)
+        {
+            for (int i = 0; i < subNets.Length; i++)
+            {
+                Entity subNet = subNets[i].m_SubNet;
+                if (m_EntityManager.TryGetBuffer(subNet, true, out DynamicBuffer<Game.Net.SubLane> dynamicBuffer))
+                {
+                    CheckParkingLanes(dynamicBuffer, ref laneCount, ref parkingCapacity, ref parkedCars, ref parkingFee);
+                }
+            }
+        }
+
+        private static void CheckParkingLanes(DynamicBuffer<Game.Net.SubLane> subLanes, ref int laneCount, ref int parkingCapacity, ref int parkedCars, ref int parkingFee)
+        {
+            for (int i = 0; i < subLanes.Length; i++)
+            {
+                Entity subLane = subLanes[i].m_SubLane;
+                if (m_EntityManager.TryGetComponent(subLane, out Game.Net.ParkingLane parkingLane))
+                {
+                    if ((parkingLane.m_Flags & ParkingLaneFlags.VirtualLane) == (ParkingLaneFlags)0)
+                    {
+                        Entity prefab = m_EntityManager.GetComponentData<PrefabRef>(subLane).m_Prefab;
+                        Curve componentData = m_EntityManager.GetComponentData<Curve>(subLane);
+                        DynamicBuffer<LaneObject> buffer = m_EntityManager.GetBuffer<LaneObject>(subLane, true);
+                        ParkingLaneData componentData2 = m_EntityManager.GetComponentData<ParkingLaneData>(prefab);
+                        if (componentData2.m_SlotInterval != 0f)
+                        {
+                            int num = (int)math.floor((componentData.m_Length + 0.01f) / componentData2.m_SlotInterval);
+                            parkingCapacity += num;
+                        }
+                        else
+                        {
+                            parkingCapacity = -1000000;
+                        }
+                        for (int j = 0; j < buffer.Length; j++)
+                        {
+                            if (m_EntityManager.HasComponent<ParkedCar>(buffer[j].m_LaneObject))
+                            {
+                                parkedCars++;
+                            }
+                        }
+                        parkingFee += parkingLane.m_ParkingFee;
+                        laneCount++;
+                    }
+                }
+                else if (m_EntityManager.TryGetComponent(subLane, out GarageLane garageLane))
+                {
+                    parkingCapacity += garageLane.m_VehicleCapacity;
+                    parkedCars += garageLane.m_VehicleCount;
+                    parkingFee += garageLane.m_ParkingFee;
+                    laneCount++;
+                }
+            }
         }
 
         private static bool HasEmployees(Entity entity, Entity prefab)
