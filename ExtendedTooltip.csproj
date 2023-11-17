@@ -409,6 +409,4 @@
 	</Target>
 
 	<Import Project="GlobalProperties.props" />
-
-	<ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>
