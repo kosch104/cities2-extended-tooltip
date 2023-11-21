@@ -1,5 +1,4 @@
-﻿using Colossal.Collections;
-using Colossal.Entities;
+﻿using Colossal.Entities;
 using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Citizens;
@@ -20,6 +19,7 @@ using Game.Vehicles;
 using Game.Zones;
 using HarmonyLib;
 using System;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -298,7 +298,8 @@ namespace ExtendedTooltip.Patches
             int householdCount = 0;
             int maxHouseholds = 0;
             int petsCount = 0;
-            if (CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, selectedEntity, prefab))
+            NativeList<Entity> householdsResult = new(Allocator.Temp);
+            if (CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdsResult, selectedEntity, prefab))
             {
                 BuildHouseholdCitizenInfo(householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
                 StringTooltip householdTooltip = new()
@@ -308,6 +309,20 @@ namespace ExtendedTooltip.Patches
                     color = householdCount == 0 ? TooltipColor.Info : (householdCount * 100 / maxHouseholds) < 50 ? TooltipColor.Error : (householdCount * 100 / maxHouseholds) < 80 ? TooltipColor.Warning : TooltipColor.Success
                 };
                 tooltipGroup.children.Add(householdTooltip);
+
+                if (householdsResult.Length > 0 && m_EntityManager.TryGetComponent(prefab, out CitizenHappinessParameterData citizenHappinessParameterData))
+                {
+                    HouseholdWealthKey wealthKey = CitizenUIUtils.GetAverageHouseholdWealth(m_EntityManager, householdsResult, citizenHappinessParameterData);
+                    string wealthLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_WEALTH_TITLE", "Household wealth");
+                    string wealthValue = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_WEALTH[{wealthKey}]");
+                    StringTooltip wealthTooltip = new()
+                    {
+                        icon = "Media/Game/Icons/CitizenWealth.svg",
+                        value = $"{wealthLabel}: {wealthValue}",
+                        color = TooltipColor.Info,
+                    };
+                    tooltipGroup.children.Add(wealthTooltip);
+                }
             }
 
             // Service, commercial, offices and industrial buildings have employees
@@ -390,6 +405,7 @@ namespace ExtendedTooltip.Patches
             ref int householdCount,
             ref int maxHouseholds,
             ref int petsCount,
+            ref NativeList<Entity> householdsResult,
             Entity entity,
             Entity prefab
         ) {
@@ -403,6 +419,7 @@ namespace ExtendedTooltip.Patches
             {
                 flag = true;
                 maxHouseholds += buildingPropertyData.m_ResidentialProperties;
+
                 if (m_EntityManager.TryGetBuffer(entity, true, out DynamicBuffer<Renter> renterBuffer))
                 {
                     for (int i = 0; i < renterBuffer.Length; i++)
@@ -410,6 +427,7 @@ namespace ExtendedTooltip.Patches
                         Entity renter = renterBuffer[i].m_Renter;
                         if (m_EntityManager.TryGetBuffer(renter, true, out DynamicBuffer<HouseholdCitizen> householdCitizenBuffer))
                         {
+                            householdsResult.Add(renter);
                             householdCount++;
                             for (int j = 0; j < householdCitizenBuffer.Length; j++)
                             {
@@ -429,6 +447,8 @@ namespace ExtendedTooltip.Patches
                     }
                 }
             }
+
+            
 
             return flag;
         }

@@ -3,5 +3,6 @@
 	<PropertyGroup Label="GlobalProperties">
 		<Cities2_Game_Location>E:\Games\Cities Skylines II</Cities2_Game_Location>
 		<Cities2_Assembly_Location>..\unstripped_libs</Cities2_Assembly_Location>
+		<BepInExVersion>5</BepInExVersion>
 	</PropertyGroup>
 </Project>

@@ -1,8 +1,11 @@
-﻿using BepInEx.Unity.Mono;
-using BepInEx;
+﻿using BepInEx;
 using HarmonyLib;
 using System.Reflection;
 using System.Linq;
+
+#if BEPINEX_V6
+    using BepInEx.Unity.Mono;
+#endif
 
 namespace ExtendedTooltip
 {

@@ -32,7 +32,6 @@ namespace ExtendedTooltip.Systems
             string assemblyPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string directory = Path.GetDirectoryName(assemblyPath);
             string filePath = Path.Combine(directory, $"Translations{Path.DirectorySeparatorChar}{LanguageCode}.json");
-            UnityEngine.Debug.Log(FrameworkDescription);
 
             // Load JSON file based on language code
             try
@@ -47,9 +46,10 @@ namespace ExtendedTooltip.Systems
                 string jsonContent = File.ReadAllText(filePath);
                 Translations = JsonDocument.Parse(jsonContent);
                 UnityEngine.Debug.Log($"Successfully loaded custom translations for {LanguageCode}.");
-            } catch (Exception)
+            } catch (Exception e)
             {
                 UnityEngine.Debug.Log($"Failed to load custom translations for {LanguageCode} from ${filePath}.");
+                UnityEngine.Debug.Log(e.Message);
             }
         }
 

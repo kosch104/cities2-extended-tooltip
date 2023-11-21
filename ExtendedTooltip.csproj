@@ -15,15 +15,10 @@
 		<Deterministic>false</Deterministic>
 		<RootNamespace>ExtendedTooltip</RootNamespace>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<SignAssembly>False</SignAssembly>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
-    <PackageReference Include="BepInEx.Unity.Mono" Version="6.0.0-be.*" IncludeAssets="compile" />
-    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
-	<PackageReference Include="HarmonyX" Version="2.10.2" />
-	<PackageReference Include="System.Text.Json" Version="6.0.8" />
-  </ItemGroup>
+	<Import Project="GlobalProperties.props" />
 	
 	<ItemGroup>
 		<Reference Include="Colossal.AssetPipeline">
@@ -404,9 +399,25 @@
 		</Reference>
 	</ItemGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="if not exist &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)0Harmony.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\0Harmony.dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Json.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\System.Text.Json.dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Json.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;xcopy &quot;$(ProjectDir)Translations&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\Translations\&quot; /E /I /Y" />
-	</Target>
+	<ItemGroup>
+		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+		<PackageReference Include="HarmonyX" Version="2.*" />
+		<PackageReference Include="System.Text.Json" Version="8.0.0" />
+	</ItemGroup>
 
-	<Import Project="GlobalProperties.props" />
+	<ItemGroup Condition="'$(BepInExVersion)' == '6'">
+		<PackageReference Include="BepInEx.Unity.Mono" Version="6.0.0-be.*" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(BepInExVersion)' == '5'">
+		<PackageReference Include="BepInEx.Core" Version="5.*" IncludeAssets="compile" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(BepInExVersion)' == '6'">
+		<DefineConstants>$(DefineConstants);BEPINEX_V6</DefineConstants>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="if not exist &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Buffers.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Memory.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Numerics.Vectors.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Runtime.CompilerServices.Unsafe.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Encodings.Web.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Json.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.Tasks.Extensions.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;xcopy &quot;$(ProjectDir)Translations&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\Translations\&quot; /E /I /Y" />
+	</Target>
 </Project>
