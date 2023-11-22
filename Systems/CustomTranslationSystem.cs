@@ -1,7 +1,12 @@
-﻿using Game;
+﻿using Colossal.IO;
+using Colossal.Json;
+using Game;
 using Game.SceneFlow;
+using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.IO.Compression;
+using System.Text;
 using System.Text.Json;
 
 namespace ExtendedTooltip.Systems
@@ -31,24 +36,40 @@ namespace ExtendedTooltip.Systems
         {
             string assemblyPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string directory = Path.GetDirectoryName(assemblyPath);
-            string filePath = Path.Combine(directory, $"Translations{Path.DirectorySeparatorChar}{LanguageCode}.json");
+            string langPackZip = Path.Combine(directory, "language_pack.zip");
 
             // Load JSON file based on language code
             try
             {
-                if (!File.Exists(filePath))
+                if (!File.Exists(langPackZip))
                 {
-                    UnityEngine.Debug.Log($"No custom translations found for {LanguageCode} at {filePath}.");
+                    UnityEngine.Debug.Log($"Language pack not found at {langPackZip}.");
                     return;
                 }
 
+                UnityEngine.Debug.Log($"Language pack found at {langPackZip}.");
+
                 // Now you have the JSON content in the 'jsonContent' variable
-                string jsonContent = File.ReadAllText(filePath);
-                Translations = JsonDocument.Parse(jsonContent);
-                UnityEngine.Debug.Log($"Successfully loaded custom translations for {LanguageCode}.");
+                using ZipArchive zipArchive = ZipFile.OpenRead(langPackZip);
+                foreach (ZipArchiveEntry entry in zipArchive.Entries)
+                {
+                    if (entry.FullName.StartsWith(LanguageCode) && entry.FullName.EndsWith(".json"))
+                    {
+                        StreamReader languageStream = new(entry.Open(), Encoding.UTF8);
+                        string languageContent = languageStream.ReadToEnd();
+
+                        Translations = JsonDocument.Parse(languageContent);
+                        UnityEngine.Debug.Log($"Successfully loaded custom translations for {LanguageCode}.");
+                        languageStream.Close();
+
+                        return;
+                    }
+                }
+                zipArchive.Dispose();
+
             } catch (Exception e)
             {
-                UnityEngine.Debug.Log($"Failed to load custom translations for {LanguageCode} from ${filePath}.");
+                UnityEngine.Debug.Log($"Failed to load custom translations.");
                 UnityEngine.Debug.Log(e.Message);
             }
         }

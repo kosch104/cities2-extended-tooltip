@@ -1,0 +1,9 @@
+{
+  "name": "ExtendedTooltip",
+  "version_number": "0.3.1",
+  "website_url": "https://github.com/89pleasure/cities2-extended-tooltip",
+  "description": "Adds more information to the game tooltips.",
+  "dependencies": [
+    "BepInEx-BepInExPack-5.4.2100"
+  ]
+}

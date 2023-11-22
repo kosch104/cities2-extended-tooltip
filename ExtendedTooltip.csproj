@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="GlobalProperties.props" />
+
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Nullable>disable</Nullable>
@@ -11,14 +13,12 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<ProduceReferenceAssembly>true</ProduceReferenceAssembly>
 		<LangVersion>latest</LangVersion>
-		<AssemblyVersion>1.0.0.*</AssemblyVersion>
-		<Deterministic>false</Deterministic>
+		<AssemblyVersion>$(PluginVersion)</AssemblyVersion>
+		<FileVersion>$(PluginVersion)</FileVersion>
 		<RootNamespace>ExtendedTooltip</RootNamespace>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<SignAssembly>False</SignAssembly>
 	</PropertyGroup>
-
-	<Import Project="GlobalProperties.props" />
 	
 	<ItemGroup>
 		<Reference Include="Colossal.AssetPipeline">
@@ -402,6 +402,7 @@
 	<ItemGroup>
 		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
 		<PackageReference Include="HarmonyX" Version="2.*" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.Text.Json" Version="8.0.0" />
 	</ItemGroup>
 
@@ -418,6 +419,6 @@
 	</PropertyGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="if not exist &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Buffers.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Memory.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Numerics.Vectors.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Runtime.CompilerServices.Unsafe.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Encodings.Web.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Json.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.Tasks.Extensions.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;xcopy &quot;$(ProjectDir)Translations&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\Translations\&quot; /E /I /Y" />
+		<Exec Command="if not exist &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Buffers.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Memory.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Numerics.Vectors.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Runtime.CompilerServices.Unsafe.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Encodings.Web.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Json.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.Tasks.Extensions.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)language_pack.zip&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;" />
 	</Target>
 </Project>

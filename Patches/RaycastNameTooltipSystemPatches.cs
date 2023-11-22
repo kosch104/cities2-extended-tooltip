@@ -23,6 +23,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using static Colossal.IO.AssetDatabase.AtlasFrame;
 using Student = Game.Buildings.Student;
 
 namespace ExtendedTooltip.Patches
@@ -91,6 +92,78 @@ namespace ExtendedTooltip.Patches
             if (m_EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
             {
                 CreateExtendedTooltipForCitizen(selectedEntity, citizen, ref tooltipGroup);
+                return;
+            }
+
+            // Add vehicle info if available (Taxis, Police cars, Public transport)
+            if (m_EntityManager.HasComponent<Vehicle>(selectedEntity) &&
+                (m_EntityManager.HasComponent<Game.Vehicles.Taxi>(selectedEntity) ||
+                m_EntityManager.HasComponent<Game.Vehicles.PoliceCar>(selectedEntity) |
+                m_EntityManager.HasComponent<Game.Vehicles.PublicTransport>(selectedEntity)
+            ))
+            {
+                int passengers = 0;
+                int maxPassengers = 0;
+                VehiclePassengerLocaleKey vehiclePassengerLocaleKey = VehiclePassengerLocaleKey.Passenger;
+
+                if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<LayoutElement> dynamicBuffer))
+                {
+                    for (int i = 0; i < dynamicBuffer.Length; i++)
+                    {
+                        Entity vehicle = dynamicBuffer[i].m_Vehicle;
+                        if (m_EntityManager.TryGetBuffer(vehicle, true, out DynamicBuffer<Passenger> dynamicBuffer2))
+                        {
+                            for (int j = 0; j < dynamicBuffer2.Length; j++)
+                            {
+                                if (m_EntityManager.HasComponent<Game.Creatures.Human>(dynamicBuffer2[j].m_Passenger))
+                                {
+                                    int num = passengers;
+                                    passengers = num + 1;
+                                }
+                            }
+                        }
+                        if (m_EntityManager.TryGetComponent(vehicle, out PrefabRef vehiclePrefabRef))
+                        {
+                            Entity vehiclePrefab = vehiclePrefabRef.m_Prefab;
+                            AddPassengerCapacity(vehiclePrefab, ref maxPassengers, ref passengers, ref vehiclePassengerLocaleKey);
+                        }
+                    }
+                }
+                else
+                {
+                    if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Passenger> dynamicBuffer3))
+                    {
+                        for (int k = 0; k < dynamicBuffer3.Length; k++)
+                        {
+                            if (m_EntityManager.HasComponent<Game.Creatures.Human>(dynamicBuffer3[k].m_Passenger))
+                            {
+                                int num = passengers;
+                                passengers = num + 1;
+                            }
+                        }
+                    }
+                    AddPassengerCapacity(prefab, ref maxPassengers, ref passengers, ref vehiclePassengerLocaleKey);
+                }
+
+                // Do not create tooltip with invalid values
+                if (maxPassengers == 0)
+                {
+                    return;
+                }
+
+                string tooltipTitle = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.PASSENGERS_TITLE", "Passengers");
+                if (vehiclePassengerLocaleKey == VehiclePassengerLocaleKey.Prisoner)
+                {
+                    tooltipTitle = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.POLICE_PRISONERS", "Prisoners");
+                }
+
+                StringTooltip vehicleCapacityTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Population.svg",
+                    value = $"{tooltipTitle}: {passengers}/{maxPassengers}",
+                };
+                tooltipGroup.children.Add(vehicleCapacityTooltip);
+
                 return;
             }
 
@@ -293,6 +366,44 @@ namespace ExtendedTooltip.Patches
                 return; // don't have any other info. No need to check for other components
             }
 
+            if (m_EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || m_EntityManager.HasBuffer<ConnectedRoute>(selectedEntity))
+            {
+                int averageWaitingTime = 0;
+                m_EntityManager.TryGetComponent(selectedEntity, out WaitingPassengers waitingPassengers);
+                if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<ConnectedRoute> dynamicBuffer))
+                {
+                    int num = 0;
+                    for (int i = 0; i < dynamicBuffer.Length; i++)
+                    {
+                        if (m_EntityManager.TryGetComponent(dynamicBuffer[i].m_Waypoint, out WaitingPassengers waitingPassengers2))
+                        {
+                            waitingPassengers.m_Count += waitingPassengers2.m_Count;
+                            num += waitingPassengers2.m_AverageWaitingTime;
+                        }
+                    }
+                    num /= math.max(1, dynamicBuffer.Length);
+                    num -= num % 5;
+                    averageWaitingTime = (ushort)num;
+                }
+
+                // Calculate average waiting time in minutes
+                averageWaitingTime = averageWaitingTime <= 0 ? 0 : (int) math.round(averageWaitingTime / 60);
+
+                StringTooltip waitingPassengersTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Population.svg",
+                    value = $"{m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.WAITING_PASSENGERS", "Waiting passengers")}: {waitingPassengers.m_Count}",
+                };
+                StringTooltip averageWaitingTimeTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Fastforward.svg",
+                    value = $"{m_CustomTranslationSystem.GetTranslation("extendedtooltip.average_waiting_time", "~ waiting time")}: {averageWaitingTime}m",
+                    color = averageWaitingTime < 60 ? TooltipColor.Success : averageWaitingTime < 120 ? TooltipColor.Warning : TooltipColor.Error,
+                };
+                tooltipGroup.children.Add(waitingPassengersTooltip);
+                tooltipGroup.children.Add(averageWaitingTimeTooltip);
+            }
+
             // Add residential info if available
             int residentCount = 0;
             int householdCount = 0;
@@ -389,6 +500,31 @@ namespace ExtendedTooltip.Patches
             if (CompanyUIUtils.HasCompany(m_EntityManager, selectedEntity, prefab, out Entity company))
             {
                 CreateTooltipsForOutputCompanies(company, ref tooltipGroup);
+            }
+        }
+
+        private static void AddPassengerCapacity(Entity prefab, ref int maxPassengers, ref int passengers, ref VehiclePassengerLocaleKey vehiclePassengerLocaleKey)
+        {
+            if (m_EntityManager.TryGetComponent(prefab, out PersonalCarData personalCarData))
+            {
+                maxPassengers += personalCarData.m_PassengerCapacity - 1;
+                passengers--;
+                return;
+            }
+            if (m_EntityManager.TryGetComponent(prefab, out TaxiData taxiData))
+            {
+                maxPassengers += taxiData.m_PassengerCapacity;
+                return;
+            }
+            if (m_EntityManager.TryGetComponent(prefab, out PoliceCarData policeCarData))
+            {
+                vehiclePassengerLocaleKey = VehiclePassengerLocaleKey.Prisoner;
+                maxPassengers += policeCarData.m_CriminalCapacity;
+                return;
+            }
+            if (m_EntityManager.TryGetComponent(prefab, out PublicTransportVehicleData publicTransportVehicleData))
+            {
+                maxPassengers += publicTransportVehicleData.m_PassengerCapacity;
             }
         }
 
