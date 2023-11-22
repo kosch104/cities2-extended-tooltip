@@ -23,7 +23,6 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-using static Colossal.IO.AssetDatabase.AtlasFrame;
 using Student = Game.Buildings.Student;
 
 namespace ExtendedTooltip.Patches
