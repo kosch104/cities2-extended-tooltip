@@ -10,7 +10,7 @@ namespace ExtendedTooltip.Patches
     {
         static void Postfix(UpdateSystem __instance)
         {
-            __instance?.UpdateAfter<CustomTranslationSystem>(SystemUpdatePhase.UIUpdate);
+            __instance?.UpdateAt<CustomTranslationSystem>(SystemUpdatePhase.UIUpdate);
         }
     }
 }

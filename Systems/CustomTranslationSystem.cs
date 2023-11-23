@@ -1,8 +1,5 @@
-﻿using Colossal.IO;
-using Colossal.Json;
-using Game;
+﻿using Game;
 using Game.SceneFlow;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -14,6 +11,7 @@ namespace ExtendedTooltip.Systems
     public class CustomTranslationSystem: GameSystemBase
     {
         private string LanguageCode { get; set; }
+        public string CurrentLanguageCode => LanguageCode;
         private JsonDocument Translations { get; set; }
         public static string FrameworkDescription { get; }
 
@@ -27,8 +25,12 @@ namespace ExtendedTooltip.Systems
 
         protected override void OnUpdate()
         {
-            LanguageCode = GameManager.instance.localizationManager.activeLocaleId;
-            UnityEngine.Debug.Log("CustomTranslationSystem updated.");
+        }
+
+        public void ReloadTranslations(string locale)
+        {
+            LanguageCode = locale;
+            UnityEngine.Debug.Log("Reloading translations.");
             LoadCustomTranslations();
         }
 
@@ -36,7 +38,7 @@ namespace ExtendedTooltip.Systems
         {
             string assemblyPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string directory = Path.GetDirectoryName(assemblyPath);
-            string langPackZip = Path.Combine(directory, "language_pack.zip");
+            string langPackZip = Path.Combine(directory, "language_pack.data");
 
             // Load JSON file based on language code
             try
@@ -49,7 +51,6 @@ namespace ExtendedTooltip.Systems
 
                 UnityEngine.Debug.Log($"Language pack found at {langPackZip}.");
 
-                // Now you have the JSON content in the 'jsonContent' variable
                 using ZipArchive zipArchive = ZipFile.OpenRead(langPackZip);
                 foreach (ZipArchiveEntry entry in zipArchive.Entries)
                 {
