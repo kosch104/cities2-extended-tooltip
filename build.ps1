@@ -25,7 +25,8 @@ if (Test-Path "$pluginPath\language_pack.data" -PathType Leaf) {
 Rename-Item -Path "$pluginPath\language_pack.zip" -NewName "$pluginPath\language_pack.data"
 
 try {
-	Compress-Archive -Path $pluginPath -DestinationPath "$pluginPath\..\ExtendedTooltip-BepInEx$bepInExVersion-v$pluginVersion.zip" -Force
+	$files = Get-ChildItem -Path $pluginPath
+	Compress-Archive -Path $files.FullName -DestinationPath "$pluginPath\..\ExtendedTooltip-BepInEx$bepInExVersion-v$pluginVersion.zip" -Force
 	Write-Host "Mod for BepInEx$bepInExVersion successfully packed to $pluginPath"
 } catch {
 	Write-Host "Error: $_"

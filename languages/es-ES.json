@@ -2,5 +2,6 @@
   "extendedtooltip.pet": "Mascota",
   "extendedtooltip.pets": "Mascotas",
   "extendedtooltip.parkinglots.utilization": "Utilización",
-  "extendedtooltip.average_waiting_time": "~ Tiempo de espera"
+  "extendedtooltip.average_waiting_time": "~ Tiempo de espera",
+  "extendedtooltip.rent": "Alquiler"
 }

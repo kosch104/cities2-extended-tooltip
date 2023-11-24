@@ -1,6 +1,7 @@
 {
-  "extendedtooltip.pet":  "Haustier",
+  "extendedtooltip.pet": "Haustier",
   "extendedtooltip.pets": "Haustiere",
   "extendedtooltip.parkinglots.utilization": "Auslastung",
-  "extendedtooltip.average_waiting_time": "~ Wartezeit"
+  "extendedtooltip.average_waiting_time": "~ Wartezeit",
+  "extendedtooltip.rent": "Miete"
 }

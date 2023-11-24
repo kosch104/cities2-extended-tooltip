@@ -1,4 +1,5 @@
 ﻿using Colossal.Entities;
+using Colossal.Mathematics;
 using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Citizens;
@@ -10,7 +11,6 @@ using Game.Input;
 using Game.Net;
 using Game.Prefabs;
 using Game.Routes;
-using Game.SceneFlow;
 using Game.Tools;
 using Game.UI;
 using Game.UI.InGame;
@@ -20,6 +20,8 @@ using Game.Vehicles;
 using Game.Zones;
 using HarmonyLib;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -48,7 +50,9 @@ namespace ExtendedTooltip.Patches
             NameSystem m_NameSystem = __instance.World.GetOrCreateSystemManaged<NameSystem>();
             ImageSystem m_ImageSystem = __instance.World.GetOrCreateSystemManaged<ImageSystem>();
             ToolRaycastSystem m_ToolRaycastSystem = __instance.World.GetOrCreateSystemManaged<ToolRaycastSystem>();
+            RandomSeed m_RandomSeed;
 
+            m_RandomSeed = RandomSeed.Next();
             m_EntityManager = __instance.World.EntityManager;
             m_PrefabSystem = __instance.World.GetOrCreateSystemManaged<PrefabSystem>();
             m_CustomTranslationSystem = __instance.World.GetOrCreateSystemManaged<CustomTranslationSystem>();
@@ -409,8 +413,9 @@ namespace ExtendedTooltip.Patches
             int householdCount = 0;
             int maxHouseholds = 0;
             int petsCount = 0;
+            List<int> householdRents = [];
             NativeList<Entity> householdsResult = new(Allocator.Temp);
-            if (CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdsResult, selectedEntity, prefab))
+            if (CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdRents, ref householdsResult, selectedEntity, prefab))
             {
                 BuildHouseholdCitizenInfo(householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
                 StringTooltip householdTooltip = new()
@@ -421,7 +426,26 @@ namespace ExtendedTooltip.Patches
                 };
                 tooltipGroup.children.Add(householdTooltip);
 
-                if (householdsResult.Length > 0 && m_EntityManager.TryGetComponent(prefab, out CitizenHappinessParameterData citizenHappinessParameterData))
+                if (householdRents.Count > 0)
+                {
+                    int householdRent = (int) math.round(householdRents.Average());
+                    string rentLabel = m_CustomTranslationSystem.GetTranslation("extendedtooltip.rent", "Rent");
+                    if (householdCount > 1)
+                    {
+                        rentLabel = $"~ {m_CustomTranslationSystem.GetTranslation("extendedtooltip.rent", "Rent")}";
+                    }
+
+                    string rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "€", "SIGN", "", "VALUE", householdRent.ToString());
+                    StringTooltip wealthTooltip = new()
+                    {
+                        icon = "Media/Game/Icons/Money.svg",
+                        value = $"{rentLabel}: {rentValue}",
+                        color = TooltipColor.Info,
+                    };
+                    tooltipGroup.children.Add(wealthTooltip);
+                }
+
+                if (householdsResult.Length > 0 && m_EntityManager.TryGetComponent(selectedEntity, out CitizenHappinessParameterData citizenHappinessParameterData))
                 {
                     HouseholdWealthKey wealthKey = CitizenUIUtils.GetAverageHouseholdWealth(m_EntityManager, householdsResult, citizenHappinessParameterData);
                     string wealthLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_WEALTH_TITLE", "Household wealth");
@@ -541,6 +565,7 @@ namespace ExtendedTooltip.Patches
             ref int householdCount,
             ref int maxHouseholds,
             ref int petsCount,
+            ref List<int> householdRents,
             ref NativeList<Entity> householdsResult,
             Entity entity,
             Entity prefab
@@ -549,6 +574,7 @@ namespace ExtendedTooltip.Patches
             bool isAbondened = m_EntityManager.HasComponent<Abandoned>(entity);
             bool hasBuildingPropertyData = m_EntityManager.TryGetComponent(prefab, out BuildingPropertyData buildingPropertyData);
             bool hasResidentialProperties = buildingPropertyData.m_ResidentialProperties > 0;
+            RandomSeed randomSeed = RandomSeed.Next();
 
             // Only check for residents if the building is not abandoned and has residential properties
             if (!isAbondened && hasBuildingPropertyData && hasResidentialProperties)
@@ -560,7 +586,16 @@ namespace ExtendedTooltip.Patches
                 {
                     for (int i = 0; i < renterBuffer.Length; i++)
                     {
+                        Unity.Mathematics.Random random = randomSeed.GetRandom(1 + i);
                         Entity renter = renterBuffer[i].m_Renter;
+
+                        int rent;
+                        if (m_EntityManager.TryGetComponent(renter, out PropertyRenter propertyRenter))
+                        {
+                            rent = MathUtils.RoundToIntRandom(ref random, propertyRenter.m_Rent * 1f);
+                            householdRents.Add(rent);
+                        }
+
                         if (m_EntityManager.TryGetBuffer(renter, true, out DynamicBuffer<HouseholdCitizen> householdCitizenBuffer))
                         {
                             householdsResult.Add(renter);
