@@ -3,6 +3,7 @@ using Colossal.Mathematics;
 using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Citizens;
+using Game.City;
 using Game.Common;
 using Game.Companies;
 using Game.Creatures;
@@ -11,6 +12,7 @@ using Game.Input;
 using Game.Net;
 using Game.Prefabs;
 using Game.Routes;
+using Game.Simulation;
 using Game.Tools;
 using Game.UI;
 using Game.UI.InGame;
@@ -50,9 +52,7 @@ namespace ExtendedTooltip.Patches
             NameSystem m_NameSystem = __instance.World.GetOrCreateSystemManaged<NameSystem>();
             ImageSystem m_ImageSystem = __instance.World.GetOrCreateSystemManaged<ImageSystem>();
             ToolRaycastSystem m_ToolRaycastSystem = __instance.World.GetOrCreateSystemManaged<ToolRaycastSystem>();
-            RandomSeed m_RandomSeed;
 
-            m_RandomSeed = RandomSeed.Next();
             m_EntityManager = __instance.World.EntityManager;
             m_PrefabSystem = __instance.World.GetOrCreateSystemManaged<PrefabSystem>();
             m_CustomTranslationSystem = __instance.World.GetOrCreateSystemManaged<CustomTranslationSystem>();
@@ -286,6 +286,93 @@ namespace ExtendedTooltip.Patches
                 return; // don't have any other info. No need to check for other components
             }
 
+            int buildingLevel = 0;
+            int levelingCost = 0;
+            int currentCondition = 0;
+            if (HasSpawnableBuildingData(ref buildingLevel, ref currentCondition, ref levelingCost, selectedEntity, prefab))
+            {
+                string buildingLevelLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LEVEL", "Level");
+                string buildingLevelValue = $"{buildingLevel}/5";
+
+                TooltipColor buildingLevelColor = TooltipColor.Info;
+                if (buildingLevel == 5)
+                {
+                    buildingLevelColor = TooltipColor.Success;
+                }
+                if (currentCondition < 0)
+                {
+                    buildingLevelColor = TooltipColor.Error;
+                }
+
+                if (levelingCost > 0)
+                {
+                    buildingLevelValue += $" [€{currentCondition} / €{levelingCost}]";
+                }
+
+                StringTooltip levelTooltip = new()
+                {
+                    icon = "Media/Game/Icons/BuildingLevel.svg",
+                    value = $"{buildingLevelLabel}: {buildingLevelValue}",
+                    color = buildingLevelColor
+                };
+                tooltipGroup.children.Add(levelTooltip);
+            }
+
+            // Add residential info if available
+            int residentCount = 0;
+            int householdCount = 0;
+            int maxHouseholds = 0;
+            int petsCount = 0;
+            List<int> householdRents = [];
+            NativeList<Entity> householdsResult = new(Allocator.Temp);
+            if (CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdRents, ref householdsResult, selectedEntity, prefab))
+            {
+                BuildHouseholdCitizenInfo(householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
+                int householdCapacityPercentage = householdCount == 0 ? 0 : (int)math.round(100 * householdCount / maxHouseholds);
+                TooltipColor householdTooltipColor = (householdCount == 0 || maxHouseholds == 1) ? TooltipColor.Info : householdCapacityPercentage < 50 ? TooltipColor.Error : householdCapacityPercentage < 80 ? TooltipColor.Warning : TooltipColor.Success;
+
+                StringTooltip householdTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Household.svg",
+                    value = finalInfoString,
+                    color = householdTooltipColor
+                };
+                tooltipGroup.children.Add(householdTooltip);
+
+                if (householdRents.Count > 0)
+                {
+                    int householdRent = (int)math.round(householdRents.Average());
+                    string rentLabel = m_CustomTranslationSystem.GetTranslation("extendedtooltip.rent", "Rent");
+                    if (householdCount > 1)
+                    {
+                        rentLabel = $"~ {m_CustomTranslationSystem.GetTranslation("extendedtooltip.rent", "Rent")}";
+                    }
+
+                    string rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "€", "SIGN", "", "VALUE", householdRent.ToString());
+                    StringTooltip wealthTooltip = new()
+                    {
+                        icon = "Media/Game/Icons/Money.svg",
+                        value = $"{rentLabel}: {rentValue}",
+                        color = TooltipColor.Info,
+                    };
+                    tooltipGroup.children.Add(wealthTooltip);
+                }
+
+                if (householdsResult.Length > 0 && m_EntityManager.TryGetComponent(selectedEntity, out CitizenHappinessParameterData citizenHappinessParameterData))
+                {
+                    HouseholdWealthKey wealthKey = CitizenUIUtils.GetAverageHouseholdWealth(m_EntityManager, householdsResult, citizenHappinessParameterData);
+                    string wealthLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_WEALTH_TITLE", "Household wealth");
+                    string wealthValue = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_WEALTH[{wealthKey}]");
+                    StringTooltip wealthTooltip = new()
+                    {
+                        icon = "Media/Game/Icons/CitizenWealth.svg",
+                        value = $"{wealthLabel}: {wealthValue}",
+                        color = TooltipColor.Info,
+                    };
+                    tooltipGroup.children.Add(wealthTooltip);
+                }
+            }
+
             // Add efficiency if available
             if (HasEfficiency(selectedEntity, prefab))
             {
@@ -408,58 +495,6 @@ namespace ExtendedTooltip.Patches
                 tooltipGroup.children.Add(averageWaitingTimeTooltip);
             }
 
-            // Add residential info if available
-            int residentCount = 0;
-            int householdCount = 0;
-            int maxHouseholds = 0;
-            int petsCount = 0;
-            List<int> householdRents = [];
-            NativeList<Entity> householdsResult = new(Allocator.Temp);
-            if (CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdRents, ref householdsResult, selectedEntity, prefab))
-            {
-                BuildHouseholdCitizenInfo(householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
-                StringTooltip householdTooltip = new()
-                {
-                    icon = "Media/Game/Icons/Household.svg",
-                    value = finalInfoString,
-                    color = householdCount == 0 ? TooltipColor.Info : (householdCount * 100 / maxHouseholds) < 50 ? TooltipColor.Error : (householdCount * 100 / maxHouseholds) < 80 ? TooltipColor.Warning : TooltipColor.Success
-                };
-                tooltipGroup.children.Add(householdTooltip);
-
-                if (householdRents.Count > 0)
-                {
-                    int householdRent = (int) math.round(householdRents.Average());
-                    string rentLabel = m_CustomTranslationSystem.GetTranslation("extendedtooltip.rent", "Rent");
-                    if (householdCount > 1)
-                    {
-                        rentLabel = $"~ {m_CustomTranslationSystem.GetTranslation("extendedtooltip.rent", "Rent")}";
-                    }
-
-                    string rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "€", "SIGN", "", "VALUE", householdRent.ToString());
-                    StringTooltip wealthTooltip = new()
-                    {
-                        icon = "Media/Game/Icons/Money.svg",
-                        value = $"{rentLabel}: {rentValue}",
-                        color = TooltipColor.Info,
-                    };
-                    tooltipGroup.children.Add(wealthTooltip);
-                }
-
-                if (householdsResult.Length > 0 && m_EntityManager.TryGetComponent(selectedEntity, out CitizenHappinessParameterData citizenHappinessParameterData))
-                {
-                    HouseholdWealthKey wealthKey = CitizenUIUtils.GetAverageHouseholdWealth(m_EntityManager, householdsResult, citizenHappinessParameterData);
-                    string wealthLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_WEALTH_TITLE", "Household wealth");
-                    string wealthValue = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_WEALTH[{wealthKey}]");
-                    StringTooltip wealthTooltip = new()
-                    {
-                        icon = "Media/Game/Icons/CitizenWealth.svg",
-                        value = $"{wealthLabel}: {wealthValue}",
-                        color = TooltipColor.Info,
-                    };
-                    tooltipGroup.children.Add(wealthTooltip);
-                }
-            }
-
             // Service, commercial, offices and industrial buildings have employees
             if (HasEmployees(selectedEntity, prefab))
             { 
@@ -471,16 +506,16 @@ namespace ExtendedTooltip.Patches
                 {
                     employeeCount += dynamicBuffer.Length;
 
-                    int buildingLevel = 1;
+                    int commercialBuildingLevel = 1;
                     if (m_EntityManager.TryGetComponent(prefab, out SpawnableBuildingData spawnableBuildingData))
                     {
-                        buildingLevel = spawnableBuildingData.m_Level;
+                        commercialBuildingLevel = spawnableBuildingData.m_Level;
                     }
                     else if (m_EntityManager.TryGetComponent(selectedEntity, out PropertyRenter propertyRenter)
                         && m_EntityManager.TryGetComponent(propertyRenter.m_Property, out PrefabRef prefabRef)
                         && m_EntityManager.TryGetComponent(prefabRef.m_Prefab, out SpawnableBuildingData spawnableBuildingData2))
                     {
-                        buildingLevel = spawnableBuildingData2.m_Level;
+                        commercialBuildingLevel = spawnableBuildingData2.m_Level;
                     }
 
                     WorkplaceComplexity complexity = m_EntityManager.GetComponentData<WorkplaceData>(renterPrefab).m_Complexity;
@@ -560,6 +595,27 @@ namespace ExtendedTooltip.Patches
                 (!CompanyUIUtils.HasCompany(m_EntityManager, selectedEntity, selectedPrefab, out Entity entity) || entity != Entity.Null);
         }
 
+        private static bool HasSpawnableBuildingData(ref int buildingLevel, ref int currentCondition, ref int levelingCost ,Entity entity, Entity prefab)
+        {
+            CitySystem citySystem = m_EntityManager.World.GetOrCreateSystemManaged<CitySystem>();
+            Entity city = citySystem.City;
+
+            if (m_EntityManager.TryGetComponent(prefab, out BuildingPropertyData buildingPropertyData) &&
+                m_EntityManager.TryGetComponent(prefab, out SpawnableBuildingData spawnableBuildingData) &&
+                m_EntityManager.TryGetComponent(entity, out BuildingCondition buildingCondition) &&
+                m_EntityManager.TryGetBuffer(city, true, out DynamicBuffer<CityModifier> cityEffectsBuffer) &&
+                m_EntityManager.TryGetComponent(spawnableBuildingData.m_ZonePrefab, out ZoneData zoneData)
+            ) {
+                buildingLevel = spawnableBuildingData.m_Level;
+                currentCondition = buildingCondition.m_Condition;
+                levelingCost = spawnableBuildingData.m_Level < 5 ? BuildingUtils.GetLevelingCost(zoneData.m_AreaType, buildingPropertyData, spawnableBuildingData.m_Level, cityEffectsBuffer) : 0;
+
+                return true;
+            }
+
+            return false;
+        }
+
         private static bool CreateTooltipsForResidentialProperties(
             ref int residentCount,
             ref int householdCount,
@@ -589,6 +645,7 @@ namespace ExtendedTooltip.Patches
                         Unity.Mathematics.Random random = randomSeed.GetRandom(1 + i);
                         Entity renter = renterBuffer[i].m_Renter;
 
+                        // Get rent
                         int rent;
                         if (m_EntityManager.TryGetComponent(renter, out PropertyRenter propertyRenter))
                         {
@@ -596,6 +653,7 @@ namespace ExtendedTooltip.Patches
                             householdRents.Add(rent);
                         }
 
+                        // Household info
                         if (m_EntityManager.TryGetBuffer(renter, true, out DynamicBuffer<HouseholdCitizen> householdCitizenBuffer))
                         {
                             householdsResult.Add(renter);
@@ -640,20 +698,26 @@ namespace ExtendedTooltip.Patches
             // Happiness
             int happinessValue = citizen.Happiness;
             CitizenHappinessKey happinessKey = (CitizenHappinessKey)CitizenUtils.GetHappinessKey(happinessValue);
+
+            string happinessLabelString = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_HAPPINESS", "Happiness");
+            string happinessValueString = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_HAPPINESS_TITLE[{Enum.GetName(typeof(CitizenHappinessKey), happinessKey)}]", happinessKey.ToString());
+
             StringTooltip happinessTooltip = new()
             {
                 icon = "Media/Game/Icons/" + happinessKey.ToString() + ".svg",
-                value = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_HAPPINESS_TITLE[${happinessKey}]", happinessKey.ToString()) + $" ({happinessValue})",
+                value = $"{happinessLabelString}: {happinessValueString}",
                 color = happinessValue < 50 ? TooltipColor.Error : happinessValue < 75 ? TooltipColor.Warning : TooltipColor.Success
             };
             tooltipGroup.children.Add(happinessTooltip);
 
             // Education
             CitizenEducationKey educationKey = CitizenUIUtils.GetEducation(citizen);
+            string educationLabelString = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_EDUCATION", "Education");
+            string educationValueString = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_EDUCATION_TITLE[{Enum.GetName(typeof(CitizenEducationKey), educationKey)}]", educationKey.ToString());
             StringTooltip educationTooltip = new()
             {
                 icon = "Media/Game/Icons/Education.svg",
-                value = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_EDUCATION[${educationKey}]", educationKey.ToString()) + $" ({citizen.GetEducationLevel()})",
+                value = $"{educationLabelString}: {educationValueString}",
                 color = TooltipColor.Info,
             };
             tooltipGroup.children.Add(educationTooltip);
