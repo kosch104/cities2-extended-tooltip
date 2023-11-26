@@ -56,17 +56,15 @@ namespace ExtendedTooltip.Systems
                 {
                     if (entry.FullName.StartsWith(LanguageCode) && entry.FullName.EndsWith(".json"))
                     {
-                        StreamReader languageStream = new(entry.Open(), Encoding.UTF8);
+                        using StreamReader languageStream = new(entry.Open(), Encoding.UTF8);
                         string languageContent = languageStream.ReadToEnd();
 
                         Translations = JsonDocument.Parse(languageContent);
                         UnityEngine.Debug.Log($"Successfully loaded custom translations for {LanguageCode}.");
-                        languageStream.Close();
 
                         return;
                     }
                 }
-                zipArchive.Dispose();
 
             } catch (Exception e)
             {

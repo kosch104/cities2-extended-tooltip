@@ -406,3 +406,6 @@ FodyWeavers.xsd
 
 ### Custom
 GlobalProperties.props
+dist/
+node_modules/
+ts-build/

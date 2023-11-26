@@ -397,6 +397,18 @@
 			<HintPath>$(Cities2_Assembly_Location)\UnityEngine.XRModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="HookUILib">
+			<HintPath>UI\HookUILib.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="HookUIMod">
+			<HintPath>UI\HookUIMod.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="dist/extended-tooltip-ui.transpiled.js" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -418,6 +430,6 @@
 	</PropertyGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="if not exist &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Buffers.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Memory.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Numerics.Vectors.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Runtime.CompilerServices.Unsafe.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Encodings.Web.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Json.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.Tasks.Extensions.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)language_pack.zip&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)build.ps1&quot; &quot;$(ProjectDir)\&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\\&quot; $(BepInExVersion) $(PluginVersion)" />
+		<Exec Command="if not exist &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Buffers.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Memory.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Numerics.Vectors.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Runtime.CompilerServices.Unsafe.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Encodings.Web.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Json.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.Tasks.Extensions.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)language_pack.zip&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)build.ps1&quot; &quot;$(ProjectName)&quot; &quot;$(PluginVersion)&quot; &quot;$(ProjectDir)\&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\\&quot; $(BepInExVersion)" />
 	</Target>
 </Project>

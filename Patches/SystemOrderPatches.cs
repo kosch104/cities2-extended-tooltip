@@ -1,16 +1,21 @@
 ﻿using ExtendedTooltip.Systems;
 using Game;
 using Game.Common;
+using Game.UI.Tooltip;
 using HarmonyLib;
 
 namespace ExtendedTooltip.Patches
 {
-    [HarmonyPatch(typeof(SystemOrder), nameof(SystemOrder.Initialize))]
-    class SystemOrder_Patches
+    [HarmonyPatch(typeof(SystemOrder))]
+    public static class SystemOrder_Patches
     {
-        static void Postfix(UpdateSystem __instance)
+        [HarmonyPatch(nameof(SystemOrder.Initialize))]
+        [HarmonyPostfix]
+        public static void Postfix(UpdateSystem updateSystem)
         {
-            __instance?.UpdateAt<CustomTranslationSystem>(SystemUpdatePhase.UIUpdate);
+            updateSystem?.UpdateAt<CustomTranslationSystem>(SystemUpdatePhase.UIUpdate);
+            updateSystem?.UpdateAt<ExtendedTooltipUISystem>(SystemUpdatePhase.UIUpdate);
+            updateSystem?.UpdateBefore<ExtendedTooltipSystem, RaycastNameTooltipSystem>(SystemUpdatePhase.UITooltip);
         }
     }
 }

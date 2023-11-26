@@ -2,6 +2,7 @@
 using HarmonyLib;
 using System.Reflection;
 using System.Linq;
+using HookUILib.Core;
 
 #if BEPINEX_V6
     using BepInEx.Unity.Mono;
@@ -26,5 +27,17 @@ namespace ExtendedTooltip
                 Logger.LogInfo($"Patched method: {patchedMethod.Module.Name}:{patchedMethod.Name}");
             }
         }
+    }
+
+    public class ExtendedTooltipUI : UIExtension
+    {
+        public ExtendedTooltipUI()
+        {
+            extensionContent = LoadEmbeddedResource("ExtendedTooltip.dist.extended-tooltip-ui.transpiled.js");
+        }
+
+        public new readonly ExtensionType extensionType = ExtensionType.Panel;
+        public new readonly string extensionID = "89pleasure.extendedTooltip";
+        public new readonly string extensionContent;
     }
 }

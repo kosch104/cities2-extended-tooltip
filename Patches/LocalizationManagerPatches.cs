@@ -1,7 +1,5 @@
 ﻿using Colossal.Localization;
 using ExtendedTooltip.Systems;
-using Game;
-using Game.SceneFlow;
 using HarmonyLib;
 using Unity.Entities;
 
