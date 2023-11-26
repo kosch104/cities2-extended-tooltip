@@ -425,6 +425,10 @@
 		<PackageReference Include="BepInEx.Core" Version="5.*" IncludeAssets="compile" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Helper\" />
+	</ItemGroup>
+
 	<PropertyGroup Condition="'$(BepInExVersion)' == '6'">
 		<DefineConstants>$(DefineConstants);BEPINEX_V6</DefineConstants>
 	</PropertyGroup>

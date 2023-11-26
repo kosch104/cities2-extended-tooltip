@@ -39,6 +39,11 @@ namespace ExtendedTooltip.Systems
         private CustomTranslationSystem m_CustomTranslationSystem;
 
         private CitizenTooltipBuilder m_CitizenTooltipBuilder;
+        public bool ShowCitizenTooltip { get; set; } = true;
+        public bool ShowCitizenStateTooltip { get; set; } = true;
+        public bool ShowCitizenHappinessTooltip { get; set; } = true;
+        public bool ShowCitizenEducationTooltip { get; set; } = true;
+
         private VehicleTooltipBuilder m_VehicleTooltipBuilder;
         private SpawnablesTooltipBuilder m_SpawnablesTooltipBuilder;
         private RoadTooltipBuilder m_RoadTooltipBuilder;
@@ -140,7 +145,7 @@ namespace ExtendedTooltip.Systems
         private void CreateExtendedTooltips(Entity selectedEntity, Entity prefab)
         {
             // CITIZEN TOOLTIP
-            if (EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
+            if (ShowCitizenTooltip && EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
             {
                 m_CitizenTooltipBuilder.Build(prefab, citizen, m_TooltipGroup);
                 m_TooltipGroup.SetChildrenChanged();

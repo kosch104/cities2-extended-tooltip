@@ -8,7 +8,7 @@ using Unity.Entities;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
-    public class CitizenTooltipBuilder
+    internal class CitizenTooltipBuilder
     {
         private EntityManager m_EntityManager;
         private readonly CustomTranslationSystem m_CustomTranslationSystem;
