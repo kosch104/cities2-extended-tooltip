@@ -1,4 +1,5 @@
 ﻿using Game.UI.Tooltip;
+using Game.Zones;
 using HarmonyLib;
 
 namespace ExtendedTooltip.Patches

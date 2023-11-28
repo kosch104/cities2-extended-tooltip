@@ -20,7 +20,7 @@ namespace ExtendedTooltip.TooltipBuilder
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
 
-            if (m_Settings.VehicleCapacity)
+            if (m_Settings.VehiclePassengerDetail)
             {
                 int passengers = 0;
                 int maxPassengers = 0;

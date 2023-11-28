@@ -2,12 +2,13 @@
 import { useDataUpdate } from 'hookui-framework'
 import * as styles from './styles'
 
-const panelStyle = { position: 'absolute'};
+const panelStyle = { position: 'absolute', maxHeight: '600rem' };
 
 const $Panel = ({ title, children, react }) => {
     const [position, setPosition] = react.useState({ top: 100, left: 10 });
     const [dragging, setDragging] = react.useState(false);
     const [rel, setRel] = react.useState({ x: 0, y: 0 }); // Position relative to the cursor
+    const [topValue, setTopValue] = react.useState(0);
 
     const onMouseDown = (e) => {
         if (e.button !== 0) return; // Only left mouse button
@@ -49,6 +50,11 @@ const $Panel = ({ title, children, react }) => {
         left: position.left + 'px',
     }
 
+    const handleScroll = (event) => {
+        setTopValue(event.target.scrollTop);
+    }
+    const scrollableStyle = { height: '200px', top: topValue };
+
     react.useEffect(() => {
         if (dragging) {
             // Attach event listeners to window
@@ -75,17 +81,19 @@ const $Panel = ({ title, children, react }) => {
                     </button>
                 </div>
             </div>
-            <div class="content_XD5 content_AD7 child-opacity-transition_nkS content_BIL">
-                <div class="section_sop section_gUk statistics-menu_y86">
+            <div class="content_XD5 content_AD7 child-opacity-transition_nkS content_BIL"
+                style={{ height: '500px', overflowY: 'scroll' }}>
+                <div class="section_sop section_gUk statistics-menu_y86" style={{ width: '100%' }}>
                     <div class="content_flM content_owQ first_l25 last_ZNw">
                         <div class="scrollable_DXr y_SMM track-visible-y_RCA scrollable_By7">
-                            <div class="content_gqa">
+                            <div class="content_gqa" onScroll={handleScroll}>
                                 <div className="content_Q1O">
-                                    <div class="statistics-category-item_qVI">
-                                        <div class="header_Ld7">Tooltips</div>
-                                        {children}
-                                    </div>
+                                    {children}
                                 </div>
+                                <div class="bottom-padding_JS3"></div>
+                            </div>
+                            <div class="track_e3O y_SMM">
+                                <div id="scrollbar" class="thumb_Cib y_SMM" style={scrollableStyle}></div>
                             </div>
                         </div>
                     </div>
@@ -97,22 +105,27 @@ const $Panel = ({ title, children, react }) => {
 
 const ExtendedTooltipUI = ({ react }) => {
 
+    const [disableMod, setDisableMod] = react.useState(false);
+    const [useOnPressOnly, setUseOnPressOnly] = react.useState(false);
+    useDataUpdate(react, 'extendedTooltip.disableMod', setDisableMod);
+    useDataUpdate(react, 'extendedTooltip.useOnPressOnly', setUseOnPressOnly);
+
     const [showCitizenGroup, setShowCitizenGroup] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.citizen', setShowCitizenGroup);
-
+    const [expandCitizenCroup, setExpandCitizenGroup] = react.useState(true);
     const [showCitizenStateTooltip, setShowCitizenStateTooltip] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.citizenState', setShowCitizenStateTooltip);
-
     const [showCitizenHappinessTooltip, setShowCitizenHappinessTooltip] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.citizenHappiness', setShowCitizenHappinessTooltip);
-
     const [showCitizenEducationTooltip, setShowCitizenEducationTooltip] = react.useState(true);
+    useDataUpdate(react, 'extendedTooltip.citizen', setShowCitizenGroup);
+    useDataUpdate(react, 'extendedTooltip.expandCitizen', setExpandCitizenGroup);
+    useDataUpdate(react, 'extendedTooltip.citizenState', setShowCitizenStateTooltip);
+    useDataUpdate(react, 'extendedTooltip.citizenHappiness', setShowCitizenHappinessTooltip);
     useDataUpdate(react, 'extendedTooltip.citizenEducation', setShowCitizenEducationTooltip);
 
     const [showCompanyGroup, setShowCompanyGroup] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.company', setShowCompanyGroup);
-
+    const [expandCompanyGroup, setExpandCompanyGroup] = react.useState(true);
     const [showCompanyOutput, setShowCompanyOutput] = react.useState(true);
+    useDataUpdate(react, 'extendedTooltip.company', setShowCompanyGroup);
+    useDataUpdate(react, 'extendedTooltip.expandCompany', setExpandCompanyGroup);
     useDataUpdate(react, 'extendedTooltip.companyOutput', setShowCompanyOutput);
 
     const [showEfficiencyGroup, setShowEfficiencyGroup] = react.useState(true);
@@ -121,81 +134,81 @@ const ExtendedTooltipUI = ({ react }) => {
     const [showEmployeeGroup, setShowEmployeeGroup] = react.useState(true);
     useDataUpdate(react, 'extendedTooltip.employee', setShowEmployeeGroup);
 
-    const [showParkingGroup, setShowParkingGroup] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.parking', setShowParkingGroup);
-
-    const [showParkingFees, setShowParkingFees] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.parkingFees', setShowParkingFees);
-
-    const [showParkingCapacity, setShowParkingCapacity] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.parkingCapacity', setShowParkingCapacity);
-
     const [showParkGroup, setShowParkGroup] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.park', setShowParkGroup);
-
+    const [expandParkGroup, setExpandParkGroup] = react.useState(true);
     const [showParkMaintenance, setShowParkMaintenance] = react.useState(true);
+    useDataUpdate(react, 'extendedTooltip.park', setShowParkGroup);
+    useDataUpdate(react, 'extendedTooltip.expandPark', setExpandParkGroup);
     useDataUpdate(react, 'extendedTooltip.parkMaintenance', setShowParkMaintenance);
 
+    const [showParkingGroup, setShowParkingGroup] = react.useState(true);
+    const [expandParkingGroup, setExpandParkingGroup] = react.useState(true);
+    const [showParkingFees, setShowParkingFees] = react.useState(true);
+    const [showParkingCapacity, setShowParkingCapacity] = react.useState(true);
+    useDataUpdate(react, 'extendedTooltip.parkingFacility', setShowParkingGroup);
+    useDataUpdate(react, 'extendedTooltip.expandParking', setExpandParkingGroup);
+    useDataUpdate(react, 'extendedTooltip.parkingFees', setShowParkingFees);
+    useDataUpdate(react, 'extendedTooltip.parkingCapacity', setShowParkingCapacity);
+
     const [showPublicTransportationGroup, setShowPublicTransportationGroup] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.publicTransportation', setShowPublicTransportationGroup);
-
+    const [expandPublicTransportationGroup, setExpandPublicTransportationGroup] = react.useState(true);
     const [showPublicTransportationWaitingPassengers, setShowPublicTransportationWaitingPassengers] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.publicTransportationWaitingPassengers', setShowPublicTransportationWaitingPassengers);
-
     const [showPublicTransportationWaitingTime, setShowPublicTransportationWaitingTime] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.publicTransportationWaitingTime', setShowPublicTransportationWaitingTime);
+    useDataUpdate(react, 'extendedTooltip.publicTransport', setShowPublicTransportationGroup);
+    useDataUpdate(react, 'extendedTooltip.expandPublicTransport', setExpandPublicTransportationGroup);
+    useDataUpdate(react, 'extendedTooltip.publicTransportWaitingPassengers', setShowPublicTransportationWaitingPassengers);
+    useDataUpdate(react, 'extendedTooltip.publicTransportWaitingTime', setShowPublicTransportationWaitingTime);
 
     const [showRoadGroup, setShowRoadGroup] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.road', setShowRoadGroup);
-
+    const [expandRoadGroup, setExpandRoadGroup] = react.useState(true);
     const [showRoadLength, setShowRoadLength] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.roadLength', setShowRoadLength);
-
     const [showRoadUpkeep, setShowRoadUpkeep] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.roadUpkeep', setShowRoadUpkeep);
-
     const [showRoadCondition, setShowRoadCondition] = react.useState(true);
+    useDataUpdate(react, 'extendedTooltip.road', setShowRoadGroup);
+    useDataUpdate(react, 'extendedTooltip.expandRoad', setExpandRoadGroup);
+    useDataUpdate(react, 'extendedTooltip.roadLength', setShowRoadLength);
+    useDataUpdate(react, 'extendedTooltip.roadUpkeep', setShowRoadUpkeep);
     useDataUpdate(react, 'extendedTooltip.roadCondition', setShowRoadCondition);
 
     const [showSchoolGroup, setShowSchoolGroup] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.school', setShowSchoolGroup);
-
+    const [expandSchoolGroup, setExpandSchoolGroup] = react.useState(true);
     const [showSchoolStudentCapacity, setShowSchoolStudentCapacity] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.schoolStudentCapacity', setShowSchoolStudentCapacity);
-
     const [showSchoolStudentCount, setShowSchoolStudentCount] = react.useState(true);
+    useDataUpdate(react, 'extendedTooltip.school', setShowSchoolGroup);
+    useDataUpdate(react, 'extendedTooltip.expandSchool', setExpandSchoolGroup);
+    useDataUpdate(react, 'extendedTooltip.schoolStudentCapacity', setShowSchoolStudentCapacity);
     useDataUpdate(react, 'extendedTooltip.schoolStudentCount', setShowSchoolStudentCount);
 
-    const [showSpawnablesGroup, setShowSpawnablesGroup] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.spawnables', setShowSpawnablesGroup);
-
-    const [showSpawnablesLevel, setShowSpawnablesLevel] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.spawnablesLevel', setShowSpawnablesLevel);
-
-    const [showSpawnablesLevelDetails, setShowSpawnablesLevelDetails] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.spawnablesLevelDetails', setShowSpawnablesLevelDetails);
-
-    const [showSpawnablesHousehold, setShowSpawnablesHousehold] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.spawnablesHousehold', setShowSpawnablesHousehold);
-
-    const [showSpawnablesHouseholdDetails, setShowSpawnablesHouseholdDetails] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.spawnablesHouseholdDetails', setShowSpawnablesHouseholdDetails);
-
-    /*const [showSpawnablesWealth, setShowSpawnablesWealth] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.spawnablesWealth', setShowSpawnablesWealth);*/
-
-    const [showSpawnablesRent, setShowSpawnablesRent] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.spawnablesRent', setShowSpawnablesRent);
-
-    const [showVehicles, setShowVehicles] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.vehicles', setShowVehicles);
-
+    const [showSpawnableGroup, setShowSpawnableGroup] = react.useState(true);
+    const [expandSpawnableGroup, setExpandSpawnableGroup] = react.useState(true);
+    const [showSpawnableLevel, setShowSpawnableLevel] = react.useState(true);
+    const [showSpawnableLevelDetails, setShowSpawnableLevelDetails] = react.useState(true);
+    const [showSpawnableHousehold, setShowSpawnableHousehold] = react.useState(true);
+    const [showSpawnableHouseholdDetails, setShowSpawnableHouseholdDetails] = react.useState(true);
+    const [showSpawnableRent, setShowSpawnableRent] = react.useState(true);
+    useDataUpdate(react, 'extendedTooltip.spawnable', setShowSpawnableGroup);
+    useDataUpdate(react, 'extendedTooltip.expandSpawnable', setExpandSpawnableGroup);
+    useDataUpdate(react, 'extendedTooltip.spawnableLevel', setShowSpawnableLevel);
+    useDataUpdate(react, 'extendedTooltip.spawnableLevelDetails', setShowSpawnableLevelDetails);
+    useDataUpdate(react, 'extendedTooltip.spawnableHousehold', setShowSpawnableHousehold);
+    useDataUpdate(react, 'extendedTooltip.spawnableHouseholdDetails', setShowSpawnableHouseholdDetails);
+    useDataUpdate(react, 'extendedTooltip.spawnableRent', setShowSpawnableRent);
+    
+    const [showVehiclesGroup, setShowVehiclesGroup] = react.useState(true);
+    const [expandVehiclesGroup, setExpandVehiclesGroup] = react.useState(true);
     const [showVehiclePassengerDetails, setShowVehiclePassengerDetails] = react.useState(true);
-    useDataUpdate(react, 'extendedTooltip.spawnablesVehiclesPassengerDetails', setShowVehiclePassengerDetails);
+    useDataUpdate(react, 'extendedTooltip.vehicle', setShowVehiclesGroup);
+    useDataUpdate(react, 'extendedTooltip.expandVehicle', setExpandVehiclesGroup);
+    useDataUpdate(react, 'extendedTooltip.vehiclePassengerDetail', setShowVehiclePassengerDetails);
+
+    const generalSettingsData = [
+        { id: 90, label: 'Disable Mod', description: 'Disable the mod globally.', isChecked: disableMod },
+        { id: 91, label: 'Enable Hotkey Mode', description: 'Hold ALT to show tooltips.', isChecked: useOnPressOnly  },
+    ]
 
     const tooltipsSettingsData = [
         {
-            id: 0, label: 'Citizen', isChecked: showCitizenGroup,
+            id: 0, label: 'Citizen', isChecked: showCitizenGroup, expanded: expandCitizenCroup,
             children: [
                 { id: 1, label: 'State', isChecked: showCitizenStateTooltip },
                 { id: 2, label: 'Happiness', isChecked: showCitizenHappinessTooltip },
@@ -203,7 +216,7 @@ const ExtendedTooltipUI = ({ react }) => {
             ]
         }, 
         {
-            id: 4, label: 'Company', isChecked: showCompanyGroup,
+            id: 4, label: 'Company', isChecked: showCompanyGroup, expanded: expandCompanyGroup,
             children: [
                 { id: 5, label: 'Company Output', isChecked: showCompanyOutput },
             ],
@@ -211,27 +224,27 @@ const ExtendedTooltipUI = ({ react }) => {
         { id: 6, label: 'Efficiency', isChecked: showEfficiencyGroup, children: [] },
         { id: 7, label: 'Employee', isChecked: showEmployeeGroup, children: [] },
         {
-            id: 8, label: 'Parking Facilities', isChecked: showParkingGroup,
+            id: 8, label: 'Parking Facilities', isChecked: showParkingGroup, expanded: expandParkingGroup,
             children: [
                 { id: 9, label: 'Fees', isChecked: showParkingFees },
                 { id: 10, label: 'Capacity', isChecked: showParkingCapacity },
             ],
         },
         {
-            id: 11, label: 'Parks', isChecked: showParkGroup,
+            id: 11, label: 'Parks', isChecked: showParkGroup, expanded: expandParkGroup,
             children: [
                 { id: 12, label: 'Maintenance', isChecked: showParkMaintenance },
             ]
         },
         {
-            id: 13, label: 'Public Transportation', isChecked: showPublicTransportationGroup,
+            id: 13, label: 'Public Transportation', isChecked: showPublicTransportationGroup, expanded: expandPublicTransportationGroup,
             children: [
                 { id: 14, label: 'Waiting Passengers', isChecked: showPublicTransportationWaitingPassengers },
                 { id: 15, label: 'Average Waiting Time', isChecked: showPublicTransportationWaitingTime },
             ]
         },
         {
-            id: 16, label: 'Roads', isChecked: showRoadGroup,
+            id: 16, label: 'Roads', isChecked: showRoadGroup, expanded: expandRoadGroup,
             children: [
                 { id: 17, label: 'Length', isChecked: showRoadLength },
                 { id: 18, label: 'Upkeep', isChecked: showRoadUpkeep },
@@ -239,24 +252,24 @@ const ExtendedTooltipUI = ({ react }) => {
             ]
         },
         {
-            id: 20, label: 'Educational Facilities', isChecked: showSchoolGroup,
+            id: 20, label: 'Educational Facilities', isChecked: showSchoolGroup, expanded: expandSchoolGroup,
             children: [
                 { id: 21, label: 'Student Capacity', isChecked: showSchoolStudentCapacity },
                 { id: 22, label: 'Student Count', isChecked: showSchoolStudentCount },
             ]
         },
         {
-            id: 23, label: 'Spawnables', isChecked: showSpawnablesGroup,
+            id: 23, label: 'Spawnables', isChecked: showSpawnableGroup, expanded: expandSpawnableGroup,
             children: [
-                { id: 24, label: 'Level', isChecked: showSpawnablesLevel },
-                { id: 25, label: 'Level Details', isChecked: showSpawnablesLevelDetails },
-                { id: 26, label: 'Household', isChecked: showSpawnablesHousehold },
-                { id: 27, label: 'Household Details', isChecked: showSpawnablesHouseholdDetails },
-                { id: 28, label: 'Rent', isChecked: showSpawnablesRent },
+                { id: 24, label: 'Level', isChecked: showSpawnableLevel },
+                { id: 25, label: 'Level Details', isChecked: showSpawnableLevelDetails },
+                { id: 26, label: 'Household', isChecked: showSpawnableHousehold },
+                { id: 27, label: 'Household Details', isChecked: showSpawnableHouseholdDetails },
+                { id: 28, label: 'Rent', isChecked: showSpawnableRent },
             ]
         },
         {
-            id: 29, label: 'Vehicles', isChecked: showVehicles,
+            id: 29, label: 'Vehicles', isChecked: showVehiclesGroup, expanded: expandVehiclesGroup,
             children: [
                 { id: 30, label: 'Passenger Details', isChecked: showVehiclePassengerDetails }
             ]
@@ -264,22 +277,22 @@ const ExtendedTooltipUI = ({ react }) => {
     ];
 
     const Setting = ({ setting, nested }) => {
-        const { label, isChecked, children } = setting;
-
-        const [expanded, setExpanded] = react.useState(false);
+        const { label, description, isChecked, expanded, children } = setting;
         const checked_class = isChecked ? styles.CLASS_CHECKED : styles.CLASS_UNCHECKED
 
         const onToggle = () => {
-            console.log(setting.id);
             engine.trigger("extendedTooltip.onToggle", setting.id);
         }
-        const expandedToggle = () => {
-            console.log(expanded)
-            setExpanded(!expanded);
+
+        const onExpand = () => {
+            engine.trigger("extendedTooltip.onExpand", setting.id);
         }
 
+        const onExpandAction = children && children.length > 0 ? onExpand : null;
         const nestingStyle = { '--nesting': nested };
-        const borderColor = 'rgba(134, 205, 144, 1.000000)';
+        const headerContentStyle = {marginTop: '-1rem'};
+        const decsriptionStyle = { fontSize: 'var(--fontSizeXS)' };
+        const borderColor = isChecked ? 'rgba(134, 205, 144, 1.000000)' : 'rgba(134, 205, 144, 0.250000)';
         const borderStyle = {
             borderTopColor: borderColor,
             borderLeftColor: borderColor,
@@ -303,43 +316,46 @@ const ExtendedTooltipUI = ({ react }) => {
         };
 
         return (
-            <div className={styles.many(styles.CLASS_TT_FOLDOUT, styles.CLASS_TT_DISABLE_MOUSE_STATES)} style={nestingStyle} >
-                <div className={styles.many(styles.CLASS_TT_HEADER, styles.CLASS_TT_ITEMMOUSESTATES, styles.CLASS_TT_ITEM_FOCUSED)} onClick={expandedToggle}>
-                    <div className={styles.CLASS_TT_ICON}>
-                        <div className={styles.many(styles.CLASS_TT_CHILD_TOGGLE, styles.CLASS_TT_ITEMMOUSESTATES, checked_class)} onClick={onToggle} style={borderStyle}>
+            <div className={styles.many(styles.CLASS_TT_FOLDOUT, styles.CLASS_TT_DISABLE_MOUSE_STATES)} style={nestingStyle}>
+                <div className={styles.many(styles.CLASS_TT_HEADER, styles.CLASS_TT_ITEMMOUSESTATES, styles.CLASS_TT_ITEM_FOCUSED)}>
+                    <div className={styles.CLASS_TT_ICON} onClick={onToggle}>
+                        <div className={styles.many(styles.CLASS_TT_CHILD_TOGGLE, styles.CLASS_TT_ITEMMOUSESTATES, checked_class)} style={borderStyle}>
                             <div className={styles.many(styles.CLASS_TT_CHECKMARK, checked_class)}></div>
                         </div>
                     </div>
-                    <div className={styles.CLASS_TT_HEADER_CONTENT}>
+                    <div className={styles.CLASS_TT_HEADER_CONTENT} style={headerContentStyle} onClick={onExpandAction}>
                         <div className={styles.CLASS_TT_LABEL}>{label}</div>
+                        {description && <div style={decsriptionStyle}>{description}</div>}
                     </div>
-                    {children && children.length > 0 && <div class="tinted-icon_iKo toggle_RV4 toggle_yQv" style={maskImageStyle}></div>}
+                    {children && children.length > 0 && <div class="tinted-icon_iKo toggle_RV4 toggle_yQv" style={maskImageStyle} onClick={onExpandAction}></div>}
                 </div>
                 {renderChildren()}
             </div>
         );
     }
 
-    const SettingsList = ({ settingsData }) => {
+    const SettingsList = ({ name, settings }) => {
         return (
-            <div class="items_AIY">
-                {settingsData.map((setting) => (
-                    <Setting
-                        key={setting.id}
-                        nested={0}
-                        setting={setting}
-                    />
-                ))}
+            <div class="statistics-category-item_qVI">
+                <div class="header_Ld7">{name}</div>
+                <div class="items_AIY">
+                    {settings.map((setting) => (
+                        <Setting
+                            key={setting.id}
+                            nested={0}
+                            setting={setting}
+                        />
+                    ))}
+                </div>
             </div>
         );
     };
 
     return <$Panel title="Extended Tooltip" react={react}>
-        <SettingsList settingsData={tooltipsSettingsData} />
+        <SettingsList name="General" settings={generalSettingsData} />
+        <SettingsList name="Tooltips" settings={tooltipsSettingsData} />
     </$Panel>
 };
-
-const TestComponent = ({ react }) => <div></div>
 
 window._$hookui.registerPanel({
     id: '89pleasure.extendedTooltip',

@@ -15,6 +15,7 @@
 		<LangVersion>latest</LangVersion>
 		<AssemblyVersion>$(PluginVersion)</AssemblyVersion>
 		<FileVersion>$(PluginVersion)</FileVersion>
+		<Version>$(PluginVersion)</Version>
 		<RootNamespace>ExtendedTooltip</RootNamespace>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<SignAssembly>False</SignAssembly>
