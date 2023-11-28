@@ -9,10 +9,13 @@ using Unity.Mathematics;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
-    public class RoadTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+    public class RoadTooltipBuilder : TooltipBuilderBase
     {
-        private EntityManager m_EntityManager = entityManager;
-        private readonly CustomTranslationSystem m_CustomTranslationSystem = customTranslationSystem;
+        public RoadTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+        : base(entityManager, customTranslationSystem)
+        {
+            UnityEngine.Debug.Log($"Created RoadTooltipBuilder.");
+        }
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)
         {

@@ -10,10 +10,13 @@ using Unity.Mathematics;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
-    public class EmployeesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+    public class EmployeesTooltipBuilder : TooltipBuilderBase
     {
-        private EntityManager m_EntityManager = entityManager;
-        private readonly CustomTranslationSystem m_CustomTranslationSystem = customTranslationSystem;
+        public EmployeesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+        : base(entityManager, customTranslationSystem)
+        {
+            UnityEngine.Debug.Log($"Created EmployeesTooltipBuilder.");
+        }
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {

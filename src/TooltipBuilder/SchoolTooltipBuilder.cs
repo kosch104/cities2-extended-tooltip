@@ -7,10 +7,13 @@ using Unity.Entities;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
-    public class SchoolTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+    public class SchoolTooltipBuilder : TooltipBuilderBase
     {
-        private EntityManager m_EntityManager = entityManager;
-        private readonly CustomTranslationSystem m_CustomTranslationSystem = customTranslationSystem;
+        public SchoolTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+        : base(entityManager, customTranslationSystem)
+        {
+            UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
+        }
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {

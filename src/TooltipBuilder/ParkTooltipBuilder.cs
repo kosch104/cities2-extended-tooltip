@@ -7,17 +7,20 @@ using UnityEngine;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
-    public class ParkTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+    public class ParkTooltipBuilder : TooltipBuilderBase
     {
-        private EntityManager EntityManager = entityManager;
-        private readonly CustomTranslationSystem m_CustomTranslationSystem = customTranslationSystem;
+        public ParkTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+        : base(entityManager, customTranslationSystem)
+        {
+            UnityEngine.Debug.Log($"Created ParkTooltipBuilder.");
+        }
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
             int maintenance = 0;
-            if (UpgradeUtils.TryGetCombinedComponent(EntityManager, selectedEntity, prefab, out ParkData parkData))
+            if (UpgradeUtils.TryGetCombinedComponent(m_EntityManager, selectedEntity, prefab, out ParkData parkData))
             {
-                Game.Buildings.Park componentData = EntityManager.GetComponentData<Game.Buildings.Park>(selectedEntity);
+                Game.Buildings.Park componentData = m_EntityManager.GetComponentData<Game.Buildings.Park>(selectedEntity);
                 maintenance = Mathf.CeilToInt(math.select(componentData.m_Maintenance / (float)parkData.m_MaintenancePool, 0f, parkData.m_MaintenancePool == 0) * 100f);
             }
 

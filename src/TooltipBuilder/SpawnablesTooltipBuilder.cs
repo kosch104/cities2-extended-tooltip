@@ -15,10 +15,13 @@ using Unity.Mathematics;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
-    public class SpawnablesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+    public class SpawnablesTooltipBuilder : TooltipBuilderBase
     {
-        private EntityManager m_EntityManager = entityManager;
-        private readonly CustomTranslationSystem m_CustomTranslationSystem = customTranslationSystem;
+        public SpawnablesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+        : base(entityManager, customTranslationSystem)
+        {
+            UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
+        }
 
         public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, TooltipGroup tooltipGroup)
         {
@@ -78,13 +81,13 @@ namespace ExtendedTooltip.TooltipBuilder
                     }
 
                     string rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "€", "SIGN", "", "VALUE", householdRent.ToString());
-                    StringTooltip wealthTooltip = new()
+                    StringTooltip rentTooltip = new()
                     {
                         icon = "Media/Game/Icons/Money.svg",
                         value = $"{rentLabel}: {rentValue}",
                         color = TooltipColor.Info,
                     };
-                    tooltipGroup.children.Add(wealthTooltip);
+                    tooltipGroup.children.Add(rentTooltip);
                 }
 
                 if (householdsResult.Length > 0 && m_EntityManager.TryGetComponent(entity, out CitizenHappinessParameterData citizenHappinessParameterData))

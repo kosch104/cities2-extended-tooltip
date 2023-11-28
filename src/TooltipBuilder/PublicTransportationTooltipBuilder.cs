@@ -7,10 +7,13 @@ using Unity.Mathematics;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
-    public class PublicTransportationTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+    public class PublicTransportationTooltipBuilder : TooltipBuilderBase
     {
-        private EntityManager m_EntityManager = entityManager;
-        private readonly CustomTranslationSystem m_CustomTranslationSystem = customTranslationSystem;
+        public PublicTransportationTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+        : base(entityManager, customTranslationSystem)
+        {
+            UnityEngine.Debug.Log($"Created PublicTransportationTooltipBuilder.");
+        }
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)
         {

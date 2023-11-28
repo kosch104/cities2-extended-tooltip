@@ -1,4 +1,5 @@
 ﻿using Colossal.Entities;
+using ExtendedTooltip.Settings;
 using ExtendedTooltip.TooltipBuilder;
 using Game.Buildings;
 using Game.Citizens;
@@ -28,6 +29,9 @@ namespace ExtendedTooltip.Systems
     [CompilerGenerated]
     public class ExtendedTooltipSystem : TooltipSystemBase
     {
+        public LocalSettings m_LocalSettings;
+        public bool m_LocalSettingsLoaded = false;
+
         private ToolSystem m_ToolSystem;
         private DefaultToolSystem m_DefaultTool;
         private NameSystem m_NameSystem;
@@ -39,11 +43,6 @@ namespace ExtendedTooltip.Systems
         private CustomTranslationSystem m_CustomTranslationSystem;
 
         private CitizenTooltipBuilder m_CitizenTooltipBuilder;
-        public bool ShowCitizenTooltip { get; set; } = true;
-        public bool ShowCitizenStateTooltip { get; set; } = true;
-        public bool ShowCitizenHappinessTooltip { get; set; } = true;
-        public bool ShowCitizenEducationTooltip { get; set; } = true;
-
         private VehicleTooltipBuilder m_VehicleTooltipBuilder;
         private SpawnablesTooltipBuilder m_SpawnablesTooltipBuilder;
         private RoadTooltipBuilder m_RoadTooltipBuilder;
@@ -64,6 +63,7 @@ namespace ExtendedTooltip.Systems
         protected override void OnCreate()
         {
             base.OnCreate();
+            LoadSettings();
 
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_DefaultTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();
@@ -77,7 +77,7 @@ namespace ExtendedTooltip.Systems
             m_VehicleTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_RoadTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_SpawnablesTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
-            m_EfficiencyTooltipBuilder = new(m_CustomTranslationSystem);
+            m_EfficiencyTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_ParkTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_ParkingFacilityTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_PublicTransportationTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
@@ -142,10 +142,24 @@ namespace ExtendedTooltip.Systems
             }
         }
 
+        private void LoadSettings()
+        {
+            try
+            {
+                m_LocalSettings = new();
+                m_LocalSettings.Init();
+                m_LocalSettingsLoaded = true;
+            } catch (System.Exception e)
+            {
+                UnityEngine.Debug.Log($"Error loading settings: {e.Message}");
+            }
+        }
+
         private void CreateExtendedTooltips(Entity selectedEntity, Entity prefab)
         {
             // CITIZEN TOOLTIP
-            if (ShowCitizenTooltip && EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
+            
+            if (m_LocalSettings.Settings.Citizen && EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
             {
                 m_CitizenTooltipBuilder.Build(prefab, citizen, m_TooltipGroup);
                 m_TooltipGroup.SetChildrenChanged();
@@ -154,7 +168,7 @@ namespace ExtendedTooltip.Systems
             }
 
             // VEHICLE TOOLTIP
-            if (EntityManager.HasComponent<Vehicle>(selectedEntity) &&
+            if (m_LocalSettings.Settings.Vehicle && EntityManager.HasComponent<Vehicle>(selectedEntity) &&
                 (EntityManager.HasComponent<Game.Vehicles.Taxi>(selectedEntity) ||
                 EntityManager.HasComponent<Game.Vehicles.PoliceCar>(selectedEntity) |
                 EntityManager.HasComponent<Game.Vehicles.PublicTransport>(selectedEntity)
@@ -165,59 +179,59 @@ namespace ExtendedTooltip.Systems
             }
 
             // ROAD TOOLTIP
-            if (EntityManager.HasComponent<AggregateElement>(selectedEntity))
+            if (m_LocalSettings.Settings.Road && EntityManager.HasComponent<AggregateElement>(selectedEntity))
             {
                 m_RoadTooltipBuilder.Build(selectedEntity, m_TooltipGroup);
                 return; // don't have any other info. No need to check for other components
             }
 
             // SPAWNABLES TOOLTIP
-            if (HasSpawnableBuildingData(selectedEntity, prefab, out int buildingLevel, out int currentCondition, out int levelingCost))
+            if (m_LocalSettings.Settings.Spawnable && HasSpawnableBuildingData(selectedEntity, prefab, out int buildingLevel, out int currentCondition, out int levelingCost))
             {
                 m_SpawnablesTooltipBuilder.Build(selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, m_TooltipGroup);
             }
 
             // EFFICIENCY TOOLTIP
-            if (HasEfficiency(selectedEntity, prefab) && EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Efficiency> buffer))
+            if (m_LocalSettings.Settings.Efficiency && HasEfficiency(selectedEntity, prefab) && EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Efficiency> buffer))
             {
                 m_EfficiencyTooltipBuilder.Build(buffer, m_TooltipGroup);
             }
 
             // PARK BUILDINGS TOOLTIP
-            if (EntityManager.HasComponent<Game.Buildings.Park>(selectedEntity))
+            if (m_LocalSettings.Settings.Park && EntityManager.HasComponent<Game.Buildings.Park>(selectedEntity))
             {
                 m_ParkTooltipBuilder.Build(selectedEntity, prefab, m_TooltipGroup);
                 return; // don't have any other info. No need to check for other components
             }
 
             // PARKING FACILITY TOOLTIP
-            if (EntityManager.HasComponent<Game.Buildings.ParkingFacility>(selectedEntity))
+            if (m_LocalSettings.Settings.ParkingFacility && EntityManager.HasComponent<Game.Buildings.ParkingFacility>(selectedEntity))
             {
                 m_ParkingFacilityTooltipBuilder.Build(selectedEntity, m_TooltipGroup);
                 return; // don't have any other info. No need to check for other components
             }
 
             // PUBLIC TRANSPORTATION TOOLTIP
-            if (EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity))
+            if (m_LocalSettings.Settings.PublicTransport && EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity))
             {
                 m_PublicTransportationTooltipBuilder.Build(selectedEntity, m_TooltipGroup);
                 return; // don't have any other info. No need to check for other components
             }
 
             // EMPLOYEES TOOLTIP
-            if (HasEmployees(selectedEntity, prefab))
+            if (m_LocalSettings.Settings.Employee && HasEmployees(selectedEntity, prefab))
             {
                 m_EmployeesTooltipBuilder.Build(selectedEntity, prefab, m_TooltipGroup);
             }
             
             // SCHOOL TOOLTIP
-            if (EntityManager.HasComponent<Game.Buildings.School>(selectedEntity))
+            if (m_LocalSettings.Settings.School && EntityManager.HasComponent<Game.Buildings.School>(selectedEntity))
             {
                 m_SchoolTooltipBuilder.Build(selectedEntity, prefab, m_TooltipGroup);
             }
 
             // COMPANY (Office, Industrial, Commercial) TOOLTIP
-            if (CompanyUIUtils.HasCompany(EntityManager, selectedEntity, prefab, out Entity company))
+            if (m_LocalSettings.Settings.Company && CompanyUIUtils.HasCompany(EntityManager, selectedEntity, prefab, out Entity company))
             {
                 m_CompanyTooltipBuilder.Build(company, m_TooltipGroup);
             }

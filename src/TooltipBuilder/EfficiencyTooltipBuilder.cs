@@ -6,9 +6,13 @@ using Unity.Mathematics;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
-    public class EfficiencyTooltipBuilder(CustomTranslationSystem customTranslationSystem)
+    public class EfficiencyTooltipBuilder : TooltipBuilderBase
     {
-        private readonly CustomTranslationSystem m_CustomTranslationSystem = customTranslationSystem;
+        public EfficiencyTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+        : base(entityManager, customTranslationSystem)
+        {
+            UnityEngine.Debug.Log($"Created EfficiencyTooltipBuilder.");
+        }
 
         public void Build(DynamicBuffer<Efficiency> efficiencyBuffer, TooltipGroup tooltipGroup)
         {

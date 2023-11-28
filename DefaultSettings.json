@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  // General settings
+  "useOnPressOnly": false,
+  "onPressOnlyKey": "ALT",
+  // Tooltips
+  "Citizen": true,
+  "CitizenState": true,
+  "CitizenHappiness": true,
+  "CitizenEducation": true
+}
