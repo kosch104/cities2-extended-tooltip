@@ -49,12 +49,13 @@ namespace ExtendedTooltip.Systems
                 { 25, () => m_Settings.SpawnableLevelDetails = !m_Settings.SpawnableLevelDetails },
                 { 26, () => m_Settings.SpawnableHousehold = !m_Settings.SpawnableHousehold },
                 { 27, () => m_Settings.SpawnableHouseholdDetails = !m_Settings.SpawnableHouseholdDetails },
-                { 28, () => m_Settings.SpawnableRent = m_Settings.SpawnableRent },
+                { 28, () => m_Settings.SpawnableRent = !m_Settings.SpawnableRent },
                 { 29, () => m_Settings.Vehicle = !m_Settings.Vehicle },
                 { 30, () => m_Settings.VehiclePassengerDetail = !m_Settings.VehiclePassengerDetail },
                 { 91, () => m_Settings.UseOnPressOnly = !m_Settings.UseOnPressOnly },
                 { 90, () => m_Settings.DisableMod = !m_Settings.DisableMod },
             };
+
             expandActions = new()
             {
                 { 0, () => m_Settings.CitizenExpanded = !m_Settings.CitizenExpanded },
@@ -155,7 +156,6 @@ namespace ExtendedTooltip.Systems
         {
             if (toggleActions.TryGetValue(settingId, out Action toggleAction))
             {
-                UnityEngine.Debug.Log($"Toggle Setting with Id {settingId} found.");
                 toggleAction.Invoke();
                 m_ExtendedTooltipSystem.m_LocalSettings.Save();
             }

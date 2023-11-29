@@ -193,7 +193,7 @@ const ExtendedTooltipUI = ({ react }) => {
     useDataUpdate(react, 'extendedTooltip.spawnableHousehold', setShowSpawnableHousehold);
     useDataUpdate(react, 'extendedTooltip.spawnableHouseholdDetails', setShowSpawnableHouseholdDetails);
     useDataUpdate(react, 'extendedTooltip.spawnableRent', setShowSpawnableRent);
-    
+
     const [showVehiclesGroup, setShowVehiclesGroup] = react.useState(true);
     const [expandVehiclesGroup, setExpandVehiclesGroup] = react.useState(true);
     const [showVehiclePassengerDetails, setShowVehiclePassengerDetails] = react.useState(true);
@@ -203,7 +203,7 @@ const ExtendedTooltipUI = ({ react }) => {
 
     const generalSettingsData = [
         { id: 90, label: 'Disable Mod', description: 'Disable the mod globally.', isChecked: disableMod },
-        { id: 91, label: 'Enable Hotkey Mode', description: 'Hold ALT to show tooltips.', isChecked: useOnPressOnly  },
+        { id: 91, label: 'Enable Hotkey Mode', description: 'Hold ALT to show tooltips.', isChecked: useOnPressOnly },
     ]
 
     const tooltipsSettingsData = [
