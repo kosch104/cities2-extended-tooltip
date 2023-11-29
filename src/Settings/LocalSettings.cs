@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ExtendedTooltip.Settings
 {
@@ -16,7 +19,7 @@ namespace ExtendedTooltip.Settings
         /// Save settings to a local JSON file
         /// </summary>
         /// <param name="settings"></param>
-        public void Save()
+        public async Task Save()
         {
             string assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string filename = "UserSettings.json";
@@ -25,7 +28,8 @@ namespace ExtendedTooltip.Settings
             try
             {
                 string updatedSettingsJson = JsonConvert.SerializeObject(m_Settings);
-                File.WriteAllText(fullFilePath, updatedSettingsJson);
+                using StreamWriter writer = new(fullFilePath, false, Encoding.UTF8);
+                await writer.WriteAsync(updatedSettingsJson);
             }
             catch (System.Exception e)
             {

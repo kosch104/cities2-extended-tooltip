@@ -1,8 +1,10 @@
 ﻿using Colossal.UI.Binding;
 using ExtendedTooltip.Settings;
+using ExtendedTooltip.src.Settings;
 using Game.UI;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ExtendedTooltip.Systems
 {
@@ -10,64 +12,133 @@ namespace ExtendedTooltip.Systems
     {
         private readonly string kGroup = "extendedTooltip";
         private ExtendedTooltipSystem m_ExtendedTooltipSystem;
+        private CustomTranslationSystem m_CustomTranslationSystem;
         private LocalSettingsItem m_Settings;
-        private Dictionary<int, Action> toggleActions;
-        private Dictionary<int, Action> expandActions;
+        private Dictionary<string, string> m_SettingLocalization;
+
+        private Dictionary<SettingKey, Action> toggleActions;
+        private Dictionary<SettingKey, Action> expandActions;
 
         protected override void OnCreate()
         {
             base.OnCreate();
             m_ExtendedTooltipSystem = World.GetOrCreateSystemManaged<ExtendedTooltipSystem>();
+            m_CustomTranslationSystem = World.GetOrCreateSystemManaged<CustomTranslationSystem>();
             m_Settings = m_ExtendedTooltipSystem.m_LocalSettings.Settings;
             toggleActions = new()
             {
-                { 0, () => m_Settings.Citizen = !m_Settings.Citizen },
-                { 1, () => m_Settings.CitizenState = !m_Settings.CitizenState },
-                { 2, () => m_Settings.CitizenHappiness = !m_Settings.CitizenHappiness },
-                { 3, () => m_Settings.CitizenEducation = !m_Settings.CitizenEducation },
-                { 4, () => m_Settings.Company = !m_Settings.Company },
-                { 5, () => m_Settings.CompanyOutput = !m_Settings.CompanyOutput },
-                { 6, () => m_Settings.Efficiency = !m_Settings.Efficiency },
-                { 7, () => m_Settings.Employee = !m_Settings.Employee },
-                { 8, () => m_Settings.ParkingFacility = !m_Settings.ParkingFacility },
-                { 9, () => m_Settings.ParkingFees = !m_Settings.ParkingFees },
-                { 10, () => m_Settings.ParkingCapacity = !m_Settings.ParkingCapacity },
-                { 11, () => m_Settings.Park = !m_Settings.Park },
-                { 12, () => m_Settings.ParkMaintenance = !m_Settings.ParkMaintenance },
-                { 13, () => m_Settings.PublicTransport = !m_Settings.PublicTransport },
-                { 14, () => m_Settings.PublicTransportWaitingPassengers = !m_Settings.PublicTransportWaitingPassengers },
-                { 15, () => m_Settings.PublicTransportWaitingTime = !m_Settings.PublicTransportWaitingTime },
-                { 16, () => m_Settings.Road = !m_Settings.Road },
-                { 17, () => m_Settings.RoadLength = !m_Settings.RoadLength },
-                { 18, () => m_Settings.RoadUpkeep = !m_Settings.RoadUpkeep },
-                { 19, () => m_Settings.RoadCondition = !m_Settings.RoadCondition },
-                { 20, () => m_Settings.School = !m_Settings.School },
-                { 21, () => m_Settings.SchoolStudentCapacity = !m_Settings.SchoolStudentCapacity },
-                { 22, () => m_Settings.SchoolStudentCount = !m_Settings.SchoolStudentCount },
-                { 23, () => m_Settings.Spawnable = !m_Settings.Spawnable },
-                { 24, () => m_Settings.SpawnableLevel = !m_Settings.SpawnableLevel },
-                { 25, () => m_Settings.SpawnableLevelDetails = !m_Settings.SpawnableLevelDetails },
-                { 26, () => m_Settings.SpawnableHousehold = !m_Settings.SpawnableHousehold },
-                { 27, () => m_Settings.SpawnableHouseholdDetails = !m_Settings.SpawnableHouseholdDetails },
-                { 28, () => m_Settings.SpawnableRent = !m_Settings.SpawnableRent },
-                { 29, () => m_Settings.Vehicle = !m_Settings.Vehicle },
-                { 30, () => m_Settings.VehiclePassengerDetail = !m_Settings.VehiclePassengerDetail },
-                { 91, () => m_Settings.UseOnPressOnly = !m_Settings.UseOnPressOnly },
-                { 90, () => m_Settings.DisableMod = !m_Settings.DisableMod },
+                { SettingKey.Citizen, () => m_Settings.Citizen = !m_Settings.Citizen },
+                { SettingKey.CitizenState, () => m_Settings.CitizenState = !m_Settings.CitizenState },
+                { SettingKey.CitizenHappiness, () => m_Settings.CitizenHappiness = !m_Settings.CitizenHappiness },
+                { SettingKey.CitizenEducation, () => m_Settings.CitizenEducation = !m_Settings.CitizenEducation },
+                { SettingKey.Company, () => m_Settings.Company = !m_Settings.Company },
+                { SettingKey.CompanyOutput, () => m_Settings.CompanyOutput = !m_Settings.CompanyOutput },
+                { SettingKey.Efficiency, () => m_Settings.Efficiency = !m_Settings.Efficiency },
+                { SettingKey.Employee, () => m_Settings.Employee = !m_Settings.Employee },
+                { SettingKey.ParkingFacility, () => m_Settings.ParkingFacility = !m_Settings.ParkingFacility },
+                { SettingKey.ParkingFees, () => m_Settings.ParkingFees = !m_Settings.ParkingFees },
+                { SettingKey.ParkingCapacity, () => m_Settings.ParkingCapacity = !m_Settings.ParkingCapacity },
+                { SettingKey.Park, () => m_Settings.Park = !m_Settings.Park },
+                { SettingKey.ParkMaintenance, () => m_Settings.ParkMaintenance = !m_Settings.ParkMaintenance },
+                { SettingKey.PublicTransport, () => m_Settings.PublicTransport = !m_Settings.PublicTransport },
+                { SettingKey.PublicTransportWaitingPassengers, () => m_Settings.PublicTransportWaitingPassengers = !m_Settings.PublicTransportWaitingPassengers },
+                { SettingKey.PublicTransportWaitingTime, () => m_Settings.PublicTransportWaitingTime = !m_Settings.PublicTransportWaitingTime },
+                { SettingKey.Road, () => m_Settings.Road = !m_Settings.Road },
+                { SettingKey.RoadLength, () => m_Settings.RoadLength = !m_Settings.RoadLength },
+                { SettingKey.RoadUpkeep, () => m_Settings.RoadUpkeep = !m_Settings.RoadUpkeep },
+                { SettingKey.RoadCondition, () => m_Settings.RoadCondition = !m_Settings.RoadCondition },
+                { SettingKey.School, () => m_Settings.School = !m_Settings.School },
+                { SettingKey.SchoolStudentCapacity, () => m_Settings.SchoolStudentCapacity = !m_Settings.SchoolStudentCapacity },
+                { SettingKey.SchoolStudentCount, () => m_Settings.SchoolStudentCount = !m_Settings.SchoolStudentCount },
+                { SettingKey.Spawnable, () => m_Settings.Spawnable = !m_Settings.Spawnable },
+                { SettingKey.SpawnableLevel, () => m_Settings.SpawnableLevel = !m_Settings.SpawnableLevel },
+                { SettingKey.SpawnableLevelDetails, () => m_Settings.SpawnableLevelDetails = !m_Settings.SpawnableLevelDetails },
+                { SettingKey.SpawnableHousehold, () => m_Settings.SpawnableHousehold = !m_Settings.SpawnableHousehold },
+                { SettingKey.SpawnableHouseholdDetails, () => m_Settings.SpawnableHouseholdDetails = !m_Settings.SpawnableHouseholdDetails },
+                { SettingKey.SpawnableRent, () => m_Settings.SpawnableRent = !m_Settings.SpawnableRent },
+                { SettingKey.Vehicle, () => m_Settings.Vehicle = !m_Settings.Vehicle },
+                { SettingKey.VehiclePassengerDetails, () => m_Settings.VehiclePassengerDetails = !m_Settings.VehiclePassengerDetails },
+                { SettingKey.UseOnPressOnly, () => m_Settings.UseOnPressOnly = !m_Settings.UseOnPressOnly },
+                { SettingKey.DisableMod, () => m_Settings.DisableMod = !m_Settings.DisableMod },
             };
 
             expandActions = new()
             {
-                { 0, () => m_Settings.CitizenExpanded = !m_Settings.CitizenExpanded },
-                { 4, () => m_Settings.CompanyExpanded = !m_Settings.CompanyExpanded },
-                { 8, () => m_Settings.ParkingExpanded = !m_Settings.ParkingExpanded },
-                { 11, () => m_Settings.ParkExpanded = !m_Settings.ParkExpanded },
-                { 13, () => m_Settings.PublicTransportExpanded = !m_Settings.PublicTransportExpanded },
-                { 16, () => m_Settings.RoadExpanded = !m_Settings.RoadExpanded },
-                { 20, () => m_Settings.SchoolExpanded = !m_Settings.SchoolExpanded },
-                { 23, () => m_Settings.SpawnableExpanded = !m_Settings.SpawnableExpanded },
-                { 29, () => m_Settings.VehicleExpanded = !m_Settings.VehicleExpanded }
+                { SettingKey.Citizen, () => m_Settings.CitizenExpanded = !m_Settings.CitizenExpanded },
+                { SettingKey.Company, () => m_Settings.CompanyExpanded = !m_Settings.CompanyExpanded },
+                { SettingKey.ParkingFacility, () => m_Settings.ParkingExpanded = !m_Settings.ParkingExpanded },
+                { SettingKey.Park, () => m_Settings.ParkExpanded = !m_Settings.ParkExpanded },
+                { SettingKey.PublicTransport, () => m_Settings.PublicTransportExpanded = !m_Settings.PublicTransportExpanded },
+                { SettingKey.Road, () => m_Settings.RoadExpanded = !m_Settings.RoadExpanded },
+                { SettingKey.School, () => m_Settings.SchoolExpanded = !m_Settings.SchoolExpanded },
+                { SettingKey.Spawnable, () => m_Settings.SpawnableExpanded = !m_Settings.SpawnableExpanded },
+                { SettingKey.Vehicle, () => m_Settings.VehicleExpanded = !m_Settings.VehicleExpanded }
             };
+
+            m_SettingLocalization = new()
+            {
+                // GENERAL
+                { "disableMod", m_CustomTranslationSystem.GetTranslation("setting.disableMod", "Disable Mod") },
+                { "disableMod.description", m_CustomTranslationSystem.GetTranslation("setting.disableMod.description", "Disable the mod globally.") },
+                { "useOnPressOnly", m_CustomTranslationSystem.GetTranslation("setting.useOnPressOnly", "Enable Hotkey Mode") },
+                { "useOnPressOnly.description", m_CustomTranslationSystem.GetTranslation("setting.useOnPressOnly.description", "Hold ALT to show tooltips.") },
+
+                // CITIZEN
+                { "citizen", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_TYPE[Citizen]", "Citizens") },
+                { "citizenState", m_CustomTranslationSystem.GetTranslation("setting.citizen.state", "Citizen state") },
+                { "citizenHappiness", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_HAPPINESS", "Citizen happiness") },
+                { "citizenEducation", m_CustomTranslationSystem.GetLocalGameTranslation("Infoviews.INFOVIEW[Education]", "Educational Facilities") },
+
+                // COMPANY
+                { "company", m_CustomTranslationSystem.GetTranslation("setting.company", "Company") },
+                { "companyOutput", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.PRODUCTION", "Company Output") },
+
+                // EFFICIENCY
+                { "efficiency", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EFFICIENCY", "Efficiency")},
+
+                // EMPLOYEE
+                { "employee", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EMPLOYEES", "Employee")},
+
+                // PARK
+                { "park", m_CustomTranslationSystem.GetLocalGameTranslation("Services.NAME[Parks & Recreation]", "Parks")},
+                { "parkMaintenance", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.PARK_MAINTENANCE", "Maintenance")},
+                
+                // PARKING
+                { "parkingFacility", m_CustomTranslationSystem.GetLocalGameTranslation("SubServices.NAME[RoadsParking]", "Parking Facilities")},
+                { "parkingFees", m_CustomTranslationSystem.GetTranslation("setting.parking.fees", "Fees")},
+                { "parkingCapacity", m_CustomTranslationSystem.GetTranslation("setting.parking.capacity", "Capacity")},
+                
+                // PUBLIC TRANSPORT
+                { "publicTransport", m_CustomTranslationSystem.GetLocalGameTranslation("TransportInfoPanel.PUBLIC_TRANSPORT_TITLE", "Public Transport")},
+                { "publicTransportWaitingPassengers", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.WAITING_PASSENGERS", "Waiting Passengers")},
+                { "publicTransportWaitingTime", m_CustomTranslationSystem.GetTranslation("setting.public_transportation.waiting_time", "Waiting Time")},
+
+                // ROAD
+                { "road", m_CustomTranslationSystem.GetLocalGameTranslation("Services.NAME[Roads]", "Roads")},
+                { "roadLength", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.ROAD_LENGTH", "Length")},
+                { "roadUpkeep", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.ROAD_UPKEEP", "Upkeep")},
+                { "roadCondition", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.ROAD_CONDITION", "Condition")},
+                
+                // SCHOOL
+                { "school", m_CustomTranslationSystem.GetLocalGameTranslation("SubServices.NAME[Education]", "Educational Facilities")},
+                { "schoolStudentCapacity", m_CustomTranslationSystem.GetTranslation("setting.school.student.capacity", "Students Capacity")},
+                { "schoolStudentCount", m_CustomTranslationSystem.GetTranslation("setting.school.student.count", "Students Cound")},
+                
+                // SPAWNABLE
+                { "spawnable", m_CustomTranslationSystem.GetLocalGameTranslation("Services.NAME[Zones]", "Spawnable")},
+                { "spawnableLevel", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LEVEL", "Level")},
+                { "spawnableLevelDetails", m_CustomTranslationSystem.GetTranslation("setting.spawnable.level_details", "Level Detail")},
+                { "spawnableHousehold", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.HOUSEHOLDS", "Households")},
+                { "spawnableHouseholdDetails", m_CustomTranslationSystem.GetTranslation("setting.spawnable.household_details", "Household Details")},
+                { "spawnableRent", m_CustomTranslationSystem.GetTranslation("rent", "Rent")},
+
+                // VEHICLE
+                { "vehicle", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.VEHICLES[HouseholdVehicle]", "Vehicles")},
+                { "vehiclePassengerDetail", m_CustomTranslationSystem.GetTranslation("setting.vehicle.passenger_details", "Passenger Details")},
+
+            };
+
+            AddUpdateBinding(new GetterValueBinding<Dictionary<string, string>>(kGroup, "translations", () => m_SettingLocalization, new DictionaryWriter<string, string>(null, null).Nullable(), null));
 
             /// GENERAL
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "disableMod", () => m_Settings.DisableMod, null, null));
@@ -133,7 +204,7 @@ namespace ExtendedTooltip.Systems
             /// VEHICLE
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicle", () => m_Settings.Vehicle, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandVehicle", () => m_Settings.VehicleExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehiclePassengerDetail", () => m_Settings.VehiclePassengerDetail, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehiclePassengerDetails", () => m_Settings.VehiclePassengerDetails, null, null));
 
             AddBinding(new TriggerBinding<int>(kGroup, "onToggle", OnToggle));
             AddBinding(new TriggerBinding<int>(kGroup, "onExpand", OnExpand));
@@ -152,12 +223,12 @@ namespace ExtendedTooltip.Systems
             UnityEngine.Debug.Log("ExtendedTooltipUISystem destroyed.");
         }
 
-        private void OnToggle(int settingId)
+        private async void OnToggle(int settingId)
         {
-            if (toggleActions.TryGetValue(settingId, out Action toggleAction))
+            if (toggleActions.TryGetValue((SettingKey)Enum.ToObject(typeof(SettingKey), settingId), out Action toggleAction))
             {
                 toggleAction.Invoke();
-                m_ExtendedTooltipSystem.m_LocalSettings.Save();
+                await m_ExtendedTooltipSystem.m_LocalSettings.Save();
             }
             else
             {
@@ -165,12 +236,12 @@ namespace ExtendedTooltip.Systems
             }
         }
 
-        private void OnExpand(int settingId)
+        private async void OnExpand(int settingId)
         {
-            if (expandActions.TryGetValue(settingId, out Action expandAction))
+            if (expandActions.TryGetValue((SettingKey) Enum.ToObject(typeof(SettingKey), settingId), out Action expandAction))
             {
                 expandAction.Invoke();
-                m_ExtendedTooltipSystem.m_LocalSettings.Save();
+                await m_ExtendedTooltipSystem.m_LocalSettings.Save();
             }
             else
             {

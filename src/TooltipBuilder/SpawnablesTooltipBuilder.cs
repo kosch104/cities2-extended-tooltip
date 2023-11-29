@@ -74,10 +74,10 @@ namespace ExtendedTooltip.TooltipBuilder
                 if (householdRents.Count > 0)
                 {
                     int householdRent = (int)math.round(householdRents.Average());
-                    string rentLabel = m_CustomTranslationSystem.GetTranslation("extendedtooltip.rent", "Rent");
+                    string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
                     if (householdCount > 1)
                     {
-                        rentLabel = $"~ {m_CustomTranslationSystem.GetTranslation("extendedtooltip.rent", "Rent")}";
+                        rentLabel = $"~ {m_CustomTranslationSystem.GetTranslation("rent", "Rent")}";
                     }
 
                     string rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "€", "SIGN", "", "VALUE", householdRent.ToString());
@@ -182,7 +182,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
             // Pets
             string petsValue = pets.ToString();
-            string petsLabel = pets > 1 ? m_CustomTranslationSystem.GetTranslation("extendedtooltip.pets", "Pets") : m_CustomTranslationSystem.GetTranslation("extendedtooltip.pet");
+            string petsLabel = pets > 1 ? m_CustomTranslationSystem.GetTranslation("pets", "Pets") : m_CustomTranslationSystem.GetTranslation("pet");
 
             // If residential building is > low density (only 1 household) show the household label only
             if (maxHouseholds > 1)

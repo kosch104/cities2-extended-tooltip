@@ -105,6 +105,9 @@ const $Panel = ({ title, children, react }) => {
 
 const ExtendedTooltipUI = ({ react }) => {
 
+    const [translations, setTranslations] = react.useState({});
+    useDataUpdate(react, 'extendedTooltip.translations', setTranslations);
+
     const [disableMod, setDisableMod] = react.useState(false);
     const [useOnPressOnly, setUseOnPressOnly] = react.useState(false);
     useDataUpdate(react, 'extendedTooltip.disableMod', setDisableMod);
@@ -199,79 +202,79 @@ const ExtendedTooltipUI = ({ react }) => {
     const [showVehiclePassengerDetails, setShowVehiclePassengerDetails] = react.useState(true);
     useDataUpdate(react, 'extendedTooltip.vehicle', setShowVehiclesGroup);
     useDataUpdate(react, 'extendedTooltip.expandVehicle', setExpandVehiclesGroup);
-    useDataUpdate(react, 'extendedTooltip.vehiclePassengerDetail', setShowVehiclePassengerDetails);
+    useDataUpdate(react, 'extendedTooltip.vehiclePassengerDetails', setShowVehiclePassengerDetails);
 
     const generalSettingsData = [
-        { id: 90, label: 'Disable Mod', description: 'Disable the mod globally.', isChecked: disableMod },
-        { id: 91, label: 'Enable Hotkey Mode', description: 'Hold ALT to show tooltips.', isChecked: useOnPressOnly },
+        { id: 90, label: translations['disableMod'], description: translations['disableMod.description'], isChecked: disableMod },
+        { id: 91, label: translations['useOnPressOnly'], description: translations['useOnPressOnly.description'], isChecked: useOnPressOnly },
     ]
 
     const tooltipsSettingsData = [
         {
-            id: 0, label: 'Citizen', isChecked: showCitizenGroup, expanded: expandCitizenCroup,
+            id: 0, label: translations['citizen'], isChecked: showCitizenGroup, expanded: expandCitizenCroup,
             children: [
-                { id: 1, label: 'State', isChecked: showCitizenStateTooltip },
-                { id: 2, label: 'Happiness', isChecked: showCitizenHappinessTooltip },
-                { id: 3, label: 'Education', isChecked: showCitizenEducationTooltip },
+                { id: 1, label: translations['citizenState'], isChecked: showCitizenStateTooltip },
+                { id: 2, label: translations['citizenHappiness'], isChecked: showCitizenHappinessTooltip },
+                { id: 3, label: translations['citizenEducation'], isChecked: showCitizenEducationTooltip },
             ]
         }, 
         {
-            id: 4, label: 'Company', isChecked: showCompanyGroup, expanded: expandCompanyGroup,
+            id: 4, label: translations['company'], isChecked: showCompanyGroup, expanded: expandCompanyGroup,
             children: [
-                { id: 5, label: 'Company Output', isChecked: showCompanyOutput },
+                { id: 5, label: translations['companyOutput'], isChecked: showCompanyOutput },
             ],
         },
-        { id: 6, label: 'Efficiency', isChecked: showEfficiencyGroup, children: [] },
-        { id: 7, label: 'Employee', isChecked: showEmployeeGroup, children: [] },
+        { id: 6, label: translations['efficiency'], isChecked: showEfficiencyGroup, children: [] },
+        { id: 7, label: translations['employee'], isChecked: showEmployeeGroup, children: [] },
         {
-            id: 8, label: 'Parking Facilities', isChecked: showParkingGroup, expanded: expandParkingGroup,
+            id: 8, label: translations['parkingFacility'], isChecked: showParkingGroup, expanded: expandParkingGroup,
             children: [
-                { id: 9, label: 'Fees', isChecked: showParkingFees },
-                { id: 10, label: 'Capacity', isChecked: showParkingCapacity },
+                { id: 9, label: translations['parkingFees'], isChecked: showParkingFees },
+                { id: 10, label: translations['parkingCapacity'], isChecked: showParkingCapacity },
             ],
         },
         {
-            id: 11, label: 'Parks', isChecked: showParkGroup, expanded: expandParkGroup,
+            id: 11, label: translations['park'], isChecked: showParkGroup, expanded: expandParkGroup,
             children: [
-                { id: 12, label: 'Maintenance', isChecked: showParkMaintenance },
+                { id: 12, label: translations['parkMaintenance'], isChecked: showParkMaintenance },
             ]
         },
         {
-            id: 13, label: 'Public Transportation', isChecked: showPublicTransportationGroup, expanded: expandPublicTransportationGroup,
+            id: 13, label: translations['publicTransport'], isChecked: showPublicTransportationGroup, expanded: expandPublicTransportationGroup,
             children: [
-                { id: 14, label: 'Waiting Passengers', isChecked: showPublicTransportationWaitingPassengers },
-                { id: 15, label: 'Average Waiting Time', isChecked: showPublicTransportationWaitingTime },
+                { id: 14, label: translations['publicTransportWaitingPassengers'], isChecked: showPublicTransportationWaitingPassengers },
+                { id: 15, label: translations['publicTransportWaitingTime'], isChecked: showPublicTransportationWaitingTime },
             ]
         },
         {
-            id: 16, label: 'Roads', isChecked: showRoadGroup, expanded: expandRoadGroup,
+            id: 16, label: translations['road'], isChecked: showRoadGroup, expanded: expandRoadGroup,
             children: [
-                { id: 17, label: 'Length', isChecked: showRoadLength },
-                { id: 18, label: 'Upkeep', isChecked: showRoadUpkeep },
-                { id: 19, label: 'Condition', isChecked: showRoadCondition },
+                { id: 17, label: translations['roadLength'], isChecked: showRoadLength },
+                { id: 18, label: translations['roadUpkeep'], isChecked: showRoadUpkeep },
+                { id: 19, label: translations['roadCondition'], isChecked: showRoadCondition },
             ]
         },
         {
-            id: 20, label: 'Educational Facilities', isChecked: showSchoolGroup, expanded: expandSchoolGroup,
+            id: 20, label: translations['school'], isChecked: showSchoolGroup, expanded: expandSchoolGroup,
             children: [
-                { id: 21, label: 'Student Capacity', isChecked: showSchoolStudentCapacity },
-                { id: 22, label: 'Student Count', isChecked: showSchoolStudentCount },
+                { id: 21, label: translations['schoolStudentCapacity'], isChecked: showSchoolStudentCapacity },
+                { id: 22, label: translations['schoolStudentCount'], isChecked: showSchoolStudentCount },
             ]
         },
         {
-            id: 23, label: 'Spawnables', isChecked: showSpawnableGroup, expanded: expandSpawnableGroup,
+            id: 23, label: translations['spawnable'], isChecked: showSpawnableGroup, expanded: expandSpawnableGroup,
             children: [
-                { id: 24, label: 'Level', isChecked: showSpawnableLevel },
-                { id: 25, label: 'Level Details', isChecked: showSpawnableLevelDetails },
-                { id: 26, label: 'Household', isChecked: showSpawnableHousehold },
-                { id: 27, label: 'Household Details', isChecked: showSpawnableHouseholdDetails },
-                { id: 28, label: 'Rent', isChecked: showSpawnableRent },
+                { id: 24, label: translations['spawnableLevel'], isChecked: showSpawnableLevel },
+                { id: 25, label: translations['spawnableLevelDetails'], isChecked: showSpawnableLevelDetails },
+                { id: 26, label: translations['spawnableHousehold'], isChecked: showSpawnableHousehold },
+                { id: 27, label: translations['spawnableHouseholdDetails'], isChecked: showSpawnableHouseholdDetails },
+                { id: 28, label: translations['spawnableRent'], isChecked: showSpawnableRent },
             ]
         },
         {
-            id: 29, label: 'Vehicles', isChecked: showVehiclesGroup, expanded: expandVehiclesGroup,
+            id: 29, label: translations['vehicle'], isChecked: showVehiclesGroup, expanded: expandVehiclesGroup,
             children: [
-                { id: 30, label: 'Passenger Details', isChecked: showVehiclePassengerDetails }
+                { id: 30, label: translations['vehiclePassengerDetail'], isChecked: showVehiclePassengerDetails }
             ]
         },
     ];

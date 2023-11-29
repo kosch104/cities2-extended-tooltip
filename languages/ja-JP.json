@@ -3,5 +3,19 @@
   "extendedtooltip.pets": "ペット",
   "extendedtooltip.parkinglots.utilization": "利用",
   "extendedtooltip.average_waiting_time": "~ 待ち時間",
-  "extendedtooltip.rent": "賃料"
+  "extendedtooltip.rent": "賃料",
+  "extendedtooltip.setting.disableMod": "Modを無効にする",
+  "extendedtooltip.setting.disableMod.description": "グローバルにMODを無効にする",
+  "extendedtooltip.setting.useOnPressOnly": "ホットキーモードを有効にする",
+  "extendedtooltip.setting.useOnPressOnly.description": "ツールチップを表示するにはALTを押したままにします",
+  "extendedtooltip.setting.citizen.state": "市民の状態",
+  "extendedtooltip.setting.company": "会社",
+  "extendedtooltip.setting.parking.fees": "料金",
+  "extendedtooltip.setting.parking.capacity": "定員",
+  "extendedtooltip.setting.public_transportation.waiting_time": "待ち時間",
+  "extendedtooltip.setting.school.student.count": "生徒数",
+  "extendedtooltip.setting.school.student.capacity": "生徒定員",
+  "extendedtooltip.setting.spawnable.level_details": "レベルの詳細",
+  "extendedtooltip.setting.spawnable.household_details": "世帯の詳細",
+  "extendedtooltip.setting.vehicle.passenger_details": "乗客の詳細"
 }

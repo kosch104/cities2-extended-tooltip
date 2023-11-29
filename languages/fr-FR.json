@@ -3,5 +3,19 @@
   "extendedtooltip.pets": "Animaux",
   "extendedtooltip.parkinglots.utilization": "Taux d'occupation",
   "extendedtooltip.average_waiting_time": "~ Temps d'attente",
-  "extendedtooltip.rent": "Loyer"
+  "extendedtooltip.rent": "Loyer",
+  "extendedtooltip.setting.disableMod": "Disable Mod",
+  "extendedtooltip.setting.disableMod.description": "Désactiver le mod globalement",
+  "extendedtooltip.setting.useOnPressOnly": "Activer le mode raccourci clavier",
+  "extendedtooltip.setting.useOnPressOnly.description": "Maintenir la touche ALT enfoncée pour afficher les infobulles",
+  "extendedtooltip.setting.citizen.state": "État du citoyen",
+  "extendedtooltip.setting.company": "Entreprise",
+  "extendedtooltip.setting.parking.fees": "Frais",
+  "extendedtooltip.setting.parking.capacity": "Capacité",
+  "extendedtooltip.setting.public_transportation.waiting_time": "Temps d'attente",
+  "extendedtooltip.setting.school.student.count": "Nombre d'élèves",
+  "extendedtooltip.setting.school.student.capacity": "Capacité d'accueil",
+  "extendedtooltip.setting.spawnable.level_details": "Détails du niveau",
+  "extendedtooltip.setting.spawnable.household_details": "Détails du ménage",
+  "extendedtooltip.setting.vehicle.passenger_details": "Détails du passager"
 }

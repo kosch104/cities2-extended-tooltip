@@ -3,5 +3,19 @@
   "extendedtooltip.pets": "Haustiere",
   "extendedtooltip.parkinglots.utilization": "Auslastung",
   "extendedtooltip.average_waiting_time": "~ Wartezeit",
-  "extendedtooltip.rent": "Miete"
+  "extendedtooltip.rent": "Miete",
+  "extendedtooltip.setting.disableMod": "Mod deaktivieren",
+  "extendedtooltip.setting.disableMod.description": "Deaktiviert die Mod im Spiel.",
+  "extendedtooltip.setting.useOnPressOnly": "Aktiviere Hotkey-Modus",
+  "extendedtooltip.setting.useOnPressOnly.description": "Halte ALT zum Zeigen der Tooltips.",
+  "extendedtooltip.setting.citizen.state": "Zustand",
+  "extendedtooltip.setting.company": "Firmen",
+  "extendedtooltip.setting.parking.fees": "Gebühren",
+  "extendedtooltip.setting.parking.capacity": "Kapazität",
+  "extendedtooltip.setting.public_transportation.waiting_time": "Wartezeit",
+  "extendedtooltip.setting.school.student.count": "Schüler/Studenten Anzahl",
+  "extendedtooltip.setting.school.student.capacity": "Schüler/Studenten Kapazität",
+  "extendedtooltip.setting.spawnable.level_details": "Details zum Level",
+  "extendedtooltip.setting.spawnable.household_details": "Details zum Haushalt",
+  "extendedtooltip.setting.vehicle.passenger_details": "Details zu Fahrgästen"
 }

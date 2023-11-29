@@ -55,7 +55,7 @@ namespace ExtendedTooltip.TooltipBuilder
             StringTooltip parkingOccupationTooltip = new()
             {
                 icon = "Media/Game/Icons/Traffic.svg",
-                value = $"{m_CustomTranslationSystem.GetTranslation("extendedtooltip.parkinglots.utilization", "Utilization")}: {parkingOccupationPercentage}% [{parkedCars}/{parkingCapacity}]",
+                value = $"{m_CustomTranslationSystem.GetTranslation("parkinglots.utilization", "Utilization")}: {parkingOccupationPercentage}% [{parkedCars}/{parkingCapacity}]",
                 color = (parkingOccupationPercentage <= 75) ? TooltipColor.Success : (parkingOccupationPercentage <= 90) ? TooltipColor.Warning : TooltipColor.Error,
             };
 

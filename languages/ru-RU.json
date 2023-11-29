@@ -3,5 +3,19 @@
   "extendedtooltip.pets": "Животные",
   "extendedtooltip.parkinglots.utilization": "Использование",
   "extendedtooltip.average_waiting_time": "~ Срок ожидания",
-  "extendedtooltip.rent": "Аренда"
+  "extendedtooltip.rent": "Аренда",
+  "extendedtooltip.setting.disableMod": "Отключить мод",
+  "extendedtooltip.setting.disableMod.description": "Отключить мод глобально",
+  "extendedtooltip.setting.useOnPressOnly": "Включить режим горячих клавиш",
+  "extendedtooltip.setting.useOnPressOnly.description": "Удерживайте ALT для отображения всплывающих подсказок",
+  "extendedtooltip.setting.citizen.state": "Состояние гражданина",
+  "extendedtooltip.setting.company": "Компания",
+  "extendedtooltip.setting.parking.fees": "Плата",
+  "extendedtooltip.setting.parking.capacity": "Вместимость",
+  "extendedtooltip.setting.public_transportation.waiting_time": "Время ожидания",
+  "extendedtooltip.setting.school.student.count": "Количество учеников",
+  "extendedtooltip.setting.school.student.capacity": "Количество учащихся",
+  "extendedtooltip.setting.spawnable.level_details": "Детали уровня",
+  "extendedtooltip.setting.spawnable.household_details": "Детали домохозяйства",
+  "extendedtooltip.setting.vehicle.passenger_details": "Детали пассажира"
 }

@@ -3,5 +3,19 @@
   "extendedtooltip.pets": "애완동물",
   "extendedtooltip.parkinglots.utilization": "활용도",
   "extendedtooltip.average_waiting_time": "~ 대기 시간",
-  "extendedtooltip.rent": "임대"
+  "extendedtooltip.rent": "임대",
+  "extendedtooltip.setting.disableMod": "모드 비활성화",
+  "extendedtooltip.setting.disableMod.description": "모드를 전역적으로 비활성화합니다.",
+  "extendedtooltip.setting.useOnPressOnly": "단축키 모드 사용",
+  "extendedtooltip.setting.useOnPressOnly.description": "툴팁을 표시하려면 ALT 키를 누릅니다.",
+  "extendedtooltip.setting.citizen.state": "시민 상태",
+  "extendedtooltip.setting.company": "회사",
+  "extendedtooltip.setting.parking.fees": "요금",
+  "extendedtooltip.setting.parking.capacity": "용량",
+  "extendedtooltip.setting.public_transportation.waiting_time": "대기 시간",
+  "extendedtooltip.setting.school.student.count": "학생 수",
+  "extendedtooltip.setting.school.student.capacity": "학생 정원",
+  "extendedtooltip.setting.spawnable.level_details": "레벨 세부 정보",
+  "extendedtooltip.setting.spawnable.household_details": "가구 세부 정보",
+  "extendedtooltip.setting.vehicle.passenger_details": "승객 세부 정보"
 }

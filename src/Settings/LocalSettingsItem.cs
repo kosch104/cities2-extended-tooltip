@@ -70,6 +70,6 @@
         // VEHICLE
         public bool VehicleExpanded { get; set; } = false;
         public bool Vehicle { get; set; } = true;
-        public bool VehiclePassengerDetail { get; set; } = true;
+        public bool VehiclePassengerDetails { get; set; } = true;
     }
 }

@@ -10,6 +10,7 @@ namespace ExtendedTooltip.Systems
 {
     public class CustomTranslationSystem: GameSystemBase
     {
+        public string Prefix { get; set; } = MyPluginInfo.PLUGIN_NAME.Trim().ToLower();
         private string LanguageCode { get; set; }
         public string CurrentLanguageCode => LanguageCode;
         private JsonDocument Translations { get; set; }
@@ -75,7 +76,7 @@ namespace ExtendedTooltip.Systems
 
         public string GetTranslation(string key, string fallback = "Translation missing.", params string[] vars)
         {
-            if (Translations == null || !Translations.RootElement.TryGetProperty(key, out var rawTranslationString))
+            if (Translations == null || !Translations.RootElement.TryGetProperty($"{Prefix}.{key}", out var rawTranslationString))
             {
                 return fallback;
             }

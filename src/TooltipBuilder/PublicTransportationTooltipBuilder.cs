@@ -46,7 +46,7 @@ namespace ExtendedTooltip.TooltipBuilder
             StringTooltip averageWaitingTimeTooltip = new()
             {
                 icon = "Media/Game/Icons/Fastforward.svg",
-                value = $"{m_CustomTranslationSystem.GetTranslation("extendedtooltip.average_waiting_time", "~ waiting time")}: {averageWaitingTime}m",
+                value = $"{m_CustomTranslationSystem.GetTranslation("average_waiting_time", "~ waiting time")}: {averageWaitingTime}m",
                 color = averageWaitingTime < 60 ? TooltipColor.Success : averageWaitingTime < 120 ? TooltipColor.Warning : TooltipColor.Error,
             };
             tooltipGroup.children.Add(waitingPassengersTooltip);

@@ -3,5 +3,18 @@
   "extendedtooltip.pets": "宠物",
   "extendedtooltip.parkinglots.utilization": "利用率",
   "extendedtooltip.average_waiting_time": "~ 等待时间",
-  "extendedtooltip.rent": "租金"
+  "extendedtooltip.rent": "租金",
+  "extendedtooltip.setting.disableMod": "禁用模式",
+  "extendedtooltip.setting.disableMod.description": "全局禁用模式",
+  "extendedtooltip.setting.useOnPressOnly": "启用热键模式",
+  "extendedtooltip.setting.useOnPressOnly.description": "按住 ALT 键显示工具提示",
+  "extendedtooltip.setting.company": "公司",
+  "extendedtooltip.setting.parking.fees": "停车费",
+  "extendedtooltip.setting.parking.capacity": "停车容量",
+  "extendedtooltip.setting.public_transportation.waiting_time": "等待时间",
+  "extendedtooltip.setting.school.student.count": "学生人数",
+  "extendedtooltip.setting.school.student.capacity": "学生容量",
+  "extendedtooltip.setting.spawnable.level_details": "级别详情",
+  "extendedtooltip.setting.spawnable.household_details": "家庭详细信息",
+  "extendedtooltip.setting.vehicle.passenger_details": "乘客详细信息"
 }
