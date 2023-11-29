@@ -10,6 +10,9 @@ const $Panel = ({ title, children, react }) => {
     const [rel, setRel] = react.useState({ x: 0, y: 0 }); // Position relative to the cursor
     const [topValue, setTopValue] = react.useState(0);
 
+    const [version, setVersion] = react.useState(null);
+    useDataUpdate(react, 'extendedTooltip.version', setVersion);
+
     const onMouseDown = (e) => {
         if (e.button !== 0) return; // Only left mouse button
         const panelElement = e.target.closest('.panel_YqS');
@@ -61,6 +64,7 @@ const $Panel = ({ title, children, react }) => {
     }
     const scrollableStyle = { height: '200px', top: topValue };
     const closeStyle = { maskImage: 'url(Media/Glyphs/Close.svg)' };
+    const versionString = 'v' + version;
 
     react.useEffect(() => {
         if (dragging) {
@@ -78,10 +82,11 @@ const $Panel = ({ title, children, react }) => {
 
     return (
         <div className="panel_YqS active-infoview-panel_aTq" style={draggableStyle}>
-            <div className="header_H_U header_Bpo child-opacity-transition_nkS"
-                onMouseDown={onMouseDown}>
+            <div className="header_H_U header_Bpo child-opacity-transition_nkS" onMouseDown={onMouseDown}>
                 <div className="title-bar_PF4 title_Hfc">
-                    <div className="icon-space_h_f"></div>
+                    <div className="icon-space_h_f">
+                        {version && <div style={{ fontSize: 'var(--fontSizeXS)', color: 'rgba(255, 255, 255, 0.5)' }}>{versionString}</div>}
+                    </div>
                     <div className="title_SVH title_zQN">{title}</div>
                     <button class="button_bvQ button_bvQ close-button_wKK" onClick={onClose}>
                         <div class="tinted-icon_iKo icon_PhD" style={closeStyle}></div>
@@ -89,7 +94,7 @@ const $Panel = ({ title, children, react }) => {
                 </div>
             </div>
             <div class="content_XD5 content_AD7 child-opacity-transition_nkS content_BIL"
-                style={{ height: '500px', overflowY: 'scroll' }}>
+                style={{ height: '500px', overflowY: 'scroll', flexDirection: 'column' }}>
                 <div class="section_sop section_gUk statistics-menu_y86" style={{ width: '100%' }}>
                     <div class="content_flM content_owQ first_l25 last_ZNw">
                         <div class="scrollable_DXr y_SMM track-visible-y_RCA scrollable_By7">
@@ -111,7 +116,6 @@ const $Panel = ({ title, children, react }) => {
 }
 
 const ExtendedTooltipUI = ({ react }) => {
-
     const [translations, setTranslations] = react.useState({});
     useDataUpdate(react, 'extendedTooltip.translations', setTranslations);
 

@@ -46,7 +46,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
                 if (m_Settings.SpawnableLevelDetails == true && levelingCost > 0)
                 {
-                    buildingLevelValue += $" [₡{currentCondition} / ₡{levelingCost}]";
+                    buildingLevelValue += $" [¢{currentCondition} / ¢{levelingCost}]";
                 }
 
                 StringTooltip levelTooltip = new()
@@ -68,16 +68,18 @@ namespace ExtendedTooltip.TooltipBuilder
             if ((m_Settings.SpawnableHousehold == true || m_Settings.SpawnableRent == true) && CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdRents, ref householdsResult, entity, prefab))
             {
                 BuildHouseholdCitizenInfo(householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
-                int householdCapacityPercentage = householdCount == 0 ? 0 : (int)math.round(100 * householdCount / maxHouseholds);
-                TooltipColor householdTooltipColor = (householdCount == 0 || maxHouseholds == 1) ? TooltipColor.Info : householdCapacityPercentage < 50 ? TooltipColor.Error : householdCapacityPercentage < 80 ? TooltipColor.Warning : TooltipColor.Success;
-
-                StringTooltip householdTooltip = new()
+                if (m_Settings.SpawnableHousehold)
                 {
-                    icon = "Media/Game/Icons/Household.svg",
-                    value = finalInfoString,
-                    color = householdTooltipColor
-                };
-                tooltipGroup.children.Add(householdTooltip);
+                    int householdCapacityPercentage = householdCount == 0 ? 0 : (int)math.round(100 * householdCount / maxHouseholds);
+                    TooltipColor householdTooltipColor = (householdCount == 0 || maxHouseholds == 1) ? TooltipColor.Info : householdCapacityPercentage < 50 ? TooltipColor.Error : householdCapacityPercentage < 80 ? TooltipColor.Warning : TooltipColor.Success;
+                    StringTooltip householdTooltip = new()
+                    {
+                        icon = "Media/Game/Icons/Household.svg",
+                        value = finalInfoString,
+                        color = householdTooltipColor
+                    };
+                    tooltipGroup.children.Add(householdTooltip);
+                }
 
                 if (m_Settings.SpawnableRent == true && householdRents.Count > 0)
                 {
@@ -88,7 +90,7 @@ namespace ExtendedTooltip.TooltipBuilder
                         rentLabel = $"~ {m_CustomTranslationSystem.GetTranslation("rent", "Rent")}";
                     }
 
-                    string rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "₡", "SIGN", "", "VALUE", householdRent.ToString());
+                    string rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "¢", "SIGN", "", "VALUE", householdRent.ToString());
                     StringTooltip rentTooltip = new()
                     {
                         icon = "Media/Game/Icons/Money.svg",
@@ -196,35 +198,31 @@ namespace ExtendedTooltip.TooltipBuilder
             // If residential building is > low density (only 1 household) show the household label only
             if (maxHouseholds > 1)
             {
-                if (pets > 0)
+                if (m_Settings.SpawnableHouseholdDetails)
                 {
-                    if (m_Settings.SpawnableHouseholdDetails == true)
+                    if (pets > 0)
                     {
                         finalInfoString = $"{householdsValue} {householdsLabel} [{residentsValue} {residentsLabel}, {petsValue} {petsLabel}]";
                         return;
                     } else
                     {
-                        finalInfoString = $"{householdsValue} {householdsLabel}";
-                        return;
-                    }
-                    
+                        finalInfoString = $"{householdsValue} {householdsLabel} [{residentsValue} {residentsLabel}]";
+                    }   
                 }
-                finalInfoString = $"{householdsValue} {householdsLabel} [{residentsValue} {residentsLabel}]";
+                else
+                {
+                    finalInfoString = $"{householdsValue} {householdsLabel}";
+                }
             }
             else // low densitiy housing only has 1 household
             {
-                if (pets > 0)
+                if (m_Settings.SpawnableHouseholdDetails && pets > 0)
                 {
-                    if (m_Settings.SpawnableHouseholdDetails == true) {
-                        finalInfoString = $"{residentsValue} {residentsLabel} [{petsValue} {petsLabel}]";
-                        return;
-                    } else
-                    {
-                        finalInfoString = $"{residentsValue} {residentsLabel}";
-                        return;
-                    }
+                    finalInfoString = $"{residentsValue} {residentsLabel} [{petsValue} {petsLabel}]";
+                } else
+                {
+                    finalInfoString = $"{residentsValue} {residentsLabel}";
                 }
-                finalInfoString = $"{residentsValue} {residentsLabel}";
             }
         }
     }
