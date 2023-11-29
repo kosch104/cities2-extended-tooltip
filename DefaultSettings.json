@@ -1,11 +1,65 @@
 {
-  "version": "1.0",
-  // General settings
+  "version": "0.6.0",
+
+  // GENERAL
   "useOnPressOnly": false,
   "onPressOnlyKey": "ALT",
-  // Tooltips
+
+  /// TOOLTIPS
+
+  // Citizen
+  "CitizenExpanded": false,
   "Citizen": true,
   "CitizenState": true,
   "CitizenHappiness": true,
-  "CitizenEducation": true
+  "CitizenEducation": true,
+
+  // Company
+  "CompanyExpanded": false,
+  "Company": true,
+  "Efficiency": true,
+  "Employee": true,
+
+  // Parks
+  "ParkExpanded": false,
+  "Park": true,
+  "ParkMaintenance": true,
+
+  // Parking
+  "ParkingExpanded": false,
+  "ParkingFacility": true,
+  "ParkingFees": true,
+  "ParkingCapacity": true,
+
+  // Public Transport
+  "PublicTransportExpanded": false,
+  "PublicTransport": true,
+  "PublicTransportWaitingPassengers": true,
+  "PublicTransportWaitingTime": true,
+
+  // Roads
+  "RoadExpanded": false,
+  "Road": true,
+  "RoadLength": true,
+  "RoadUpkeep": true,
+  "RoadCondition": true,
+
+  // Schools
+  "SchoolExpanded": false,
+  "School": true,
+  "SchoolStudentCapacity": true,
+
+  // Spawnables
+  "SpawnableExpanded": false,
+  "Spawnable": true,
+  "SpawnableHousehold": true,
+  "SpawnableHouseholdDetails": true,
+  "SpawnableLevel": true,
+  "SpawnableLevelDetails": true,
+  "SpawnableRent": true,
+
+  // Vehicles
+  "VehicleExpanded": false,
+  "Vehicle": true,
+  "VehiclePassengerDetails": true
 }

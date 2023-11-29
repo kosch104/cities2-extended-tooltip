@@ -20,6 +20,9 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)
         {
+            if (m_Settings.ParkingFees == false && m_Settings.ParkingCapacity == false)
+                return;
+
             int laneCount = 0;
             int parkingCapacity = 0;
             int parkedCars = 0;
@@ -37,30 +40,39 @@ namespace ExtendedTooltip.TooltipBuilder
             {
                 CheckParkingLanes(dynamicBuffer3, ref laneCount, ref parkingCapacity, ref parkedCars, ref parkingFee);
             }
-            if (laneCount != 0)
-            {
-                parkingFee /= laneCount;
-            }
-            if (parkingCapacity < 0)
-            {
-                parkingCapacity = 0;
-            }
-            int parkingOccupationPercentage = parkedCars == 0 ? 0 : Convert.ToInt16(math.round(parkedCars * 100 / parkingCapacity));
 
-            StringTooltip parkingFeesTooltip = new()
+            // Only if activated
+            if (m_Settings.ParkingFees == true)
             {
-                icon = "Media/Game/Icons/ServiceFees.svg",
-                value = $"{m_CustomTranslationSystem.GetLocalGameTranslation("Policy.TITLE[Lot Parking Fee]")}: {m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY", "€", "SIGN", "", "VALUE", parkingFee.ToString())}",
-            };
-            StringTooltip parkingOccupationTooltip = new()
+                if (laneCount != 0)
+                {
+                    parkingFee /= laneCount;
+                }
+                StringTooltip parkingFeesTooltip = new()
+                {
+                    icon = "Media/Game/Icons/ServiceFees.svg",
+                    value = $"{m_CustomTranslationSystem.GetLocalGameTranslation("Policy.TITLE[Lot Parking Fee]")}: {m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY", "€", "SIGN", "", "VALUE", parkingFee.ToString())}",
+                };
+                tooltipGroup.children.Add(parkingFeesTooltip);
+            }
+            
+            // Only if activated
+            if (m_Settings.ParkingCapacity == true)
             {
-                icon = "Media/Game/Icons/Traffic.svg",
-                value = $"{m_CustomTranslationSystem.GetTranslation("parkinglots.utilization", "Utilization")}: {parkingOccupationPercentage}% [{parkedCars}/{parkingCapacity}]",
-                color = (parkingOccupationPercentage <= 75) ? TooltipColor.Success : (parkingOccupationPercentage <= 90) ? TooltipColor.Warning : TooltipColor.Error,
-            };
-
-            tooltipGroup.children.Add(parkingOccupationTooltip);
-            tooltipGroup.children.Add(parkingFeesTooltip);
+                if (parkingCapacity < 0)
+                {
+                    parkingCapacity = 0;
+                }
+                int parkingOccupationPercentage = parkedCars == 0 ? 0 : Convert.ToInt16(math.round(parkedCars * 100 / parkingCapacity));
+                StringTooltip parkingOccupationTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Traffic.svg",
+                    value = $"{m_CustomTranslationSystem.GetTranslation("parkinglots.utilization", "Utilization")}: {parkingOccupationPercentage}% [{parkedCars}/{parkingCapacity}]",
+                    color = (parkingOccupationPercentage <= 75) ? TooltipColor.Success : (parkingOccupationPercentage <= 90) ? TooltipColor.Warning : TooltipColor.Error,
+                };
+                tooltipGroup.children.Add(parkingOccupationTooltip);
+            }
+            
         }
 
         private void CheckParkingLanes(DynamicBuffer<Game.Objects.SubObject> subObjects, ref int laneCount, ref int parkingCapacity, ref int parkedCars, ref int parkingFee)

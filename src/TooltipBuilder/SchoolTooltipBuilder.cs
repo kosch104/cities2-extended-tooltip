@@ -17,6 +17,9 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
+            if (m_Settings.SchoolStudentCapacity == false)
+                return;
+
             // Add student info if available
             int studentCount = 0;
             int studentCapacity = 0;

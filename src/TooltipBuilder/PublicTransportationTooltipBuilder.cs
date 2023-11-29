@@ -17,6 +17,9 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)
         {
+            if (m_Settings.PublicTransportWaitingPassengers == false && m_Settings.PublicTransportWaitingTime == false)
+                return;
+
             int averageWaitingTime = 0;
             m_EntityManager.TryGetComponent(selectedEntity, out WaitingPassengers waitingPassengers);
             if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<ConnectedRoute> dynamicBuffer))
@@ -35,22 +38,28 @@ namespace ExtendedTooltip.TooltipBuilder
                 averageWaitingTime = (ushort)num;
             }
 
-            // Calculate average waiting time in minutes
-            averageWaitingTime = averageWaitingTime <= 0 ? 0 : (int)math.round(averageWaitingTime / 60);
+            if (m_Settings.PublicTransportWaitingPassengers)
+            {
+                StringTooltip waitingPassengersTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Population.svg",
+                    value = $"{m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.WAITING_PASSENGERS", "Waiting passengers")}: {waitingPassengers.m_Count}",
+                };
+                tooltipGroup.children.Add(waitingPassengersTooltip);
+            }
 
-            StringTooltip waitingPassengersTooltip = new()
+            if (m_Settings.PublicTransportWaitingTime)
             {
-                icon = "Media/Game/Icons/Population.svg",
-                value = $"{m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.WAITING_PASSENGERS", "Waiting passengers")}: {waitingPassengers.m_Count}",
-            };
-            StringTooltip averageWaitingTimeTooltip = new()
-            {
-                icon = "Media/Game/Icons/Fastforward.svg",
-                value = $"{m_CustomTranslationSystem.GetTranslation("average_waiting_time", "~ waiting time")}: {averageWaitingTime}m",
-                color = averageWaitingTime < 60 ? TooltipColor.Success : averageWaitingTime < 120 ? TooltipColor.Warning : TooltipColor.Error,
-            };
-            tooltipGroup.children.Add(waitingPassengersTooltip);
-            tooltipGroup.children.Add(averageWaitingTimeTooltip);
+                // Calculate average waiting time in minutes
+                averageWaitingTime = averageWaitingTime <= 0 ? 0 : (int)math.round(averageWaitingTime / 60);
+                StringTooltip averageWaitingTimeTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Fastforward.svg",
+                    value = $"{m_CustomTranslationSystem.GetTranslation("average_waiting_time", "~ waiting time")}: {averageWaitingTime}m",
+                    color = averageWaitingTime < 60 ? TooltipColor.Success : averageWaitingTime < 120 ? TooltipColor.Warning : TooltipColor.Error,
+                };
+                tooltipGroup.children.Add(averageWaitingTimeTooltip);
+            }   
         }
     }
 }

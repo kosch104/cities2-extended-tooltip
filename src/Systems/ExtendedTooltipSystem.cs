@@ -18,10 +18,12 @@ using Game.UI.InGame;
 using Game.UI.Tooltip;
 using Game.Vehicles;
 using Game.Zones;
+using System;
 using System.Runtime.CompilerServices;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Scripting;
 
 namespace ExtendedTooltip.Systems
@@ -31,6 +33,7 @@ namespace ExtendedTooltip.Systems
     {
         public LocalSettings m_LocalSettings;
         public bool m_LocalSettingsLoaded = false;
+        public bool hotkeyPressed = false;
 
         private ToolSystem m_ToolSystem;
         private DefaultToolSystem m_DefaultTool;
@@ -117,7 +120,9 @@ namespace ExtendedTooltip.Systems
                 Entity entity = raycastResult.m_Owner;
                 Entity prefab = prefabRef.m_Prefab;
                 AdjustTargets(ref entity, ref prefab);
-                
+
+                hotkeyPressed = Input.GetKey(KeyCode.LeftAlt);
+
                 m_NameTooltip.icon = m_ImageSystem.GetInstanceIcon(entity, prefab);
                 m_NameTooltip.entity = entity;
 
@@ -130,7 +135,21 @@ namespace ExtendedTooltip.Systems
                     {
                         m_TooltipGroup.children.Clear();
                         m_TooltipGroup.children.Add(m_NameTooltip);
-                        CreateExtendedTooltips(entity, prefab);
+
+                        // ExtendedTooltips entry point
+                        LocalSettingsItem settings = m_LocalSettings.Settings;
+                        if (!settings.DisableMod)
+                        {
+                            // Only show tooltip if Alt key is pressed or if UseOnPressOnly is false
+                            if (settings.UseOnPressOnly && hotkeyPressed)
+                            {
+                                CreateExtendedTooltips(entity, prefab);
+                            } else if(!settings.UseOnPressOnly)
+                            {
+                                CreateExtendedTooltips(entity, prefab);
+                            }
+                        }
+
                         UpdateTooltipGroupPosition();
                         AddGroup(m_TooltipGroup);
                     }
@@ -198,7 +217,7 @@ namespace ExtendedTooltip.Systems
             }
 
             // PARK BUILDINGS TOOLTIP
-            if (m_LocalSettings.Settings.Park && EntityManager.HasComponent<Game.Buildings.Park>(selectedEntity))
+            if ((m_LocalSettings.Settings.Park) && EntityManager.HasComponent<Game.Buildings.Park>(selectedEntity))
             {
                 m_ParkTooltipBuilder.Build(selectedEntity, prefab, m_TooltipGroup);
                 return; // don't have any other info. No need to check for other components
@@ -212,7 +231,7 @@ namespace ExtendedTooltip.Systems
             }
 
             // PUBLIC TRANSPORTATION TOOLTIP
-            if (m_LocalSettings.Settings.PublicTransport && EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity))
+            if (m_LocalSettings.Settings.PublicTransport && (EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity)))
             {
                 m_PublicTransportationTooltipBuilder.Build(selectedEntity, m_TooltipGroup);
                 return; // don't have any other info. No need to check for other components

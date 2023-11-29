@@ -44,6 +44,12 @@ const $Panel = ({ title, children, react }) => {
         e.preventDefault();
     }
 
+    const onClose = () => {
+        const data = { type: "toggle_visibility", id: '89pleasure.extendedTooltip' };
+        const event  = new CustomEvent('hookui', { detail: data });
+        window.dispatchEvent(event);
+    }
+
     const draggableStyle = {
         ...panelStyle,
         top: position.top + 'px',
@@ -54,6 +60,7 @@ const $Panel = ({ title, children, react }) => {
         setTopValue(event.target.scrollTop);
     }
     const scrollableStyle = { height: '200px', top: topValue };
+    const closeStyle = { maskImage: 'url(Media/Glyphs/Close.svg)' };
 
     react.useEffect(() => {
         if (dragging) {
@@ -76,8 +83,8 @@ const $Panel = ({ title, children, react }) => {
                 <div className="title-bar_PF4 title_Hfc">
                     <div className="icon-space_h_f"></div>
                     <div className="title_SVH title_zQN">{title}</div>
-                    <button class="button_bvQ button_bvQ close-button_wKK">
-                        <div class="tinted-icon-iKo icon_PhD" stlye="mask-image: url(Media/Glyphs/Close.svg); "></div>
+                    <button class="button_bvQ button_bvQ close-button_wKK" onClick={onClose}>
+                        <div class="tinted-icon_iKo icon_PhD" style={closeStyle}></div>
                     </button>
                 </div>
             </div>
@@ -176,11 +183,9 @@ const ExtendedTooltipUI = ({ react }) => {
     const [showSchoolGroup, setShowSchoolGroup] = react.useState(true);
     const [expandSchoolGroup, setExpandSchoolGroup] = react.useState(true);
     const [showSchoolStudentCapacity, setShowSchoolStudentCapacity] = react.useState(true);
-    const [showSchoolStudentCount, setShowSchoolStudentCount] = react.useState(true);
     useDataUpdate(react, 'extendedTooltip.school', setShowSchoolGroup);
     useDataUpdate(react, 'extendedTooltip.expandSchool', setExpandSchoolGroup);
     useDataUpdate(react, 'extendedTooltip.schoolStudentCapacity', setShowSchoolStudentCapacity);
-    useDataUpdate(react, 'extendedTooltip.schoolStudentCount', setShowSchoolStudentCount);
 
     const [showSpawnableGroup, setShowSpawnableGroup] = react.useState(true);
     const [expandSpawnableGroup, setExpandSpawnableGroup] = react.useState(true);
@@ -258,7 +263,6 @@ const ExtendedTooltipUI = ({ react }) => {
             id: 20, label: translations['school'], isChecked: showSchoolGroup, expanded: expandSchoolGroup,
             children: [
                 { id: 21, label: translations['schoolStudentCapacity'], isChecked: showSchoolStudentCapacity },
-                { id: 22, label: translations['schoolStudentCount'], isChecked: showSchoolStudentCount },
             ]
         },
         {
@@ -280,7 +284,7 @@ const ExtendedTooltipUI = ({ react }) => {
     ];
 
     const Setting = ({ setting, nested }) => {
-        const { label, description, isChecked, expanded, children } = setting;
+        const { label, isChecked, description, expanded, children } = setting;
         const checked_class = isChecked ? styles.CLASS_CHECKED : styles.CLASS_UNCHECKED
 
         const onToggle = () => {
@@ -337,10 +341,16 @@ const ExtendedTooltipUI = ({ react }) => {
         );
     }
 
-    const SettingsList = ({ name, settings }) => {
+    const SettingsList = ({ name, description, settings }) => {
+        const decsriptionStyle = {
+            fontSize: 'var(--fontSizeS)',
+            fontWeight: 'normal',
+        };
+        
         return (
             <div class="statistics-category-item_qVI">
                 <div class="header_Ld7">{name}</div>
+                {description && <div className={styles.CLASS_TT_HEADER} style={decsriptionStyle}>{description}</div>}
                 <div class="items_AIY">
                     {settings.map((setting) => (
                         <Setting
@@ -356,7 +366,7 @@ const ExtendedTooltipUI = ({ react }) => {
 
     return <$Panel title="Extended Tooltip" react={react}>
         <SettingsList name="General" settings={generalSettingsData} />
-        <SettingsList name="Tooltips" settings={tooltipsSettingsData} />
+        <SettingsList name="Tooltips" description={translations['tooltips.description']} settings={tooltipsSettingsData} />
     </$Panel>
 };
 

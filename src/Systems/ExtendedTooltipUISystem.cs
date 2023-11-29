@@ -4,7 +4,6 @@ using ExtendedTooltip.src.Settings;
 using Game.UI;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ExtendedTooltip.Systems
 {
@@ -49,7 +48,6 @@ namespace ExtendedTooltip.Systems
                 { SettingKey.RoadCondition, () => m_Settings.RoadCondition = !m_Settings.RoadCondition },
                 { SettingKey.School, () => m_Settings.School = !m_Settings.School },
                 { SettingKey.SchoolStudentCapacity, () => m_Settings.SchoolStudentCapacity = !m_Settings.SchoolStudentCapacity },
-                { SettingKey.SchoolStudentCount, () => m_Settings.SchoolStudentCount = !m_Settings.SchoolStudentCount },
                 { SettingKey.Spawnable, () => m_Settings.Spawnable = !m_Settings.Spawnable },
                 { SettingKey.SpawnableLevel, () => m_Settings.SpawnableLevel = !m_Settings.SpawnableLevel },
                 { SettingKey.SpawnableLevelDetails, () => m_Settings.SpawnableLevelDetails = !m_Settings.SpawnableLevelDetails },
@@ -82,6 +80,9 @@ namespace ExtendedTooltip.Systems
                 { "disableMod.description", m_CustomTranslationSystem.GetTranslation("setting.disableMod.description", "Disable the mod globally.") },
                 { "useOnPressOnly", m_CustomTranslationSystem.GetTranslation("setting.useOnPressOnly", "Enable Hotkey Mode") },
                 { "useOnPressOnly.description", m_CustomTranslationSystem.GetTranslation("setting.useOnPressOnly.description", "Hold ALT to show tooltips.") },
+
+                // TOOLTIPS
+                { "tooltips.description", m_CustomTranslationSystem.GetTranslation("tooltips.description", "Enable/Disable tooltips by your needs.") },
 
                 // CITIZEN
                 { "citizen", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_TYPE[Citizen]", "Citizens") },
@@ -122,7 +123,6 @@ namespace ExtendedTooltip.Systems
                 // SCHOOL
                 { "school", m_CustomTranslationSystem.GetLocalGameTranslation("SubServices.NAME[Education]", "Educational Facilities")},
                 { "schoolStudentCapacity", m_CustomTranslationSystem.GetTranslation("setting.school.student.capacity", "Students Capacity")},
-                { "schoolStudentCount", m_CustomTranslationSystem.GetTranslation("setting.school.student.count", "Students Cound")},
                 
                 // SPAWNABLE
                 { "spawnable", m_CustomTranslationSystem.GetLocalGameTranslation("Services.NAME[Zones]", "Spawnable")},
@@ -190,7 +190,6 @@ namespace ExtendedTooltip.Systems
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "school", () => m_Settings.School, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandSchool", () => m_Settings.SchoolExpanded, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "schoolStudentCapacity", () => m_Settings.SchoolStudentCapacity, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "schoolStudentCount", () => m_Settings.SchoolStudentCount, null, null));
 
             /// SPAWNABLE
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnable", () => m_Settings.Spawnable, null, null));

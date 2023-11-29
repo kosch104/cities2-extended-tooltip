@@ -17,6 +17,9 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
+            if (m_Settings.ParkMaintenance == false)
+                return;
+
             int maintenance = 0;
             if (UpgradeUtils.TryGetCombinedComponent(m_EntityManager, selectedEntity, prefab, out ParkData parkData))
             {

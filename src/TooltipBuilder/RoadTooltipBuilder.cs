@@ -44,7 +44,7 @@ namespace ExtendedTooltip.TooltipBuilder
             {
 
                 Entity edge = buffer[i].m_Edge;
-                if (m_EntityManager.TryGetComponent(edge, out Road road) && m_EntityManager.TryGetComponent(edge, out Curve curve))
+                if (m_Settings.RoadLength && m_EntityManager.TryGetComponent(edge, out Road _) && m_EntityManager.TryGetComponent(edge, out Curve curve))
                 {
                     length += curve.m_Length;
 
@@ -116,11 +116,15 @@ namespace ExtendedTooltip.TooltipBuilder
                     condition += math.csum(wear) * 0.5f;
                 }
 
-                if (m_EntityManager.TryGetComponent(edge, out PrefabRef prefabRef) && m_EntityManager.TryGetComponent(prefabRef.m_Prefab, out PlaceableNetData placeableNetData))
+                if (m_Settings.RoadUpkeep && m_EntityManager.TryGetComponent(edge, out PrefabRef prefabRef) && m_EntityManager.TryGetComponent(prefabRef.m_Prefab, out PlaceableNetData placeableNetData))
                 {
                     upkeep += placeableNetData.m_DefaultUpkeepCost;
                 }
             }
+
+            // No need to calc if both are disabled
+            if (m_Settings.RoadUpkeep == false && m_Settings.RoadCondition == false && m_Settings.RoadLength == false)
+                return;
 
             // Traffic volume and flow need some work
             /*volume[0] /= buffer.Length;
@@ -137,45 +141,54 @@ namespace ExtendedTooltip.TooltipBuilder
             UnityEngine.Debug.Log(string.Join(", ", volume));
             UnityEngine.Debug.Log(string.Join(", ", flow));*/
 
-            bestCondition = 100f - bestCondition / 10f * 100f;
-            worstCondition = 100f - worstCondition / 10f * 100f;
-            condition = condition / 10f * 100f;
-            condition = 100f - condition / buffer.Length;
-
-            // 1 = km , 0 = m
-            int lengthFormat = length >= 1000 ? 1 : 0;
-            string finalLength = (length >= 1000 ? math.round(length / 1000) : math.round(length)).ToString();
-            StringTooltip lengthTooltip = new()
+            if (m_Settings.RoadLength)
             {
-                icon = "Media/Game/Icons/OutsideConnections.svg",
-                value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LINE_VISUALIZER_LENGTH", "Length") + ": " +
-                m_CustomTranslationSystem.GetLocalGameTranslation(lengthFormat == 1 ? "Common.VALUE_KILOMETER" : "Common.VALUE_METER", lengthFormat == 1 ? " km" : " m", "SIGN", "", "VALUE", finalLength)
-            };
-            tooltipGroup.children.Add(lengthTooltip);
+                // 1 = km , 0 = m
+                int lengthFormat = length >= 1000 ? 1 : 0;
+                string finalLength = (length >= 1000 ? math.round(length / 1000) : math.round(length)).ToString();
+                StringTooltip lengthTooltip = new()
+                {
+                    icon = "Media/Game/Icons/OutsideConnections.svg",
+                    value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LINE_VISUALIZER_LENGTH", "Length") + ": " +
+                    m_CustomTranslationSystem.GetLocalGameTranslation(lengthFormat == 1 ? "Common.VALUE_KILOMETER" : "Common.VALUE_METER", lengthFormat == 1 ? " km" : " m", "SIGN", "", "VALUE", finalLength)
+                };
+                tooltipGroup.children.Add(lengthTooltip);
+            }
 
-            int finalUpkeep = Convert.ToInt16(upkeep);
-            StringTooltip upkeepTooltip = new()
+            if (m_Settings.RoadUpkeep)
             {
-                icon = "Media/Game/Icons/ServiceUpkeep.svg",
-                value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.UPKEEP", "Upkeep") + ": " +
-                m_CustomTranslationSystem.GetLocalGameTranslation(
-                    "Common.VALUE_MONEY_PER_MONTH", finalUpkeep.ToString() + " /month",
-                "SIGN", "",
-                    "VALUE", finalUpkeep.ToString()
-                ),
-            };
-            tooltipGroup.children.Add(upkeepTooltip);
+                int finalUpkeep = Convert.ToInt16(upkeep);
+                StringTooltip upkeepTooltip = new()
+                {
+                    icon = "Media/Game/Icons/ServiceUpkeep.svg",
+                    value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.UPKEEP", "Upkeep") + ": " +
+                    m_CustomTranslationSystem.GetLocalGameTranslation(
+                        "Common.VALUE_MONEY_PER_MONTH", finalUpkeep.ToString() + " /month",
+                    "SIGN", "",
+                        "VALUE", finalUpkeep.ToString()
+                    ),
+                };
+                tooltipGroup.children.Add(upkeepTooltip);
+            }
+            
+            if (m_Settings.RoadCondition)
+            {
+                bestCondition = 100f - bestCondition / 10f * 100f;
+                worstCondition = 100f - worstCondition / 10f * 100f;
+                condition = condition / 10f * 100f;
+                condition = 100f - condition / buffer.Length;
 
-            int finalAvgCondition = Convert.ToInt16(math.round(condition));
-            int finalWorstCondition = Convert.ToInt16(math.round(worstCondition));
-            int finalBestCondition = Convert.ToInt16(math.round(bestCondition));
-            StringTooltip conditionTooltip = new()
-            {
-                icon = "Media/Game/Icons/RoadsServices.svg",
-                value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.ROAD_CONDITION", "Condition") + ": ~" + finalAvgCondition + $"% ({finalWorstCondition}% - {finalBestCondition}%)",
-                color = finalAvgCondition < 66 ? TooltipColor.Error : finalAvgCondition < 85 ? TooltipColor.Warning : finalAvgCondition < 95 ? TooltipColor.Info : TooltipColor.Success,
-            };
-            tooltipGroup.children.Add(conditionTooltip);
+                int finalAvgCondition = Convert.ToInt16(math.round(condition));
+                int finalWorstCondition = Convert.ToInt16(math.round(worstCondition));
+                int finalBestCondition = Convert.ToInt16(math.round(bestCondition));
+                StringTooltip conditionTooltip = new()
+                {
+                    icon = "Media/Game/Icons/RoadsServices.svg",
+                    value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.ROAD_CONDITION", "Condition") + ": ~" + finalAvgCondition + $"% ({finalWorstCondition}% - {finalBestCondition}%)",
+                    color = finalAvgCondition < 66 ? TooltipColor.Error : finalAvgCondition < 85 ? TooltipColor.Warning : finalAvgCondition < 95 ? TooltipColor.Info : TooltipColor.Success,
+                };
+                tooltipGroup.children.Add(conditionTooltip);
+            }
         }
     }
 }

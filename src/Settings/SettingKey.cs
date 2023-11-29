@@ -24,7 +24,6 @@
         RoadCondition = 19,
         School = 20,
         SchoolStudentCapacity = 21,
-        SchoolStudentCount = 22,
         Spawnable = 23,
         SpawnableLevel = 24,
         SpawnableLevelDetails = 25,

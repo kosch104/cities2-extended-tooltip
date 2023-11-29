@@ -55,7 +55,6 @@
         // SCHOOL
         public bool SchoolExpanded { get; set; } = false;
         public bool School { get; set; } = true;
-        public bool SchoolStudentCount { get; set; } = true;
         public bool SchoolStudentCapacity { get; set; } = true;
 
         // SPAWNABLE
