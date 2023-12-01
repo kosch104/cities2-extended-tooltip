@@ -5,6 +5,6 @@
   "description": "Adds more information to the game tooltips.",
   "dependencies": [
     "BepInEx-BepInExPack-5.4.2100",
-    "CaptainOfCoit-HookUI-0.3.2"
+    "CaptainOfCoit-HookUI-0.3.3"
   ]
 }
