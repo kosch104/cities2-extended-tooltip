@@ -50,7 +50,7 @@ namespace ExtendedTooltip.TooltipBuilder
                     {
                         zoneInfos[i] = m_CustomTranslationSystem.GetTranslation($"zone_info[{zoneInfos[i]}]", zoneInfos[i]);
                     }
-                    finalZoneName = string.Join(" ", zoneInfos);
+                    finalZoneName = string.Join(", ", zoneInfos);
                 }
                 
                 StringTooltip zoneTooltip = new()
