@@ -54,8 +54,13 @@ namespace ExtendedTooltip.Systems
                 { SettingKey.SpawnableHousehold, () => m_Settings.SpawnableHousehold = !m_Settings.SpawnableHousehold },
                 { SettingKey.SpawnableHouseholdDetails, () => m_Settings.SpawnableHouseholdDetails = !m_Settings.SpawnableHouseholdDetails },
                 { SettingKey.SpawnableRent, () => m_Settings.SpawnableRent = !m_Settings.SpawnableRent },
+                { SettingKey.SpawnableZoneInfo, () => m_Settings.SpawnableZoneInfo = !m_Settings.SpawnableZoneInfo },
                 { SettingKey.Vehicle, () => m_Settings.Vehicle = !m_Settings.Vehicle },
                 { SettingKey.VehiclePassengerDetails, () => m_Settings.VehiclePassengerDetails = !m_Settings.VehiclePassengerDetails },
+                { SettingKey.VehicleDriver, () => m_Settings.VehicleDriver = !m_Settings.VehicleDriver },
+                { SettingKey.VehicleState, () => m_Settings.VehicleState = !m_Settings.VehicleState },
+                { SettingKey.VehiclePostvan, () => m_Settings.VehiclePostvan = !m_Settings.VehiclePostvan},
+                { SettingKey.VehicleGarbageTruck, () => m_Settings.VehicleGarbageTruck = !m_Settings.VehicleGarbageTruck },
                 { SettingKey.UseOnPressOnly, () => m_Settings.UseOnPressOnly = !m_Settings.UseOnPressOnly },
                 { SettingKey.DisableMod, () => m_Settings.DisableMod = !m_Settings.DisableMod },
             };
@@ -126,6 +131,7 @@ namespace ExtendedTooltip.Systems
                 
                 // SPAWNABLE
                 { "spawnable", m_CustomTranslationSystem.GetLocalGameTranslation("Services.NAME[Zones]", "Spawnable")},
+                { "spawnableZoneInfo", m_CustomTranslationSystem.GetTranslation("setting.spawnable.zone_info", "Zone Info")},
                 { "spawnableLevel", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LEVEL", "Level")},
                 { "spawnableLevelDetails", m_CustomTranslationSystem.GetTranslation("setting.spawnable.level_details", "Level Detail")},
                 { "spawnableHousehold", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.HOUSEHOLDS", "Households")},
@@ -134,7 +140,11 @@ namespace ExtendedTooltip.Systems
 
                 // VEHICLE
                 { "vehicle", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.VEHICLES[HouseholdVehicle]", "Vehicles")},
-                { "vehiclePassengerDetail", m_CustomTranslationSystem.GetTranslation("setting.vehicle.passenger_details", "Passenger Details")},
+                { "vehicleState", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.VEHICLE_STATE", "Status")},
+                { "vehicleDriver", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.DRIVER", "Driver")},
+                { "vehicleGarbageTruck", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.GARBAGE_VEHICLE_TITLE[GarbageTruck]", "Garbage Truck")},
+                { "vehiclePostvan", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.POST_VEHICLE_TITLE", "Postvan")},
+                { "vehiclePassengerDetail", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.PASSENGERS_TITLE", "Passengers")},
 
             };
 
@@ -195,6 +205,7 @@ namespace ExtendedTooltip.Systems
             /// SPAWNABLE
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnable", () => m_Settings.Spawnable, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandSpawnable", () => m_Settings.SpawnableExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableZoneInfo", () => m_Settings.SpawnableZoneInfo, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableHousehold", () => m_Settings.SpawnableHousehold, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableHouseholdDetails", () => m_Settings.SpawnableHouseholdDetails, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableLevel", () => m_Settings.SpawnableLevel, null, null));
@@ -204,6 +215,10 @@ namespace ExtendedTooltip.Systems
             /// VEHICLE
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicle", () => m_Settings.Vehicle, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandVehicle", () => m_Settings.VehicleExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicleState", () => m_Settings.VehicleState, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicleDriver", () => m_Settings.VehicleDriver, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicleGarbageTruck", () => m_Settings.VehicleGarbageTruck, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehiclePostvan", () => m_Settings.VehiclePostvan, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehiclePassengerDetails", () => m_Settings.VehiclePassengerDetails, null, null));
 
             AddBinding(new TriggerBinding<int>(kGroup, "onToggle", OnToggle));

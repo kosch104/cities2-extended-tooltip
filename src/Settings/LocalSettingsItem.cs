@@ -65,10 +65,15 @@
         public bool SpawnableLevel { get; set; } = true;
         public bool SpawnableLevelDetails { get; set; } = true;
         public bool SpawnableRent { get; set; } = true;
+        public bool SpawnableZoneInfo { get; set; } = true;
 
         // VEHICLE
         public bool VehicleExpanded { get; set; } = false;
         public bool Vehicle { get; set; } = true;
+        public bool VehicleState { get; set; } = true;
+        public bool VehicleDriver { get; set; } = true;
+        public bool VehiclePostvan { get; set; } = true;
+        public bool VehicleGarbageTruck { get; set; } = true;
         public bool VehiclePassengerDetails { get; set; } = true;
     }
 }

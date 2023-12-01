@@ -4,7 +4,21 @@
   "extendedtooltip.parkinglots.utilization": "Использование",
   "extendedtooltip.average_waiting_time": "~ Срок ожидания",
   "extendedtooltip.rent": "Аренда",
+  "extendedtooltip.mail.to_deliver": "Доставить",
+  "extendedtooltip.mail.collected": "Собрано",
+  "extendedtooltip.mail.capacity": "Вместимость",
   "extendedtooltip.tooltips.description": "Включение/отключение всплывающих подсказок по вашему желанию.",
+  "extendedtooltip.zone_info[NA]": "NA",
+  "extendedtooltip.zone_info[EU]": "EU",
+  "extendedtooltip.zone_info[Low]": "Низкий",
+  "extendedtooltip.zone_info[Medium]": "Средний",
+  "extendedtooltip.zone_info[High]": "Высокий",
+  "extendedtooltip.zone_info[Commercial]": "Коммерческая",
+  "extendedtooltip.zone_info[Industrial]": "Промышленность",
+  "extendedtooltip.zone_info[Residential]": "Жилье",
+  "extendedtooltip.zone_info[Row]": "Ряд",
+  "extendedtooltip.zone_info[Mixed]": "Смешанный",
+  "extendedtooltip.zone_info[LowRent]": "Низкая аренда",
   "extendedtooltip.setting.disableMod": "Отключить мод",
   "extendedtooltip.setting.disableMod.description": "Отключить мод глобально",
   "extendedtooltip.setting.useOnPressOnly": "Включить режим горячих клавиш",
@@ -17,5 +31,5 @@
   "extendedtooltip.setting.school.student.capacity": "Количество учащихся",
   "extendedtooltip.setting.spawnable.level_details": "Детали уровня",
   "extendedtooltip.setting.spawnable.household_details": "Детали домохозяйства",
-  "extendedtooltip.setting.vehicle.passenger_details": "Детали пассажира"
+  "extendedtooltip.setting.spawnable.zone_info": "Информация о зоне"
 }

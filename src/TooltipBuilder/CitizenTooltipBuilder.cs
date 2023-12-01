@@ -1,7 +1,6 @@
 ﻿using ExtendedTooltip.Systems;
 using Game.Citizens;
 using Game.UI.InGame;
-using Game.UI.Localization;
 using Game.UI.Tooltip;
 using System;
 using Unity.Entities;
@@ -21,11 +20,10 @@ namespace ExtendedTooltip.TooltipBuilder
             if (m_Settings.CitizenState)
             {
                 CitizenStateKey stateKey = CitizenUIUtils.GetStateKey(m_EntityManager, entity);
-                var stateStringBuilder = CachedLocalizedStringBuilder<CitizenStateKey>.Id((CitizenStateKey t) => $"SelectedInfoPanel.CITIZEN_STATE[{t:G}]");
                 StringTooltip stateTooltip = new()
                 {
-                    icon = "Media/Game/Icons/Information.svg",
-                    value = stateStringBuilder[stateKey],
+                    icon = "Media/Game/Icons/AdvisorInfoView.svg",
+                    value = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_STATE[{stateKey}]", "")}",
                     color = TooltipColor.Info,
                 };
                 tooltipGroup.children.Add(stateTooltip);
@@ -51,8 +49,8 @@ namespace ExtendedTooltip.TooltipBuilder
             if (m_Settings.CitizenEducation)
             {
                 CitizenEducationKey educationKey = CitizenUIUtils.GetEducation(citizen);
-                string educationLabelString = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_EDUCATION", "Education");
-                string educationValueString = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_EDUCATION_TITLE[{Enum.GetName(typeof(CitizenEducationKey), educationKey)}]", educationKey.ToString());
+                string educationLabelString = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_EDUCATION_TITLE", "Education");
+                string educationValueString = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_EDUCATION[{Enum.GetName(typeof(CitizenEducationKey), educationKey)}]", educationKey.ToString());
                 StringTooltip educationTooltip = new()
                 {
                     icon = "Media/Game/Icons/Education.svg",

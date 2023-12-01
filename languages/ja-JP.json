@@ -4,7 +4,21 @@
   "extendedtooltip.parkinglots.utilization": "利用",
   "extendedtooltip.average_waiting_time": "~ 待ち時間",
   "extendedtooltip.rent": "賃料",
+  "extendedtooltip.mail.to_deliver": "配送する",
+  "extendedtooltip.mail.collected": "収集済み",
+  "extendedtooltip.mail.capacity": "容量",
   "extendedtooltip.tooltips.description": "「必要に応じてツールチップを有効/無効にします、",
+  "extendedtooltip.zone_info[NA]": "NA",
+  "extendedtooltip.zone_info[EU]": "EU",
+  "extendedtooltip.zone_info[Low]": "低い",
+  "extendedtooltip.zone_info[Medium]": "ミディアム",
+  "extendedtooltip.zone_info[High]": "高い",
+  "extendedtooltip.zone_info[Commercial]": "コマーシャル",
+  "extendedtooltip.zone_info[Industrial]": "インダストリアル",
+  "extendedtooltip.zone_info[Residential]": "レジデンシャル",
+  "extendedtooltip.zone_info[Row]": "列",
+  "extendedtooltip.zone_info[Mixed]": "ミックス",
+  "extendedtooltip.zone_info[LowRent]": "低家賃",
   "extendedtooltip.setting.disableMod": "Modを無効にする",
   "extendedtooltip.setting.disableMod.description": "グローバルにMODを無効にする",
   "extendedtooltip.setting.useOnPressOnly": "ホットキーモードを有効にする",
@@ -17,5 +31,5 @@
   "extendedtooltip.setting.school.student.capacity": "生徒定員",
   "extendedtooltip.setting.spawnable.level_details": "レベルの詳細",
   "extendedtooltip.setting.spawnable.household_details": "世帯の詳細",
-  "extendedtooltip.setting.vehicle.passenger_details": "乗客の詳細"
+  "extendedtooltip.setting.spawnable.zone_info": "ゾーンの詳細"
 }

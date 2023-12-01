@@ -4,7 +4,21 @@
   "extendedtooltip.parkinglots.utilization": "활용도",
   "extendedtooltip.average_waiting_time": "~ 대기 시간",
   "extendedtooltip.rent": "임대",
+  "extendedtooltip.mail.to_deliver": "배달할",
+  "extendedtooltip.mail.collected": "수집됨",
+  "extendedtooltip.mail.capacity": "용량",
   "extendedtooltip.tooltips.description": "필요에 따라 툴팁을 활성화/비활성화합니다.",
+  "extendedtooltip.zone_info[NA]": "NA",
+  "extendedtooltip.zone_info[EU]": "EU",
+  "extendedtooltip.zone_info[Low]": "낮음",
+  "extendedtooltip.zone_info[Medium]": "중간",
+  "extendedtooltip.zone_info[High]": "높음",
+  "extendedtooltip.zone_info[Commercial]": "상업용",
+  "extendedtooltip.zone_info[Industrial]": "산업",
+  "extendedtooltip.zone_info[Residential]": "주거용",
+  "extendedtooltip.zone_info[Row]": "행",
+  "extendedtooltip.zone_info[Mixed]": "혼합",
+  "extendedtooltip.zone_info[LowRent]": "저렴한 임대료",
   "extendedtooltip.setting.disableMod": "모드 비활성화",
   "extendedtooltip.setting.disableMod.description": "모드를 전역적으로 비활성화합니다.",
   "extendedtooltip.setting.useOnPressOnly": "단축키 모드 사용",
@@ -17,5 +31,5 @@
   "extendedtooltip.setting.school.student.capacity": "학생 정원",
   "extendedtooltip.setting.spawnable.level_details": "레벨 세부 정보",
   "extendedtooltip.setting.spawnable.household_details": "가구 세부 정보",
-  "extendedtooltip.setting.vehicle.passenger_details": "승객 세부 정보"
+  "extendedtooltip.setting.spawnable.zone_info": "영역 세부 정보"
 }

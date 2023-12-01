@@ -18,12 +18,10 @@ using Game.UI.InGame;
 using Game.UI.Tooltip;
 using Game.Vehicles;
 using Game.Zones;
-using System;
 using System.Runtime.CompilerServices;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Scripting;
 
 namespace ExtendedTooltip.Systems
@@ -77,9 +75,9 @@ namespace ExtendedTooltip.Systems
             m_CustomTranslationSystem = World.GetOrCreateSystemManaged<CustomTranslationSystem>();
 
             m_CitizenTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
-            m_VehicleTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
+            m_VehicleTooltipBuilder = new(EntityManager, m_CustomTranslationSystem, m_NameSystem);
             m_RoadTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
-            m_SpawnablesTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
+            m_SpawnablesTooltipBuilder = new(EntityManager, m_CustomTranslationSystem, m_PrefabSystem);
             m_EfficiencyTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_ParkTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_ParkingFacilityTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
@@ -187,11 +185,7 @@ namespace ExtendedTooltip.Systems
             }
 
             // VEHICLE TOOLTIP
-            if (m_LocalSettings.Settings.Vehicle && EntityManager.HasComponent<Vehicle>(selectedEntity) &&
-                (EntityManager.HasComponent<Game.Vehicles.Taxi>(selectedEntity) ||
-                EntityManager.HasComponent<Game.Vehicles.PoliceCar>(selectedEntity) |
-                EntityManager.HasComponent<Game.Vehicles.PublicTransport>(selectedEntity)
-            ))
+            if (m_LocalSettings.Settings.Vehicle && EntityManager.HasComponent<Vehicle>(selectedEntity))
             {
                 m_VehicleTooltipBuilder.Build(selectedEntity, prefab, m_TooltipGroup);
                 return; // don't have any other info. No need to check for other components
@@ -205,9 +199,9 @@ namespace ExtendedTooltip.Systems
             }
 
             // SPAWNABLES TOOLTIP
-            if (m_LocalSettings.Settings.Spawnable && HasSpawnableBuildingData(selectedEntity, prefab, out int buildingLevel, out int currentCondition, out int levelingCost))
+            if (m_LocalSettings.Settings.Spawnable && HasSpawnableBuildingData(selectedEntity, prefab, out int buildingLevel, out int currentCondition, out int levelingCost, out SpawnableBuildingData spawnableData))
             {
-                m_SpawnablesTooltipBuilder.Build(selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, m_TooltipGroup);
+                m_SpawnablesTooltipBuilder.Build(selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, m_TooltipGroup);
             }
 
             // EFFICIENCY TOOLTIP
@@ -291,11 +285,12 @@ namespace ExtendedTooltip.Systems
             return false;
         }
 
-        private bool HasSpawnableBuildingData(Entity entity, Entity prefab, out int buildingLevel, out int currentCondition, out int levelingCost)
+        private bool HasSpawnableBuildingData(Entity entity, Entity prefab, out int buildingLevel, out int currentCondition, out int levelingCost, out SpawnableBuildingData spawnableData)
         {
             buildingLevel = default;
             currentCondition = default;
             levelingCost = default;
+            spawnableData = default;
 
             CitySystem citySystem = EntityManager.World.GetOrCreateSystemManaged<CitySystem>();
             Entity city = citySystem.City;
@@ -309,6 +304,7 @@ namespace ExtendedTooltip.Systems
             {
                 buildingLevel = spawnableBuildingData.m_Level;
                 currentCondition = buildingCondition.m_Condition;
+                spawnableData = spawnableBuildingData;
                 levelingCost = spawnableBuildingData.m_Level < 5 ? BuildingUtils.GetLevelingCost(zoneData.m_AreaType, buildingPropertyData, spawnableBuildingData.m_Level, cityEffectsBuffer) : 0;
 
                 return true;

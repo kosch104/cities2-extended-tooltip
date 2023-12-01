@@ -30,8 +30,13 @@
         SpawnableHousehold = 26,
         SpawnableHouseholdDetails = 27,
         SpawnableRent = 28,
+        SpawnableZoneInfo = 35,
         Vehicle = 29,
         VehiclePassengerDetails = 30,
+        VehicleDriver = 31,
+        VehicleState = 32,
+        VehiclePostvan = 33,
+        VehicleGarbageTruck = 34,
         UseOnPressOnly = 91,
         DisableMod = 90
     }

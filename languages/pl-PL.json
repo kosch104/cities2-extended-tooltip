@@ -4,7 +4,21 @@
   "extendedtooltip.parkinglots.utilization": "Utilização",
   "extendedtooltip.average_waiting_time": "~ Tempo de espera",
   "extendedtooltip.rent": "Aluguer",
+  "extendedtooltip.mail.to_deliver": "Para entregar",
+  "extendedtooltip.mail.collected": "Recolhido",
+  "extendedtooltip.mail.capacity": "Capacidade",
   "extendedtooltip.tooltips.description": "Enable/Disable tooltips by your needs.",
+  "extendedtooltip.zone_info[NA]": "NA",
+  "extendedtooltip.zone_info[EU]": "EU",
+  "extendedtooltip.zone_info[Low]": "Baixa",
+  "extendedtooltip.zone_info[Medium]": "Médio",
+  "extendedtooltip.zone_info[High]": "Alto",
+  "extendedtooltip.zone_info[Commercial]": "Commercial",
+  "extendedtooltip.zone_info[Industrial]": "Industrial",
+  "extendedtooltip.zone_info[Residential]": "Residencial",
+  "extendedtooltip.zone_info[Row]": "Fila",
+  "extendedtooltip.zone_info[Mixed]": "Misto",
+  "extendedtooltip.zone_info[LowRent]": "Aluguer baixo",
   "extendedtooltip.setting.disableMod": "Desativar Mod",
   "extendedtooltip.setting.disableMod.description": "Desativar o mod globalmente",
   "extendedtooltip.setting.useOnPressOnly": "Ativar o modo de teclas de atalho",
@@ -17,5 +31,5 @@
   "extendedtooltip.setting.school.student.capacity": "Capacidade dos alunos",
   "extendedtooltip.setting.spawnable.level_details": "Detalhes do nível",
   "extendedtooltip.setting.spawnable.household_details": "Detalhes do agregado familiar",
-  "extendedtooltip.setting.vehicle.passenger_details": "Detalhes do passageiro"
+  "extendedtooltip.setting.spawnable.zone_info": "Detalhes da zona"
 }

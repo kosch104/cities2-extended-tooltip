@@ -198,6 +198,7 @@ const ExtendedTooltipUI = ({ react }) => {
     const [showSpawnableHousehold, setShowSpawnableHousehold] = react.useState(true);
     const [showSpawnableHouseholdDetails, setShowSpawnableHouseholdDetails] = react.useState(true);
     const [showSpawnableRent, setShowSpawnableRent] = react.useState(true);
+    const [showSpawnableZoneInfo, setShowSpawnableZoneInfo] = react.useState(true);
     useDataUpdate(react, 'extendedTooltip.spawnable', setShowSpawnableGroup);
     useDataUpdate(react, 'extendedTooltip.expandSpawnable', setExpandSpawnableGroup);
     useDataUpdate(react, 'extendedTooltip.spawnableLevel', setShowSpawnableLevel);
@@ -205,12 +206,21 @@ const ExtendedTooltipUI = ({ react }) => {
     useDataUpdate(react, 'extendedTooltip.spawnableHousehold', setShowSpawnableHousehold);
     useDataUpdate(react, 'extendedTooltip.spawnableHouseholdDetails', setShowSpawnableHouseholdDetails);
     useDataUpdate(react, 'extendedTooltip.spawnableRent', setShowSpawnableRent);
+    useDataUpdate(react, 'extendedTooltip.spawnableZoneInfo', setShowSpawnableZoneInfo);
 
     const [showVehiclesGroup, setShowVehiclesGroup] = react.useState(true);
     const [expandVehiclesGroup, setExpandVehiclesGroup] = react.useState(true);
+    const [showVehicleState, setShowVehicleState] = react.useState(true);
+    const [showVehicleDriver, setShowVehicleDriver] = react.useState(true);
+    const [showVehicleGarbageTruck, setShowVehicleGarbageTruck] = react.useState(true);
+    const [showVehiclePostvan, setShowVehiclePostvan] = react.useState(true);
     const [showVehiclePassengerDetails, setShowVehiclePassengerDetails] = react.useState(true);
     useDataUpdate(react, 'extendedTooltip.vehicle', setShowVehiclesGroup);
     useDataUpdate(react, 'extendedTooltip.expandVehicle', setExpandVehiclesGroup);
+    useDataUpdate(react, 'extendedTooltip.vehicleState', setShowVehicleState);
+    useDataUpdate(react, 'extendedTooltip.vehicleDriver', setShowVehicleDriver);
+    useDataUpdate(react, 'extendedTooltip.vehicleGarbageTruck', setShowVehicleGarbageTruck);
+    useDataUpdate(react, 'extendedTooltip.vehiclePostvan', setShowVehiclePostvan);
     useDataUpdate(react, 'extendedTooltip.vehiclePassengerDetails', setShowVehiclePassengerDetails);
 
     const generalSettingsData = [
@@ -272,6 +282,7 @@ const ExtendedTooltipUI = ({ react }) => {
         {
             id: 23, label: translations['spawnable'], isChecked: showSpawnableGroup, expanded: expandSpawnableGroup,
             children: [
+                { id: 35, label: translations['spawnableZoneInfo'], isChecked: showSpawnableZoneInfo },
                 { id: 24, label: translations['spawnableLevel'], isChecked: showSpawnableLevel },
                 { id: 25, label: translations['spawnableLevelDetails'], isChecked: showSpawnableLevelDetails },
                 { id: 26, label: translations['spawnableHousehold'], isChecked: showSpawnableHousehold },
@@ -282,7 +293,11 @@ const ExtendedTooltipUI = ({ react }) => {
         {
             id: 29, label: translations['vehicle'], isChecked: showVehiclesGroup, expanded: expandVehiclesGroup,
             children: [
-                { id: 30, label: translations['vehiclePassengerDetail'], isChecked: showVehiclePassengerDetails }
+                { id: 30, label: translations['vehiclePassengerDetail'], isChecked: showVehiclePassengerDetails },
+                { id: 31, label: translations['vehicleDriver'], isChecked: showVehicleDriver },
+                { id: 32, label: translations['vehicleState'], isChecked: showVehicleState },
+                { id: 33, label: translations['vehiclePostvan'], isChecked: showVehiclePostvan },
+                { id: 34, label: translations['vehicleGarbageTruck'], isChecked: showVehicleGarbageTruck },
             ]
         },
     ];

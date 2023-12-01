@@ -5,8 +5,8 @@ using Game.Buildings;
 using Game.Citizens;
 using Game.Common;
 using Game.Prefabs;
-using Game.UI.InGame;
 using Game.UI.Tooltip;
+using Game.Zones;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
@@ -17,16 +17,49 @@ namespace ExtendedTooltip.TooltipBuilder
 {
     public class SpawnablesTooltipBuilder : TooltipBuilderBase
     {
-        public SpawnablesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+        private readonly PrefabSystem m_PrefabSystem;
+        
+        public SpawnablesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem, PrefabSystem prefabSystem)
         : base(entityManager, customTranslationSystem)
         {
+            m_PrefabSystem = prefabSystem;
             UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
         }
 
-        public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, TooltipGroup tooltipGroup)
+        public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, TooltipGroup tooltipGroup)
         {
             if (m_Settings.SpawnableHousehold == false && m_Settings.SpawnableHouseholdDetails == false && m_Settings.SpawnableLevel == false && m_Settings.SpawnableLevelDetails == false && m_Settings.SpawnableRent == false)
                 return;
+
+            if (m_Settings.SpawnableZoneInfo)
+            {
+                ZoneData zoneData = m_EntityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);
+                ZonePrefab zonePrefab = m_PrefabSystem.GetPrefab<ZonePrefab>(spawnableBuildingData.m_ZonePrefab);
+                PrefabBase zonePrefabBase = m_PrefabSystem.GetPrefab<PrefabBase>(spawnableBuildingData.m_ZonePrefab);
+                string rawZoneName = m_PrefabSystem.GetPrefab<PrefabBase>(spawnableBuildingData.m_ZonePrefab).name;
+                string finalZoneName;
+
+                // Offices and industrial zones have a different naming convention
+                if (zoneData.m_AreaType == AreaType.Industrial) // Offices are technically industrial zones
+                {
+                    finalZoneName = m_CustomTranslationSystem.GetLocalGameTranslation($"Assets.NAME[{rawZoneName}]", rawZoneName);
+                } else {
+                    // Split the string into individual values
+                    List<string> zoneInfos = [.. rawZoneName.Split(' ')];
+                    for (int i = 0; i < zoneInfos.Count; i++)
+                    {
+                        zoneInfos[i] = m_CustomTranslationSystem.GetTranslation($"zone_info[{zoneInfos[i]}]", zoneInfos[i]);
+                    }
+                    finalZoneName = string.Join(" ", zoneInfos);
+                }
+                
+                StringTooltip zoneTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Zones.svg",
+                    value = finalZoneName,
+                };
+                tooltipGroup.children.Add(zoneTooltip);
+            }
 
             if (m_Settings.SpawnableLevel)
             {
