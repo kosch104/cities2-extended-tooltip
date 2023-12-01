@@ -3,21 +3,25 @@
 This mod adds new informations to the mouse hover tooltip of several entities to the game.
 If you want anything added to the tooltip, please let me know and open an issue.
 
+## Requirement
+- HookUI v0.3.3
+
 ## Installation
 Simply download the latest release from the [releases page](https://github.com/89pleasure/cities2-extended-tooltip/releases)
 and extract it to your `Cities Skylines II /bepinex/plugins` folder.
 
 ## Current features
 Shows the following information on tooltips:
-- Overall Efficiency
-- Company employees current/max
+- Efficiency
+- Employees
 - Company produces/sells information
-- Citizen happiness
-- Citizen activity
-- Citizen job
-- Schools students current/max
-- Roads upkeep
-- Roads lengths
+- Citizen: Status, Happiness, State, Education, ect.
+- Schools: Students current/max
+- Public Transport: Waiting passengers, Average waiting time
+- Roads: Length, Upkeep, Conditions
+- Zones: Zone info, Households, Residents, Pets, ect.
+- Vehicles: Driver, Passengers, Garbage Trucks info, Postvan info
+- many more
 
 ## Community
 If you need any help or are you interested in modding yourself?
