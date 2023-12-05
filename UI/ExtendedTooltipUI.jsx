@@ -1,6 +1,7 @@
 ﻿import React from 'react'
 import { useDataUpdate } from 'hookui-framework'
 import * as styles from './styles'
+import $Select from './select'
 
 const panelStyle = { position: 'absolute', maxHeight: '600rem' };
 
@@ -120,9 +121,10 @@ const ExtendedTooltipUI = ({ react }) => {
     useDataUpdate(react, 'extendedTooltip.translations', setTranslations);
 
     const [disableMod, setDisableMod] = react.useState(false);
-    const [useOnPressOnly, setUseOnPressOnly] = react.useState(false);
     useDataUpdate(react, 'extendedTooltip.disableMod', setDisableMod);
-    useDataUpdate(react, 'extendedTooltip.useOnPressOnly', setUseOnPressOnly);
+
+    const [displayMode, setDisplayMode] = react.useState(0);
+    useDataUpdate(react, 'extendedTooltip.displayMode', setDisplayMode);
 
     const [showCitizenGroup, setShowCitizenGroup] = react.useState(true);
     const [expandCitizenCroup, setExpandCitizenGroup] = react.useState(true);
@@ -225,7 +227,13 @@ const ExtendedTooltipUI = ({ react }) => {
 
     const generalSettingsData = [
         { id: 90, label: translations['disableMod'], description: translations['disableMod.description'], isChecked: disableMod },
-        { id: 91, label: translations['useOnPressOnly'], description: translations['useOnPressOnly.description'], isChecked: useOnPressOnly },
+        {
+            id: 91, label: translations['displayMode'], description: translations['displayMode.description'], event: 'extendedTooltip.onDisplayModeSelect', selected: displayMode, options: [
+                { id: 0, label: translations['displayMode.instant'], value: 0 },
+                { id: 1, label: translations['displayMode.delayed'], value: 1 },
+                { id: 2, label: translations['displayMode.onKey'], value: 2 },
+            ]
+        },
     ]
 
     const tooltipsSettingsData = [
@@ -303,7 +311,7 @@ const ExtendedTooltipUI = ({ react }) => {
     ];
 
     const Setting = ({ setting, nested }) => {
-        const { label, isChecked, description, expanded, children } = setting;
+        const { label, isChecked, description, expanded, selected, event, options, children } = setting;
         const checked_class = isChecked ? styles.CLASS_CHECKED : styles.CLASS_UNCHECKED
 
         const onToggle = () => {
@@ -316,8 +324,10 @@ const ExtendedTooltipUI = ({ react }) => {
 
         const onExpandAction = children && children.length > 0 ? onExpand : null;
         const nestingStyle = { '--nesting': nested };
-        const headerContentStyle = {marginTop: '-1rem'};
+        const headerContentStyle = { marginTop: '-1rem', whiteSpace: 'normal' };
         const decsriptionStyle = { fontSize: 'var(--fontSizeXS)' };
+        const selectWrapperStyle = { padding: '10rem 0'}
+        const selectStyle = { width: '66%', padding: '4rem' };
         const borderColor = isChecked ? 'rgba(134, 205, 144, 1.000000)' : 'rgba(134, 205, 144, 0.250000)';
         const borderStyle = {
             borderTopColor: borderColor,
@@ -344,14 +354,17 @@ const ExtendedTooltipUI = ({ react }) => {
         return (
             <div className={styles.many(styles.CLASS_TT_FOLDOUT, styles.CLASS_TT_DISABLE_MOUSE_STATES)} style={nestingStyle}>
                 <div className={styles.many(styles.CLASS_TT_HEADER, styles.CLASS_TT_ITEMMOUSESTATES, styles.CLASS_TT_ITEM_FOCUSED)}>
-                    <div className={styles.CLASS_TT_ICON} onClick={onToggle}>
-                        <div className={styles.many(styles.CLASS_TT_CHILD_TOGGLE, styles.CLASS_TT_ITEMMOUSESTATES, checked_class)} style={borderStyle}>
-                            <div className={styles.many(styles.CLASS_TT_CHECKMARK, checked_class)}></div>
+                    { isChecked !== undefined &&
+                        <div className={styles.CLASS_TT_ICON} onClick={onToggle}>
+                            <div className={styles.many(styles.CLASS_TT_CHILD_TOGGLE, styles.CLASS_TT_ITEMMOUSESTATES, checked_class)} style={borderStyle}>
+                                <div className={styles.many(styles.CLASS_TT_CHECKMARK, checked_class)}></div>
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div className={styles.CLASS_TT_HEADER_CONTENT} style={headerContentStyle} onClick={onExpandAction}>
                         <div className={styles.CLASS_TT_LABEL}>{label}</div>
                         {description && <div style={decsriptionStyle}>{description}</div>}
+                        {options && options.length > 0 && <div style={selectWrapperStyle}><$Select react={react} event={event} selected={selected} children={options} style={selectStyle}></$Select></div>}
                     </div>
                     {children && children.length > 0 && <div class="tinted-icon_iKo toggle_RV4 toggle_yQv" style={maskImageStyle} onClick={onExpandAction}></div>}
                 </div>

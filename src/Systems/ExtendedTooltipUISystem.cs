@@ -61,7 +61,6 @@ namespace ExtendedTooltip.Systems
                 { SettingKey.VehicleState, () => m_Settings.VehicleState = !m_Settings.VehicleState },
                 { SettingKey.VehiclePostvan, () => m_Settings.VehiclePostvan = !m_Settings.VehiclePostvan},
                 { SettingKey.VehicleGarbageTruck, () => m_Settings.VehicleGarbageTruck = !m_Settings.VehicleGarbageTruck },
-                { SettingKey.UseOnPressOnly, () => m_Settings.UseOnPressOnly = !m_Settings.UseOnPressOnly },
                 { SettingKey.DisableMod, () => m_Settings.DisableMod = !m_Settings.DisableMod },
             };
 
@@ -83,8 +82,11 @@ namespace ExtendedTooltip.Systems
                 // GENERAL
                 { "disableMod", m_CustomTranslationSystem.GetTranslation("setting.disableMod", "Disable Mod") },
                 { "disableMod.description", m_CustomTranslationSystem.GetTranslation("setting.disableMod.description", "Disable the mod globally.") },
-                { "useOnPressOnly", m_CustomTranslationSystem.GetTranslation("setting.useOnPressOnly", "Enable Hotkey Mode") },
-                { "useOnPressOnly.description", m_CustomTranslationSystem.GetTranslation("setting.useOnPressOnly.description", "Hold ALT to show tooltips.") },
+                { "displayMode", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode", "Display mode") },
+                { "displayMode.description", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode.description", "Decide between different display modes for the tooltip.") },
+                { "displayMode.instant", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode.instant", "Instant (default)") },
+                { "displayMode.delayed", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode.delayed", "Delayed") },
+                { "displayMode.onKey", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode.onKey", "Hold key (ALT)") },
 
                 // TOOLTIPS
                 { "tooltips.description", m_CustomTranslationSystem.GetTranslation("tooltips.description", "Enable/Disable tooltips by your needs.") },
@@ -153,7 +155,8 @@ namespace ExtendedTooltip.Systems
 
             /// GENERAL
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "disableMod", () => m_Settings.DisableMod, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "useOnPressOnly", () => m_Settings.UseOnPressOnly, null, null));
+            AddUpdateBinding(new GetterValueBinding<int>(kGroup, "displayMode", () => (int) m_Settings.DisplayMode, null, null));
+            AddBinding(new TriggerBinding<int>(kGroup, "onDisplayModeSelect", OnDisplayModeSelect));
 
             /// CITIZENS
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizen", () => m_Settings.Citizen, null, null));
@@ -236,6 +239,12 @@ namespace ExtendedTooltip.Systems
         {
             base.OnDestroy();
             UnityEngine.Debug.Log("ExtendedTooltipUISystem destroyed.");
+        }
+
+        private void OnDisplayModeSelect(int displayMode)
+        {
+            UnityEngine.Debug.Log($"DisplayMode changed to {displayMode}");
+            m_Settings.DisplayMode = (DisplayMode) displayMode;
         }
 
         private async void OnToggle(int settingId)

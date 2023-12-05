@@ -7,7 +7,7 @@
 
         // GENERAL
         public bool DisableMod { get; set; } = false;
-        public bool UseOnPressOnly { get; set; } = false;
+        public DisplayMode DisplayMode { get; set; } = 0;
         public string OnPressOnlyKey { get; set; } = "ALT";
 
         // CITIZEN

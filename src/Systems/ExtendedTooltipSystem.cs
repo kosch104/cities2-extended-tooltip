@@ -33,6 +33,9 @@ namespace ExtendedTooltip.Systems
         public bool m_LocalSettingsLoaded = false;
         public bool hotkeyPressed = false;
 
+        Entity? lastEntity;
+        float timer = 0f;
+
         private ToolSystem m_ToolSystem;
         private DefaultToolSystem m_DefaultTool;
         private NameSystem m_NameSystem;
@@ -124,6 +127,13 @@ namespace ExtendedTooltip.Systems
                 m_NameTooltip.icon = m_ImageSystem.GetInstanceIcon(entity, prefab);
                 m_NameTooltip.entity = entity;
 
+                // Reset timer if entity changed
+                if (lastEntity != null && !lastEntity.Equals(entity))
+                {
+                    timer = 0;
+                    lastEntity = null;
+                }
+
                 if (IsInfomodeActivated())
                 {
                     AddMouseTooltip(m_NameTooltip);
@@ -138,13 +148,14 @@ namespace ExtendedTooltip.Systems
                         LocalSettingsItem settings = m_LocalSettings.Settings;
                         if (!settings.DisableMod)
                         {
-                            // Only show tooltip if Alt key is pressed or if UseOnPressOnly is false
-                            if (settings.UseOnPressOnly && hotkeyPressed)
+                            timer += World.Time.DeltaTime;
+                            if ((settings.DisplayMode == DisplayMode.OnKey && hotkeyPressed)
+                                || (settings.DisplayMode != DisplayMode.OnKey && settings.DisplayMode != DisplayMode.Delayed)
+                                || (settings.DisplayMode == DisplayMode.Delayed && timer > 0.60f)
+                            )
                             {
                                 CreateExtendedTooltips(entity, prefab);
-                            } else if(!settings.UseOnPressOnly)
-                            {
-                                CreateExtendedTooltips(entity, prefab);
+                                lastEntity = entity;
                             }
                         }
 
@@ -156,6 +167,9 @@ namespace ExtendedTooltip.Systems
                         UnityEngine.Debug.Log("Creating ExtendedTooltips failed at: " + e);
                     }
                 }                
+            } else
+            {
+                timer = 0;
             }
         }
 
@@ -166,7 +180,8 @@ namespace ExtendedTooltip.Systems
                 m_LocalSettings = new();
                 m_LocalSettings.Init();
                 m_LocalSettingsLoaded = true;
-            } catch (System.Exception e)
+            }
+            catch (System.Exception e)
             {
                 UnityEngine.Debug.Log($"Error loading settings: {e.Message}");
             }

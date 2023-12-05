@@ -38,6 +38,7 @@
         VehiclePostvan = 33,
         VehicleGarbageTruck = 34,
         UseOnPressOnly = 91,
-        DisableMod = 90
+        DisableMod = 90,
+        DelayedTooltip = 92
     }
 }
