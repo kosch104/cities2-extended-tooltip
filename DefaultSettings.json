@@ -2,7 +2,7 @@
   "version": "0.6.0",
 
   // GENERAL
-  "useOnPressOnly": false,
+  "DisplayMode":  0,
   "onPressOnlyKey": "ALT",
 
   /// TOOLTIPS

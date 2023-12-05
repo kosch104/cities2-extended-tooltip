@@ -77,7 +77,7 @@ const $Select = ({ react, style, event, selected, children }) => {
                 <div className="dropdown-menu_jf2 dropdown-menu_Swd">
                     {
                         children.map((child) => (
-                            <button key={child.id} className="dropdown-item_sZT selected" style={{ padding: '5rem', height: 'auto' }} onClick={() => onSelectionChanged(child.value)}>{child.label}</button>
+                            <button key={child.id} className="dropdown-item_sZT selected" style={{ padding: '5rem', height: 'auto', fontSize: 'var(--fontSizeS)', }} onClick={() => onSelectionChanged(child.value)}>{child.label}</button>
                         ))
                     }
                 </div>

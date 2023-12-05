@@ -2,6 +2,7 @@
 import { useDataUpdate } from 'hookui-framework'
 import * as styles from './styles'
 import $Select from './select'
+import $Slider from './slider'
 
 const panelStyle = { position: 'absolute', maxHeight: '600rem' };
 
@@ -327,7 +328,7 @@ const ExtendedTooltipUI = ({ react }) => {
         const headerContentStyle = { marginTop: '-1rem', whiteSpace: 'normal' };
         const decsriptionStyle = { fontSize: 'var(--fontSizeXS)' };
         const selectWrapperStyle = { padding: '10rem 0'}
-        const selectStyle = { width: '66%', padding: '4rem' };
+        const selectStyle = { width: '66%', padding: '4rem', fontSize: 'var(--fontSizeS)' };
         const borderColor = isChecked ? 'rgba(134, 205, 144, 1.000000)' : 'rgba(134, 205, 144, 0.250000)';
         const borderStyle = {
             borderTopColor: borderColor,
