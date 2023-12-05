@@ -82,11 +82,11 @@ namespace ExtendedTooltip.Systems
                 // GENERAL
                 { "disableMod", m_CustomTranslationSystem.GetTranslation("setting.disableMod", "Disable Mod") },
                 { "disableMod.description", m_CustomTranslationSystem.GetTranslation("setting.disableMod.description", "Disable the mod globally.") },
-                { "displayMode", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode", "Display mode") },
-                { "displayMode.description", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode.description", "Decide between different display modes for the tooltip.") },
-                { "displayMode.instant", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode.instant", "Instant (default)") },
-                { "displayMode.delayed", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode.delayed", "Delayed") },
-                { "displayMode.onKey", m_CustomTranslationSystem.GetTranslation("extendedtooltip.setting.displayMode.onKey", "Hold key (ALT)") },
+                { "displayMode", m_CustomTranslationSystem.GetTranslation("setting.displayMode", "Display mode") },
+                { "displayMode.description", m_CustomTranslationSystem.GetTranslation("setting.displayMode.description", "Decide between different display modes for the tooltip.") },
+                { "displayMode.instant", m_CustomTranslationSystem.GetTranslation("setting.displayMode.instant", "Instant (default)") },
+                { "displayMode.delayed", m_CustomTranslationSystem.GetTranslation("setting.displayMode.delayed", "Delayed") },
+                { "displayMode.onKey", m_CustomTranslationSystem.GetTranslation("setting.displayMode.onKey", "Hold key (ALT)") },
 
                 // TOOLTIPS
                 { "tooltips.description", m_CustomTranslationSystem.GetTranslation("tooltips.description", "Enable/Disable tooltips by your needs.") },
