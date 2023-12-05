@@ -4,7 +4,10 @@ This mod adds new informations to the mouse hover tooltip of several entities to
 If you want anything added to the tooltip, please let me know and open an issue.
 
 ## Requirement
-- HookUI v0.3.3
+- [BepInEx v5](https://thunderstore.io/c/cities-skylines-ii/p/BepInEx/BepInExPack/) or v6 bleeding edge
+- [HookUI v0.3.3](https://thunderstore.io/c/cities-skylines-ii/p/CaptainOfCoit/HookUI/)
+
+I do recommend using the [Thunderstore.io mod manager](https://www.overwolf.com/app/Thunderstore-Thunderstore_Mod_Manager) , or [r2modman](https://thunderstore.io/package/ebkr/r2modman/) for Game Pass users
 
 ## Installation
 Simply download the latest release from the [releases page](https://github.com/89pleasure/cities2-extended-tooltip/releases)
