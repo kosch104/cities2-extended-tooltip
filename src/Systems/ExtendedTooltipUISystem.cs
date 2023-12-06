@@ -24,6 +24,27 @@ namespace ExtendedTooltip.Systems
             m_ExtendedTooltipSystem = World.GetOrCreateSystemManaged<ExtendedTooltipSystem>();
             m_CustomTranslationSystem = World.GetOrCreateSystemManaged<CustomTranslationSystem>();
             m_Settings = m_ExtendedTooltipSystem.m_LocalSettings.Settings;
+            
+            CreateActions();
+            CreateLanguages();
+            CreateBindings();
+
+            UnityEngine.Debug.Log("ExtendedTooltipUISystem created.");
+        }
+
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            UnityEngine.Debug.Log("ExtendedTooltipUISystem destroyed.");
+        }
+
+        private void CreateActions()
+        {
             toggleActions = new()
             {
                 { SettingKey.Citizen, () => m_Settings.Citizen = !m_Settings.Citizen },
@@ -81,7 +102,96 @@ namespace ExtendedTooltip.Systems
                 { SettingKey.Spawnable, () => m_Settings.SpawnableExpanded = !m_Settings.SpawnableExpanded },
                 { SettingKey.Vehicle, () => m_Settings.VehicleExpanded = !m_Settings.VehicleExpanded }
             };
+        }
 
+        private void CreateBindings()
+        {
+            AddUpdateBinding(new GetterValueBinding<Dictionary<string, string>>(kGroup, "translations", () => m_SettingLocalization, new DictionaryWriter<string, string>(null, null).Nullable(), null));
+            AddUpdateBinding(new GetterValueBinding<string>(kGroup, "version", () => MyPluginInfo.PLUGIN_VERSION, null, null));
+
+            /// GENERAL
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "disableMod", () => m_Settings.DisableMod, null, null));
+            AddUpdateBinding(new GetterValueBinding<int>(kGroup, "displayMode", () => (int)m_Settings.DisplayMode, null, null));
+            AddBinding(new TriggerBinding<int>(kGroup, "onDisplayModeSelect", OnDisplayModeSelect));
+
+            /// TOOL SYSTEM
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "anarchyMode", () => m_Settings.AnarchyMode, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "netToolSystem", () => m_Settings.NetToolSystem, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandNetToolSystem", () => m_Settings.NetToolSystemExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "netToolMode", () => m_Settings.NetToolMode, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "netToolElevation", () => m_Settings.NetToolElevation, null, null));
+
+            /// CITIZENS
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizen", () => m_Settings.Citizen, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandCitizen", () => m_Settings.CitizenExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenState", () => m_Settings.CitizenState, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenHappiness", () => m_Settings.CitizenHappiness, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenEducation", () => m_Settings.CitizenEducation, null, null));
+
+            /// COMPANIES
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "company", () => m_Settings.Company, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandCompany", () => m_Settings.CompanyExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "companyOutput", () => m_Settings.CompanyOutput, null, null));
+
+            /// EFFICIENCY
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "efficiency", () => m_Settings.Efficiency, null, null));
+
+            /// EMPLOYEES
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "employee", () => m_Settings.Employee, null, null));
+
+            /// PARKS
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "park", () => m_Settings.Park, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandPark", () => m_Settings.ParkExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "parkMaintenance", () => m_Settings.ParkMaintenance, null, null));
+
+            /// PARKING
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "parkingFacility", () => m_Settings.ParkingFacility, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandParking", () => m_Settings.ParkingExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "parkingFees", () => m_Settings.ParkingFees, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "parkingCapacity", () => m_Settings.ParkingCapacity, null, null));
+
+            /// PUBLIC TRANSPORT
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "publicTransport", () => m_Settings.PublicTransport, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandPublicTransport", () => m_Settings.PublicTransportExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "publicTransportWaitingPassengers", () => m_Settings.PublicTransportWaitingPassengers, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "publicTransportWaitingTime", () => m_Settings.PublicTransportWaitingTime, null, null));
+
+            /// ROAD
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "road", () => m_Settings.Road, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandRoad", () => m_Settings.RoadExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "roadLength", () => m_Settings.RoadLength, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "roadUpkeep", () => m_Settings.RoadUpkeep, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "roadCondition", () => m_Settings.RoadCondition, null, null));
+
+            /// SCHOOL
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "school", () => m_Settings.School, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandSchool", () => m_Settings.SchoolExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "schoolStudentCapacity", () => m_Settings.SchoolStudentCapacity, null, null));
+
+            /// SPAWNABLE
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnable", () => m_Settings.Spawnable, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandSpawnable", () => m_Settings.SpawnableExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableZoneInfo", () => m_Settings.SpawnableZoneInfo, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableHousehold", () => m_Settings.SpawnableHousehold, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableHouseholdDetails", () => m_Settings.SpawnableHouseholdDetails, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableLevel", () => m_Settings.SpawnableLevel, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableLevelDetails", () => m_Settings.SpawnableLevelDetails, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableRent", () => m_Settings.SpawnableRent, null, null));
+
+            /// VEHICLE
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicle", () => m_Settings.Vehicle, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandVehicle", () => m_Settings.VehicleExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicleState", () => m_Settings.VehicleState, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicleDriver", () => m_Settings.VehicleDriver, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicleGarbageTruck", () => m_Settings.VehicleGarbageTruck, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehiclePostvan", () => m_Settings.VehiclePostvan, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehiclePassengerDetails", () => m_Settings.VehiclePassengerDetails, null, null));
+
+            AddBinding(new TriggerBinding<int>(kGroup, "onToggle", OnToggle));
+            AddBinding(new TriggerBinding<int>(kGroup, "onExpand", OnExpand));
+        }
+
+        private void CreateLanguages() {
             m_SettingLocalization = new()
             {
                 // GENERAL
@@ -171,105 +281,7 @@ namespace ExtendedTooltip.Systems
                 { "vehiclePassengerDetail", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.PASSENGERS_TITLE", "Passengers")},
 
             };
-
-            AddUpdateBinding(new GetterValueBinding<Dictionary<string, string>>(kGroup, "translations", () => m_SettingLocalization, new DictionaryWriter<string, string>(null, null).Nullable(), null));
-            AddUpdateBinding(new GetterValueBinding<string>(kGroup, "version", () => MyPluginInfo.PLUGIN_VERSION, null, null));
-
-            /// GENERAL
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "disableMod", () => m_Settings.DisableMod, null, null));
-            AddUpdateBinding(new GetterValueBinding<int>(kGroup, "displayMode", () => (int) m_Settings.DisplayMode, null, null));
-            AddBinding(new TriggerBinding<int>(kGroup, "onDisplayModeSelect", OnDisplayModeSelect));
-
-            /// TOOL SYSTEM
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "anarchyMode", () => m_Settings.AnarchyMode, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "netToolSystem", () => m_Settings.NetToolSystem, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandNetToolSystem", () => m_Settings.NetToolSystemExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "netToolMode", () => m_Settings.NetToolMode, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "netToolElevation", () => m_Settings.NetToolElevation, null, null));
-
-            /// CITIZENS
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizen", () => m_Settings.Citizen, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandCitizen", () => m_Settings.CitizenExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenState", () => m_Settings.CitizenState, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenHappiness", () => m_Settings.CitizenHappiness, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenEducation", () => m_Settings.CitizenEducation, null, null));
-
-            /// COMPANIES
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "company", () => m_Settings.Company, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandCompany", () => m_Settings.CompanyExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "companyOutput", () => m_Settings.CompanyOutput, null, null));
-
-            /// EFFICIENCY
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "efficiency", () => m_Settings.Efficiency, null, null));
-
-            /// EMPLOYEES
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "employee", () => m_Settings.Employee, null, null));
-
-            /// PARKS
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "park", () => m_Settings.Park, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandPark", () => m_Settings.ParkExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "parkMaintenance", () => m_Settings.ParkMaintenance, null, null));
-
-            /// PARKING
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "parkingFacility", () => m_Settings.ParkingFacility, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandParking", () => m_Settings.ParkingExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "parkingFees", () => m_Settings.ParkingFees, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "parkingCapacity", () => m_Settings.ParkingCapacity, null, null));
-
-            /// PUBLIC TRANSPORT
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "publicTransport", () => m_Settings.PublicTransport, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandPublicTransport", () => m_Settings.PublicTransportExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "publicTransportWaitingPassengers", () => m_Settings.PublicTransportWaitingPassengers, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "publicTransportWaitingTime", () => m_Settings.PublicTransportWaitingTime, null, null));
-
-            /// ROAD
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "road", () => m_Settings.Road, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandRoad", () => m_Settings.RoadExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "roadLength", () => m_Settings.RoadLength, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "roadUpkeep", () => m_Settings.RoadUpkeep, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "roadCondition", () => m_Settings.RoadCondition, null, null));
-
-            /// SCHOOL
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "school", () => m_Settings.School, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandSchool", () => m_Settings.SchoolExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "schoolStudentCapacity", () => m_Settings.SchoolStudentCapacity, null, null));
-
-            /// SPAWNABLE
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnable", () => m_Settings.Spawnable, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandSpawnable", () => m_Settings.SpawnableExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableZoneInfo", () => m_Settings.SpawnableZoneInfo, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableHousehold", () => m_Settings.SpawnableHousehold, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableHouseholdDetails", () => m_Settings.SpawnableHouseholdDetails, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableLevel", () => m_Settings.SpawnableLevel, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableLevelDetails", () => m_Settings.SpawnableLevelDetails, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableRent", () => m_Settings.SpawnableRent, null, null));
-
-            /// VEHICLE
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicle", () => m_Settings.Vehicle, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandVehicle", () => m_Settings.VehicleExpanded, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicleState", () => m_Settings.VehicleState, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicleDriver", () => m_Settings.VehicleDriver, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicleGarbageTruck", () => m_Settings.VehicleGarbageTruck, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehiclePostvan", () => m_Settings.VehiclePostvan, null, null));
-            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehiclePassengerDetails", () => m_Settings.VehiclePassengerDetails, null, null));
-
-            AddBinding(new TriggerBinding<int>(kGroup, "onToggle", OnToggle));
-            AddBinding(new TriggerBinding<int>(kGroup, "onExpand", OnExpand));
-
-            UnityEngine.Debug.Log("ExtendedTooltipUISystem created.");
         }
-
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            UnityEngine.Debug.Log("ExtendedTooltipUISystem destroyed.");
-        }
-
         private void OnDisplayModeSelect(int displayMode)
         {
             UnityEngine.Debug.Log($"DisplayMode changed to {displayMode}");

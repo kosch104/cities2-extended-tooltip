@@ -55,14 +55,14 @@ namespace ExtendedTooltip.Systems
                 if (m_Settings.Settings.NetToolMode && m_ToolSystem.activeTool is NetToolSystem)
                 {
                     m_NetToolMode.icon = $"Media/Tools/Net Tool/{m_NetToolSystem.mode}.svg";
-                    m_NetToolMode.value = m_CustomTranslationSystem.GetLocalGameTranslation($"Tools.TOOL_MODE[{m_NetToolSystem.mode}]");
+                    m_NetToolMode.value = m_CustomTranslationSystem.GetLocalGameTranslation($"ToolOptions.TOOLTIP_TITLE[{m_NetToolSystem.mode}]");
 
                     // Add elevation to tooltip if it's not 0.0f
                     if (m_Settings.Settings.NetToolElevation && m_NetToolSystem.elevation != 0.0f)
                     {
                         // Add + sign for positive elevation (- is added by default)
                         string sign = (m_NetToolSystem.elevation > 0.0f) ? "+" : "";
-                        m_NetToolMode.value = m_CustomTranslationSystem.GetLocalGameTranslation($"Tools.TOOL_MODE[{m_NetToolSystem.mode}]") + $" ({sign}{m_NetToolSystem.elevation} m)";
+                        m_NetToolMode.value = m_CustomTranslationSystem.GetLocalGameTranslation($"ToolOptions.TOOLTIP_TITLE[{m_NetToolSystem.mode}]") + $" ({sign}{m_NetToolSystem.elevation} m)";
                     }
 
                     AddMouseTooltip(m_NetToolMode);
