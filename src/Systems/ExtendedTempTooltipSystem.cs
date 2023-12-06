@@ -47,7 +47,9 @@ namespace ExtendedTooltip.Systems
             if (m_ToolSystem != null && m_Settings.Settings.NetToolSystem)
             {
                 // Add anarchy tooltip if the active tool is ObjectToolSystem or NetToolSystem and ignoreErrors is true
-                if (m_Settings.Settings.AnarchyMode && m_ToolSystem.ignoreErrors == true && (m_ToolSystem.activeTool is ObjectToolSystem || m_ToolSystem.activeTool is NetToolSystem))
+                if (m_Settings.Settings.AnarchyMode && m_ToolSystem.ignoreErrors == true
+                    && (m_ToolSystem.activeTool is ObjectToolSystem || m_ToolSystem.activeTool is NetToolSystem || m_ToolSystem.activeTool is TerrainToolSystem)
+                )
                 {
                     AddMouseTooltip(m_AnarchyTooltip);
                 }

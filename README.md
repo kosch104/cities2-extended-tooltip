@@ -4,6 +4,8 @@ This mod adds new informations to the mouse hover tooltip of several entities to
 If you want anything added to the tooltip, please let me know and open an issue.
 
 ## Updates
+- v0.9.1
+	- Added Anarchy Mode indicator for terrain tool
 - v0.9.0
 	- New Feature: Anarchy Mode indicator
 	- New Feature: Net Tool Tooltips
