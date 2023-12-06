@@ -7,7 +7,8 @@
   "extendedtooltip.mail.to_deliver": "A livrer",
   "extendedtooltip.mail.collected": "Collecté",
   "extendedtooltip.mail.capacity": "Capacity",
-  "extendedtooltip.tooltips.description": "Activer/Désactiver les infobulles en fonction de vos besoins",
+  "extendedtooltip.entities": "Entités",
+  "extendedtooltip.entities.description": "Activer les infobulles des entités. (Citoyens, véhicules, bâtiments, spawnings, etc.)",
   "extendedtooltip.zone_info[NA]": "NA",
   "extendedtooltip.zone_info[EU]": "EU",
   "extendedtooltip.zone_info[Low]": "Faible",
@@ -34,5 +35,13 @@
   "extendedtooltip.setting.school.student.capacity": "Capacité d'accueil",
   "extendedtooltip.setting.spawnable.level_details": "Détails du niveau",
   "extendedtooltip.setting.spawnable.household_details": "Détails du ménage",
-  "extendedtooltip.setting.spawnable.zone_info": "Détails de la zone"
+  "extendedtooltip.setting.spawnable.zone_info": "Détails de la zone",
+  "extendedtooltip.setting.toolSystem.anarchyMode": "Statut d'anarchie",
+  "extendedtooltip.setting.toolSystem.anarchyMode.description": "Affiche un indicateur si vous construisez avec le mode anarchie activé.",
+  "extendedtooltip.setting.toolSystem.netTool": "Outil net",
+  "extendedtooltip.setting.toolSystem.netTool.description": "Activer les infobulles pour le Net Tool.",
+  "extendedtooltip.setting.toolSystem.netTool.mode": "Mode",
+  "extendedtooltip.setting.toolSystem.netTool.mode.description": "Indique le mode utilisé (droit, courbe, etc.)",
+  "extendedtooltip.setting.toolSystem.netTool.elevation": "Élévation",
+  "extendedtooltip.setting.toolSystem.netTool.elevation.description": "Ajoute une élévation à l'info-bulle du mode outil net."
 }

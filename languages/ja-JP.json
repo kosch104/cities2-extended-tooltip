@@ -7,7 +7,8 @@
   "extendedtooltip.mail.to_deliver": "配送する",
   "extendedtooltip.mail.collected": "収集済み",
   "extendedtooltip.mail.capacity": "容量",
-  "extendedtooltip.tooltips.description": "「必要に応じてツールチップを有効/無効にします、",
+  "extendedtooltip.entities": "エンティティ",
+  "extendedtooltip.entities.description": "エンティティツールチップを有効にする。(市民、乗り物、建物、産卵など)",
   "extendedtooltip.zone_info[NA]": "NA",
   "extendedtooltip.zone_info[EU]": "EU",
   "extendedtooltip.zone_info[Low]": "低い",
@@ -34,5 +35,13 @@
   "extendedtooltip.setting.school.student.capacity": "生徒定員",
   "extendedtooltip.setting.spawnable.level_details": "レベルの詳細",
   "extendedtooltip.setting.spawnable.household_details": "世帯の詳細",
-  "extendedtooltip.setting.spawnable.zone_info": "ゾーンの詳細"
+  "extendedtooltip.setting.spawnable.zone_info": "ゾーンの詳細",
+  "extendedtooltip.setting.toolSystem.anarchyMode": "無政府状態",
+  "extendedtooltip.setting.toolSystem.anarchyMode.description": "アナーキーモードを有効にしてビルドした場合のインジケータを表示します",
+  "extendedtooltip.setting.toolSystem.netTool": "ネットツール",
+  "extendedtooltip.setting.toolSystem.netTool.description": "「ネットツールのツールチップを有効にします",
+  "extendedtooltip.setting.toolSystem.netTool.mode": "モード",
+  "extendedtooltip.setting.toolSystem.netTool.mode.description": "「どのモード(直線、曲線など)が使用されているかを示す", 
+  "extendedtooltip.setting.toolSystem.netTool.elevation": "標高",
+  "extendedtooltip.setting.toolSystem.netTool.elevation.description": "ネットツールモードのツールチップに仰角を追加します。"
 }

@@ -10,6 +10,13 @@
         public DisplayMode DisplayMode { get; set; } = 0;
         public string OnPressOnlyKey { get; set; } = "ALT";
 
+        // TOOL SYSTEM
+        public bool AnarchyMode { get; set; } = true;
+        public bool NetToolSystem { get; set; } = true;
+        public bool NetToolSystemExpanded { get; set; } = false;
+        public bool NetToolMode { get; set; } = true;
+        public bool NetToolElevation { get; set; } = true;
+
         // CITIZEN
         public bool CitizenExpanded { get; set; } = false;
         public bool Citizen { get; set; } = true;

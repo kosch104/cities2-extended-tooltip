@@ -3,6 +3,17 @@
 This mod adds new informations to the mouse hover tooltip of several entities to the game.
 If you want anything added to the tooltip, please let me know and open an issue.
 
+## Updates
+- v0.9.0
+	- New Feature: Anarchy Mode indicator
+	- New Feature: Net Tool Tooltips
+		- Shows the current net tool mode
+		- Shows the elevation
+- v0.8.0
+	- Added delayed mode
+- v0.1.0
+	- Initial release
+
 ## Requirement
 - [BepInEx v5](https://thunderstore.io/c/cities-skylines-ii/p/BepInEx/BepInExPack/) or v6 bleeding edge
 - [HookUI v0.3.3](https://thunderstore.io/c/cities-skylines-ii/p/CaptainOfCoit/HookUI/)

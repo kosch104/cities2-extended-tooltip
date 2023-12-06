@@ -7,7 +7,8 @@
   "extendedtooltip.mail.to_deliver": "To deliver",
   "extendedtooltip.mail.collected": "Collected",
   "extendedtooltip.mail.capacity": "Capacity",
-  "extendedtooltip.tooltips.description": "Enable/Disable tooltips by your needs.",
+  "extendedtooltip.entities": "Entidades",
+  "extendedtooltip.entities.description": "Habilitar información sobre entidades. (Ciudadanos, Vehículos, Edificios, Creaciones, etc.)",
   "extendedtooltip.zone_info[NA]": "NA",
   "extendedtooltip.zone_info[EU]": "EU",
   "extendedtooltip.zone_info[Low]": "Low",
@@ -34,5 +35,13 @@
   "extendedtooltip.setting.school.student.capacity": "Student capacity",
   "extendedtooltip.setting.spawnable.level_details": "Level details",
   "extendedtooltip.setting.spawnable.household_details": "Household details",
-  "extendedtooltip.setting.spawnable.zone_info": "Zone details"
+  "extendedtooltip.setting.spawnable.zone_info": "Zone details",
+  "extendedtooltip.setting.toolSystem.anarchyMode": "Anarchy Status",
+  "extendedtooltip.setting.toolSystem.anarchyMode.description": "Shows an indicator if you build with anarchy mode enabled.",
+  "extendedtooltip.setting.toolSystem.netTool": "Net Tool",
+  "extendedtooltip.setting.toolSystem.netTool.description": "Enable tooltips for the Net Tool.",
+  "extendedtooltip.setting.toolSystem.netTool.mode": "Mode",
+  "extendedtooltip.setting.toolSystem.netTool.mode.description": "Shows which mode (straight, curve, ect.) is in use.",
+  "extendedtooltip.setting.toolSystem.netTool.elevation": "Elevation",
+  "extendedtooltip.setting.toolSystem.netTool.elevation.description": "Adds elevation to net tool mode tooltip."
 }

@@ -7,7 +7,8 @@
   "extendedtooltip.mail.to_deliver": "Доставить",
   "extendedtooltip.mail.collected": "Собрано",
   "extendedtooltip.mail.capacity": "Вместимость",
-  "extendedtooltip.tooltips.description": "Включение/отключение всплывающих подсказок по вашему желанию.",
+  "extendedtooltip.entities": "Организации",
+  "extendedtooltip.entities.description": "Включить всплывающие подсказки сущностей. (Граждане, транспортные средства, здания, спавны и т. д.)",
   "extendedtooltip.zone_info[NA]": "NA",
   "extendedtooltip.zone_info[EU]": "EU",
   "extendedtooltip.zone_info[Low]": "Низкий",
@@ -34,5 +35,13 @@
   "extendedtooltip.setting.school.student.capacity": "Количество учащихся",
   "extendedtooltip.setting.spawnable.level_details": "Детали уровня",
   "extendedtooltip.setting.spawnable.household_details": "Детали домохозяйства",
-  "extendedtooltip.setting.spawnable.zone_info": "Информация о зоне"
+  "extendedtooltip.setting.spawnable.zone_info": "Информация о зоне",
+  "extendedtooltip.setting.toolSystem.anarchyMode": "Состояние анархии",
+  "extendedtooltip.setting.toolSystem.anarchyMode.description": "Показывает индикатор, если вы строите с включенным режимом анархии.",
+  "extendedtooltip.setting.toolSystem.netTool": "Чистый инструмент",
+  "extendedtooltip.setting.toolSystem.netTool.description": "Включить всплывающие подсказки для инструмента Чистый инструмент.",
+  "extendedtooltip.setting.toolSystem.netTool.mode": "Режим",
+  "extendedtooltip.setting.toolSystem.netTool.mode.description": "Показывает, какой режим (прямой, кривой и т. д.) используется.",
+  "extendedtooltip.setting.toolSystem.netTool.elevation": "Возвышение",
+  "extendedtooltip.setting.toolSystem.netTool.elevation.description": "Добавляет возвышение к всплывающей подсказке режима сетевого инструмента."
 }

@@ -39,6 +39,11 @@
         VehicleGarbageTruck = 34,
         UseOnPressOnly = 91,
         DisableMod = 90,
-        DelayedTooltip = 92
+        DelayedTooltip = 92,
+        ToolSystem = 93,
+        AnarchyMode = 94,
+        NetToolSystem = 95,
+        NetToolMode = 96,
+        NetToolElevation = 97,
     }
 }

@@ -7,7 +7,8 @@
   "extendedtooltip.mail.to_deliver": "배달할",
   "extendedtooltip.mail.collected": "수집됨",
   "extendedtooltip.mail.capacity": "용량",
-  "extendedtooltip.tooltips.description": "필요에 따라 툴팁을 활성화/비활성화합니다.",
+  "extendedtooltip.entities": "엔티티",
+  "extendedtooltip.entities.description": "엔티티 툴팁 활성화. (시민, 차량, 건물, 스폰 등)",
   "extendedtooltip.zone_info[NA]": "NA",
   "extendedtooltip.zone_info[EU]": "EU",
   "extendedtooltip.zone_info[Low]": "낮음",
@@ -34,5 +35,13 @@
   "extendedtooltip.setting.school.student.capacity": "학생 정원",
   "extendedtooltip.setting.spawnable.level_details": "레벨 세부 정보",
   "extendedtooltip.setting.spawnable.household_details": "가구 세부 정보",
-  "extendedtooltip.setting.spawnable.zone_info": "영역 세부 정보"
+  "extendedtooltip.setting.spawnable.zone_info": "영역 세부 정보",
+  "extendedtooltip.setting.toolSystem.anarchyMode": "무정부 상태",
+  "extendedtooltip.setting.toolSystem.anarchyMode.description": "아나키 모드를 활성화한 상태로 빌드한 경우 표시기를 표시합니다.",
+  "extendedtooltip.setting.toolSystem.netTool": "넷 도구",
+  "extendedtooltip.setting.toolSystem.netTool.description": "넷 도구에 대한 툴팁 활성화.",
+  "extendedtooltip.setting.toolSystem.netTool.mode": "모드",
+  "extendedtooltip.setting.toolSystem.netTool.mode.description": "사용 중인 모드(직선, 곡선 등)를 표시합니다.",
+  "extendedtooltip.setting.toolSystem.netTool.elevation": "고도",
+  "extendedtooltip.setting.toolSystem.netTool.elevation.description": "넷 툴 모드 툴팁에 고도를 추가합니다."
 }

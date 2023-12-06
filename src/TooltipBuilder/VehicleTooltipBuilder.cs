@@ -17,12 +17,9 @@ namespace ExtendedTooltip.TooltipBuilder
 {
     internal class VehicleTooltipBuilder : TooltipBuilderBase
     {
-        NameSystem m_NameSystem;
-
         public VehicleTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem, NameSystem nameSystem)
         : base(entityManager, customTranslationSystem)
         {
-            m_NameSystem = nameSystem;
             UnityEngine.Debug.Log($"Created CitizenTooltipBuilder.");
         }
 

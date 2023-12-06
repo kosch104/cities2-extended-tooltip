@@ -7,7 +7,8 @@
   "extendedtooltip.mail.to_deliver": "Zu liefern",
   "extendedtooltip.mail.collected": "Eingesammelt",
   "extendedtooltip.mail.capacity": "Kapazität",
-  "extendedtooltip.tooltips.description": "Aktiviere/Deaktiviere Tooltips wie du es brauchst.",
+  "extendedtooltip.entities": "Einheiten",
+  "extendedtooltip.entities.description": "Aktiviere Einheiten-Tooltips. (Bürger, Fahrzeuge, Gebäude, Spawnings, ect.)",
   "extendedtooltip.zone_info[NA]": "NA",
   "extendedtooltip.zone_info[EU]": "EU",
   "extendedtooltip.zone_info[Low]": "Gering",
@@ -34,5 +35,13 @@
   "extendedtooltip.setting.school.student.capacity": "Schüler/Studenten Kapazität",
   "extendedtooltip.setting.spawnable.level_details": "Details zur Stufe",
   "extendedtooltip.setting.spawnable.household_details": "Details zum Haushalt",
-  "extendedtooltip.setting.spawnable.zone_info": "Zonentyp"
+  "extendedtooltip.setting.spawnable.zone_info": "Zonentyp",
+  "extendedtooltip.setting.toolSystem.anarchyMode": "Anarchie-Status",
+  "extendedtooltip.setting.toolSystem.anarchyMode.description": "Zeigt einen Indikator an, wenn Du mit aktiviertem Anarchiemodus baust.",
+  "extendedtooltip.setting.toolSystem.netTool": "Netz-Werkzeug",
+  "extendedtooltip.setting.toolSystem.netTool.description": "Tooltips für das Netzwerktool aktivieren.",
+  "extendedtooltip.setting.toolSystem.netTool.mode": "Modus",
+  "extendedtooltip.setting.toolSystem.netTool.mode.description": "Zeigt an, welcher Modus (Gerade, Kurve, ect.) verwendet wird.",
+  "extendedtooltip.setting.toolSystem.netTool.elevation": "Erhöhung",
+  "extendedtooltip.setting.toolSystem.netTool.elevation.description": "Fügt dem Tooltip für den Netzwerkzeugmodus die Erhöhung hinzu."
 }

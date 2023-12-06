@@ -7,7 +7,8 @@
   "extendedtooltip.mail.to_deliver": "Para entregar",
   "extendedtooltip.mail.collected": "Coletado",
   "extendedtooltip.mail.capacity": "Capacidade",
-  "extendedtooltip.tooltips.description": "Ativar/desativar dicas de ferramentas de acordo com suas necessidades.",
+  "extendedtooltip.entities": "Entidades",
+  "extendedtooltip.entities.description": "Ativar dicas de ferramentas de entidades. (Cidadão, Veículos, Edifícios, Spawnings, etc.)",
   "extendedtooltip.zone_info[NA]": "NA",
   "extendedtooltip.zone_info[EU]": "EU",
   "extendedtooltip.zone_info[Low]": "Baixa",
@@ -34,5 +35,13 @@
   "extendedtooltip.setting.school.student.capacity": "Capacidade de alunos",
   "extendedtooltip.setting.spawnable.level_details": "Detalhes do nível",
   "extendedtooltip.setting.spawnable.household_details": "Detalhes da residência",
-  "extendedtooltip.setting.spawnable.zone_info": "Detalhes da zona"
+  "extendedtooltip.setting.spawnable.zone_info": "Detalhes da zona",
+  "extendedtooltip.setting.toolSystem.anarchyMode": "Status da anarquia",
+  "extendedtooltip.setting.toolSystem.anarchyMode.description": "Mostra um indicador se você construir com o modo anarquia ativado.",
+  "extendedtooltip.setting.toolSystem.netTool": "Ferramenta de rede",
+  "extendedtooltip.setting.toolSystem.netTool.description": "Habilitar dicas de ferramentas para a Ferramenta de Rede.",
+  "extendedtooltip.setting.toolSystem.netTool.mode": "Modo",
+  "extendedtooltip.setting.toolSystem.netTool.mode.description": "Mostra qual modo (reto, curva, etc.) está em uso.",
+  "extendedtooltip.setting.toolSystem.netTool.elevation": "Elevação",
+  "extendedtooltip.setting.toolSystem.netTool.elevation.description": "Adiciona elevação à dica de ferramenta do modo de ferramenta de rede."
 }

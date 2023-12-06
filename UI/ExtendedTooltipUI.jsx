@@ -2,7 +2,6 @@
 import { useDataUpdate } from 'hookui-framework'
 import * as styles from './styles'
 import $Select from './select'
-import $Slider from './slider'
 
 const panelStyle = { position: 'absolute', maxHeight: '600rem' };
 
@@ -127,6 +126,17 @@ const ExtendedTooltipUI = ({ react }) => {
     const [displayMode, setDisplayMode] = react.useState(0);
     useDataUpdate(react, 'extendedTooltip.displayMode', setDisplayMode);
 
+    const [showNetToolSystemGroup, setShowNetToolSystemGroup] = react.useState(true);
+    const [expandNetToolSystemGroup, setExpandNetToolSystemGroup] = react.useState(true);
+    const [showNetToolMode, setShowNetToolMode] = react.useState(true);
+    const [showNetToolElevation, setShowNetToolElevation] = react.useState(true);
+    const [showAnarchyMode, setShowAnarchyMode] = react.useState(true);
+    useDataUpdate(react, 'extendedTooltip.netToolSystem', setShowNetToolSystemGroup);
+    useDataUpdate(react, 'extendedTooltip.expandNetToolSystem', setExpandNetToolSystemGroup);
+    useDataUpdate(react, 'extendedTooltip.netToolMode', setShowNetToolMode);
+    useDataUpdate(react, 'extendedTooltip.netToolElevation', setShowNetToolElevation);
+    useDataUpdate(react, 'extendedTooltip.anarchyMode', setShowAnarchyMode);
+
     const [showCitizenGroup, setShowCitizenGroup] = react.useState(true);
     const [expandCitizenCroup, setExpandCitizenGroup] = react.useState(true);
     const [showCitizenStateTooltip, setShowCitizenStateTooltip] = react.useState(true);
@@ -233,9 +243,20 @@ const ExtendedTooltipUI = ({ react }) => {
                 { id: 0, label: translations['displayMode.instant'], value: 0 },
                 { id: 1, label: translations['displayMode.delayed'], value: 1 },
                 { id: 2, label: translations['displayMode.onKey'], value: 2 },
-            ]
+            ],
         },
     ]
+
+    const toolSystemSettingsData = [
+        { id: 94, label: translations['toolSystem.anarchyMode'], description: translations['toolSystem.anarchyMode.description'], isChecked: showAnarchyMode },
+        {
+            id: 95, label: translations['toolSystem.netTool'], description: translations['toolSystem.netTool.description'], isChecked: showNetToolSystemGroup, expanded: expandNetToolSystemGroup,
+            children: [
+                { id: 96, label: translations['toolSystem.netTool.mode'], description: translations['toolSystem.netTool.mode.description'], isChecked: showNetToolMode },
+                { id: 97, label: translations['toolSystem.netTool.elevation'], description: translations['toolSystem.netTool.elevation.description'], isChecked: showNetToolElevation },
+            ]
+        },
+    ];
 
     const tooltipsSettingsData = [
         {
@@ -399,7 +420,8 @@ const ExtendedTooltipUI = ({ react }) => {
 
     return <$Panel title="Extended Tooltip" react={react}>
         <SettingsList name="General" settings={generalSettingsData} />
-        <SettingsList name="Tooltips" description={translations['tooltips.description']} settings={tooltipsSettingsData} />
+        <SettingsList name={translations['toolSystem']} description={translations['toolSystem.description']} settings={toolSystemSettingsData} />
+        <SettingsList name={translations['entities']} description={translations['entities.description']} settings={tooltipsSettingsData} />
     </$Panel>
 };
 

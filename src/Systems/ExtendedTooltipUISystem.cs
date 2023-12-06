@@ -62,10 +62,15 @@ namespace ExtendedTooltip.Systems
                 { SettingKey.VehiclePostvan, () => m_Settings.VehiclePostvan = !m_Settings.VehiclePostvan},
                 { SettingKey.VehicleGarbageTruck, () => m_Settings.VehicleGarbageTruck = !m_Settings.VehicleGarbageTruck },
                 { SettingKey.DisableMod, () => m_Settings.DisableMod = !m_Settings.DisableMod },
+                { SettingKey.AnarchyMode, () => m_Settings.AnarchyMode = !m_Settings.AnarchyMode },
+                { SettingKey.NetToolSystem, () => m_Settings.NetToolSystem = !m_Settings.NetToolSystem },
+                { SettingKey.NetToolMode, () => m_Settings.NetToolMode = !m_Settings.NetToolMode },
+                { SettingKey.NetToolElevation, () => m_Settings.NetToolElevation = !m_Settings.NetToolElevation },
             };
 
             expandActions = new()
             {
+                { SettingKey.NetToolSystem, () => m_Settings.NetToolSystemExpanded = !m_Settings.NetToolSystemExpanded },
                 { SettingKey.Citizen, () => m_Settings.CitizenExpanded = !m_Settings.CitizenExpanded },
                 { SettingKey.Company, () => m_Settings.CompanyExpanded = !m_Settings.CompanyExpanded },
                 { SettingKey.ParkingFacility, () => m_Settings.ParkingExpanded = !m_Settings.ParkingExpanded },
@@ -88,8 +93,25 @@ namespace ExtendedTooltip.Systems
                 { "displayMode.delayed", m_CustomTranslationSystem.GetTranslation("setting.displayMode.delayed", "Delayed") },
                 { "displayMode.onKey", m_CustomTranslationSystem.GetTranslation("setting.displayMode.onKey", "Hold key (ALT)") },
 
-                // TOOLTIPS
-                { "tooltips.description", m_CustomTranslationSystem.GetTranslation("tooltips.description", "Enable/Disable tooltips by your needs.") },
+                // TOOL SYSTEMS
+                { "toolSystem", m_CustomTranslationSystem.GetTranslation("setting.toolSystem", "Tool Systems") },
+                { "toolSystem.description", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.description", "Enable tooltips for different tool systems.") },
+
+                // NET TOOL SYSTEM
+
+                { "toolSystem.anarchyMode", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.anarchyMode", "Anarchy") },
+                { "toolSystem.anarchyMode.description", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.anarchyMode.description", "Shows anarchy status.") },
+
+                { "toolSystem.netTool", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.netTool", "Net Tool") },
+                { "toolSystem.netTool.description", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.netTool.description", "Enable tooltips for the Net Tool.") },
+                { "toolSystem.netTool.mode", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.netTool.mode", "Net Tool Mode") },
+                { "toolSystem.netTool.mode.description", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.netTool.mode.description", "Shows which mode (straight, curve, ect.) is in use.") },
+                { "toolSystem.netTool.elevation", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.netTool.elevation", "Elevation") },
+                { "toolSystem.netTool.elevation.description", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.netTool.elevation.description", "Adds elevation to net tool mode tooltip.") },
+
+                // ENTITY TOOLTIPS
+                { "entities", m_CustomTranslationSystem.GetTranslation("entities", "Entities") },
+                { "entities.description", m_CustomTranslationSystem.GetTranslation("entities.description", "Enables entity tooltips. (Citizen, Vehicles, Buildings, Spawnings, ect.)") },
 
                 // CITIZEN
                 { "citizen", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_TYPE[Citizen]", "Citizens") },
@@ -157,6 +179,13 @@ namespace ExtendedTooltip.Systems
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "disableMod", () => m_Settings.DisableMod, null, null));
             AddUpdateBinding(new GetterValueBinding<int>(kGroup, "displayMode", () => (int) m_Settings.DisplayMode, null, null));
             AddBinding(new TriggerBinding<int>(kGroup, "onDisplayModeSelect", OnDisplayModeSelect));
+
+            /// TOOL SYSTEM
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "anarchyMode", () => m_Settings.AnarchyMode, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "netToolSystem", () => m_Settings.NetToolSystem, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandNetToolSystem", () => m_Settings.NetToolSystemExpanded, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "netToolMode", () => m_Settings.NetToolMode, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "netToolElevation", () => m_Settings.NetToolElevation, null, null));
 
             /// CITIZENS
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizen", () => m_Settings.Citizen, null, null));
