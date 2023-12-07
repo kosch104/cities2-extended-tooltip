@@ -41,7 +41,7 @@ Shows the following information on tooltips:
 - Schools: Students current/max
 - Public Transport: Waiting passengers, Average waiting time
 - Roads: Length, Upkeep, Conditions
-- Zones: Zone info, Households, Residents, Pets, ect.
+- Zones: Zone info, Households, Residents, Pets, Rent, Balance ect.
 - Vehicles: Driver, Passengers, Garbage Trucks info, Postvan info
 - many more
 
