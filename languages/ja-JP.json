@@ -1,9 +1,12 @@
 {
+  "extendedtooltip.common.range_minmax_value_money": "[min. {SIGN0} ¢{VALUE0}] — [max. {SIGN1} ¢{VALUE1}]",
+  "extendedtooltip.common.range_value_money": "{SIGN0} ¢{VALUE0} — {SIGN1} ¢{VALUE1}",
   "extendedtooltip.pet": "ペット",
   "extendedtooltip.pets": "ペット",
   "extendedtooltip.parkinglots.utilization": "利用",
   "extendedtooltip.average_waiting_time": "~ 待ち時間",
   "extendedtooltip.rent": "賃料",
+  "extendedtooltip.balance": "バランス",
   "extendedtooltip.mail.to_deliver": "配送する",
   "extendedtooltip.mail.collected": "収集済み",
   "extendedtooltip.mail.capacity": "容量",
@@ -41,7 +44,7 @@
   "extendedtooltip.setting.toolSystem.netTool": "ネットツール",
   "extendedtooltip.setting.toolSystem.netTool.description": "「ネットツールのツールチップを有効にします",
   "extendedtooltip.setting.toolSystem.netTool.mode": "モード",
-  "extendedtooltip.setting.toolSystem.netTool.mode.description": "「どのモード(直線、曲線など)が使用されているかを示す", 
+  "extendedtooltip.setting.toolSystem.netTool.mode.description": "「どのモード(直線、曲線など)が使用されているかを示す",
   "extendedtooltip.setting.toolSystem.netTool.elevation": "標高",
   "extendedtooltip.setting.toolSystem.netTool.elevation.description": "ネットツールモードのツールチップに仰角を追加します。"
 }

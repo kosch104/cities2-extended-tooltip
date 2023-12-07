@@ -4,6 +4,12 @@ This mod adds new informations to the mouse hover tooltip of several entities to
 If you want anything added to the tooltip, please let me know and open an issue.
 
 ## Updates
+- v0.10.0
+	- New Feature: Added balance info to households. Thx to @Biffa for the idea
+	- New Feature: Added passenger info to public transport station buildings
+	- New Feature: Added more detailed rent info to buildings with 1+ households
+	- Fixed citizen state tooltip. Thx @Rotiti for reporting
+	- Added color indictator to low density households. Thx @Scaristotle for reporting
 - v0.9.1
 	- Added Anarchy Mode indicator for terrain tool
 - v0.9.0

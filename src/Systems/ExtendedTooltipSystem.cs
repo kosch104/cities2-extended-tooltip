@@ -193,7 +193,7 @@ namespace ExtendedTooltip.Systems
             
             if (m_LocalSettings.Settings.Citizen && EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
             {
-                m_CitizenTooltipBuilder.Build(prefab, citizen, m_TooltipGroup);
+                m_CitizenTooltipBuilder.Build(selectedEntity, citizen, m_TooltipGroup);
                 m_TooltipGroup.SetChildrenChanged();
 
                 return; // don't have any other info. No need to check for other components
@@ -240,7 +240,7 @@ namespace ExtendedTooltip.Systems
             }
 
             // PUBLIC TRANSPORTATION TOOLTIP
-            if (m_LocalSettings.Settings.PublicTransport && (EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity)))
+            if (m_LocalSettings.Settings.PublicTransport && (EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity) || EntityManager.HasComponent<Game.Buildings.TransportStation>(selectedEntity)))
             {
                 m_PublicTransportationTooltipBuilder.Build(selectedEntity, m_TooltipGroup);
                 return; // don't have any other info. No need to check for other components

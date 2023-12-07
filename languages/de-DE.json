@@ -1,9 +1,12 @@
 {
+  "extendedtooltip.common.range_minmax_value_money": "[min. {SIGN0} ¢{VALUE0}] — [max. {SIGN1} ¢{VALUE1}]",
+  "extendedtooltip.common.range_value_money": "{SIGN0} ¢{VALUE0} — {SIGN1} ¢{VALUE1}",
   "extendedtooltip.pet": "Haustier",
   "extendedtooltip.pets": "Haustiere",
   "extendedtooltip.parkinglots.utilization": "Auslastung",
   "extendedtooltip.average_waiting_time": "~ Wartezeit",
   "extendedtooltip.rent": "Miete",
+  "extendedtooltip.balance": "Kontostand",
   "extendedtooltip.mail.to_deliver": "Zu liefern",
   "extendedtooltip.mail.collected": "Eingesammelt",
   "extendedtooltip.mail.capacity": "Kapazität",

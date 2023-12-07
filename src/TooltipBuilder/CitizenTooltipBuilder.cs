@@ -1,9 +1,12 @@
-﻿using ExtendedTooltip.Systems;
+﻿using Colossal.Entities;
+using ExtendedTooltip.Systems;
+using Game.Agents;
 using Game.Citizens;
 using Game.UI.InGame;
 using Game.UI.Tooltip;
 using System;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
@@ -28,6 +31,18 @@ namespace ExtendedTooltip.TooltipBuilder
                 };
                 tooltipGroup.children.Add(stateTooltip);
             }
+
+            /*if (m_EntityManager.TryGetComponent(entity, out TaxPayer taxPayer))
+            {
+                int wage = (taxPayer.m_UntaxedIncome - ((int)math.round(0.01f * taxPayer.m_AverageTaxRate * taxPayer.m_UntaxedIncome)));
+                wage = wage < 0 ? 0 : wage;
+                StringTooltip wageTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Money.svg",
+                    value = $"Wage: {wage}",
+                };
+                tooltipGroup.children.Add(wageTooltip);
+            }*/
 
             // Happiness
             if (m_Settings.CitizenHappiness)

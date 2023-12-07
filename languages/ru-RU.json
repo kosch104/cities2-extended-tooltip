@@ -1,9 +1,12 @@
 {
+  "extendedtooltip.common.range_minmax_value_money": "[мин. {SIGN0} ¢{VALUE0}] — [макс. {SIGN1} ¢{VALUE1}]",
+  "extendedtooltip.common.range_value_money": "{SIGN0} ¢{VALUE0} — {SIGN1} ¢{VALUE1}",
   "extendedtooltip.pet": "Питомцы",
   "extendedtooltip.pets": "Животные",
   "extendedtooltip.parkinglots.utilization": "Использование",
   "extendedtooltip.average_waiting_time": "~ Срок ожидания",
   "extendedtooltip.rent": "Аренда",
+  "extendedtooltip.balance": "Остаток",
   "extendedtooltip.mail.to_deliver": "Доставить",
   "extendedtooltip.mail.collected": "Собрано",
   "extendedtooltip.mail.capacity": "Вместимость",

@@ -30,6 +30,7 @@
         SpawnableHousehold = 26,
         SpawnableHouseholdDetails = 27,
         SpawnableRent = 28,
+        SpawnableBalance = 36,
         SpawnableZoneInfo = 35,
         Vehicle = 29,
         VehiclePassengerDetails = 30,

@@ -4,9 +4,12 @@ using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Citizens;
 using Game.Common;
+using Game.Companies;
+using Game.Economy;
 using Game.Prefabs;
 using Game.UI.Tooltip;
 using Game.Zones;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
@@ -97,14 +100,15 @@ namespace ExtendedTooltip.TooltipBuilder
             int maxHouseholds = 0;
             int petsCount = 0;
             List<int> householdRents = [];
+            List<int> householdBalances = [];
             NativeList<Entity> householdsResult = new(Allocator.Temp);
-            if ((m_Settings.SpawnableHousehold == true || m_Settings.SpawnableRent == true) && CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdRents, ref householdsResult, entity, prefab))
+            if ((m_Settings.SpawnableHousehold == true || m_Settings.SpawnableRent == true) && CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdRents, ref householdBalances, ref householdsResult, entity, prefab))
             {
                 BuildHouseholdCitizenInfo(householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
                 if (m_Settings.SpawnableHousehold)
                 {
                     int householdCapacityPercentage = householdCount == 0 ? 0 : (int)math.round(100 * householdCount / maxHouseholds);
-                    TooltipColor householdTooltipColor = (householdCount == 0 || maxHouseholds == 1) ? TooltipColor.Info : householdCapacityPercentage < 50 ? TooltipColor.Error : householdCapacityPercentage < 80 ? TooltipColor.Warning : TooltipColor.Success;
+                    TooltipColor householdTooltipColor = (householdCount == 0 || householdCapacityPercentage < 50) ? TooltipColor.Error : householdCapacityPercentage < 80 ? TooltipColor.Warning : TooltipColor.Success;
                     StringTooltip householdTooltip = new()
                     {
                         icon = "Media/Game/Icons/Household.svg",
@@ -116,14 +120,22 @@ namespace ExtendedTooltip.TooltipBuilder
 
                 if (m_Settings.SpawnableRent == true && householdRents.Count > 0)
                 {
-                    int householdRent = (int)math.round(householdRents.Average());
                     string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
+                    string rentValue;
                     if (householdCount > 1)
                     {
-                        rentLabel = $"~ {m_CustomTranslationSystem.GetTranslation("rent", "Rent")}";
+                        int minRent = householdRents.Min();
+                        int minRentValue = minRent < 0 ? Math.Abs(minRent) : minRent;
+                        int maxRent = householdRents.Max();
+                        int maxRentValue = maxRent < 0 ? Math.Abs(maxRent) : maxRent;
+                        rentValue = m_CustomTranslationSystem.GetTranslation("common.range_value_money", "", "SIGN0", minRent < 0 ? "-" : "", "VALUE0", minRentValue.ToString(), "SIGN1", maxRent < 0 ? "-" : "", "VALUE1", maxRentValue.ToString());
+                    } else
+                    {
+                        int finalRent = householdRents.First();
+                        int finalRentValue = finalRent < 0 ? Math.Abs(finalRent) : finalRent;
+                        rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "-", "SIGN", finalRent < 0 ? "-" : "", "VALUE", finalRentValue.ToString());
                     }
 
-                    string rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "¢", "SIGN", "", "VALUE", householdRent.ToString());
                     StringTooltip rentTooltip = new()
                     {
                         icon = "Media/Game/Icons/Money.svg",
@@ -131,6 +143,37 @@ namespace ExtendedTooltip.TooltipBuilder
                         color = TooltipColor.Info,
                     };
                     tooltipGroup.children.Add(rentTooltip);
+                }
+
+                if (m_Settings.SpawnableBalance && householdBalances.Count > 0)
+                {
+                    string balanceLabel = m_CustomTranslationSystem.GetTranslation("balance", "Balance");
+                    string balanceValue;
+                    int finalBalance = default;
+                    int minBalance = default;
+                    int maxBalance = default;
+
+                    if (householdCount > 1)
+                    {
+                        minBalance = householdBalances.Min();
+                        int minBalanceValue = minBalance < 0 ? Math.Abs(minBalance) : minBalance;
+                        maxBalance = householdBalances.Max();
+                        int maxBalanceValue = maxBalance < 0 ? Math.Abs(maxBalance) : maxBalance;
+                        balanceValue = m_CustomTranslationSystem.GetTranslation("common.range_minmax_value_money", "", "SIGN0", minBalance < 0 ? "-" : "", "VALUE0", minBalanceValue.ToString(), "SIGN1", maxBalance < 0 ? "-" : "", "VALUE1", maxBalanceValue.ToString());
+                    } else
+                    {
+                        finalBalance = householdBalances.First();
+                        int finalRentValue = finalBalance < 0 ? Math.Abs(finalBalance) : finalBalance;
+                        balanceValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY", "", "SIGN", finalBalance < 0 ? "-" : "", "VALUE", finalRentValue.ToString());
+                    }
+
+                    StringTooltip balanceTooltip = new()
+                    {
+                        icon = "Media/Game/Icons/Money.svg",
+                        value = $"{balanceLabel}: {balanceValue}",
+                        color = (householdCount > 1 && minBalance < 0 && maxBalance < 0) || (householdCount == 1 && finalBalance < 0) ? TooltipColor.Error : TooltipColor.Info,
+                    };
+                    tooltipGroup.children.Add(balanceTooltip);
                 }
 
                 // Needs revisting, not working
@@ -156,6 +199,7 @@ namespace ExtendedTooltip.TooltipBuilder
             ref int maxHouseholds,
             ref int petsCount,
             ref List<int> householdRents,
+            ref List<int> householdBalances,
             ref NativeList<Entity> householdsResult,
             Entity entity,
             Entity prefab
@@ -185,6 +229,13 @@ namespace ExtendedTooltip.TooltipBuilder
                         {
                             rent = MathUtils.RoundToIntRandom(ref random, propertyRenter.m_Rent * 1f);
                             householdRents.Add(rent);
+                        }
+
+                        // Balances (Savings)
+                        if (m_EntityManager.TryGetBuffer(renter, true, out DynamicBuffer<Resources> resources))
+                        {
+                            int balance = EconomyUtils.GetResources(Resource.Money, resources);
+                            householdBalances.Add(balance);
                         }
 
                         // Household info
@@ -257,6 +308,23 @@ namespace ExtendedTooltip.TooltipBuilder
                     finalInfoString = $"{residentsValue} {residentsLabel}";
                 }
             }
+        }
+
+        private Entity GetRenter(Entity entity)
+        {
+            if (m_EntityManager.TryGetBuffer(entity, true, out DynamicBuffer<Renter> dynamicBuffer))
+            {
+                for (int i = 0; i < dynamicBuffer.Length; i++)
+                {
+                    Entity renter = dynamicBuffer[i].m_Renter;
+                    if (m_EntityManager.HasComponent<CompanyData>(renter))
+                    {
+                        return renter;
+                    }
+                }
+            }
+
+            return entity;
         }
     }
 }

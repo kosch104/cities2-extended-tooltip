@@ -75,6 +75,7 @@ namespace ExtendedTooltip.Systems
                 { SettingKey.SpawnableHousehold, () => m_Settings.SpawnableHousehold = !m_Settings.SpawnableHousehold },
                 { SettingKey.SpawnableHouseholdDetails, () => m_Settings.SpawnableHouseholdDetails = !m_Settings.SpawnableHouseholdDetails },
                 { SettingKey.SpawnableRent, () => m_Settings.SpawnableRent = !m_Settings.SpawnableRent },
+                { SettingKey.SpawnableBalance, () => m_Settings.SpawnableBalance = !m_Settings.SpawnableBalance },
                 { SettingKey.SpawnableZoneInfo, () => m_Settings.SpawnableZoneInfo = !m_Settings.SpawnableZoneInfo },
                 { SettingKey.Vehicle, () => m_Settings.Vehicle = !m_Settings.Vehicle },
                 { SettingKey.VehiclePassengerDetails, () => m_Settings.VehiclePassengerDetails = !m_Settings.VehiclePassengerDetails },
@@ -177,6 +178,7 @@ namespace ExtendedTooltip.Systems
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableLevel", () => m_Settings.SpawnableLevel, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableLevelDetails", () => m_Settings.SpawnableLevelDetails, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableRent", () => m_Settings.SpawnableRent, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableBalance", () => m_Settings.SpawnableBalance, null, null));
 
             /// VEHICLE
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "vehicle", () => m_Settings.Vehicle, null, null));
@@ -271,6 +273,7 @@ namespace ExtendedTooltip.Systems
                 { "spawnableHousehold", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.HOUSEHOLDS", "Households")},
                 { "spawnableHouseholdDetails", m_CustomTranslationSystem.GetTranslation("setting.spawnable.household_details", "Household Details")},
                 { "spawnableRent", m_CustomTranslationSystem.GetTranslation("rent", "Rent")},
+                { "spawnableBalance", m_CustomTranslationSystem.GetTranslation("balance", "Balance")},
 
                 // VEHICLE
                 { "vehicle", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.VEHICLES[HouseholdVehicle]", "Vehicles")},

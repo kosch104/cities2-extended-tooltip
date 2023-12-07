@@ -72,6 +72,7 @@
         public bool SpawnableLevel { get; set; } = true;
         public bool SpawnableLevelDetails { get; set; } = true;
         public bool SpawnableRent { get; set; } = true;
+        public bool SpawnableBalance { get; set; } = true;
         public bool SpawnableZoneInfo { get; set; } = true;
 
         // VEHICLE
