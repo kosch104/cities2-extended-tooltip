@@ -42,9 +42,11 @@ namespace ExtendedTooltip.Systems
         private ImageSystem m_ImageSystem;
         private ToolRaycastSystem m_ToolRaycastSystem;
         private NameTooltip m_NameTooltip;
-        private TooltipGroup m_TooltipGroup;
         private PrefabSystem m_PrefabSystem;
         private CustomTranslationSystem m_CustomTranslationSystem;
+
+        private TooltipGroup m_TooltipGroup;
+        private TooltipGroup m_SecondaryTooltipGroup;
 
         private CitizenTooltipBuilder m_CitizenTooltipBuilder;
         private VehicleTooltipBuilder m_VehicleTooltipBuilder;
@@ -91,9 +93,15 @@ namespace ExtendedTooltip.Systems
 
             m_TooltipGroup = new TooltipGroup()
             {
-                path = "raycastName",
+                path = "extendedTooltipPrimary",
                 horizontalAlignment = TooltipGroup.Alignment.Start,
                 verticalAlignment = TooltipGroup.Alignment.Start
+            };
+            m_SecondaryTooltipGroup = new TooltipGroup()
+            {
+                path = "extendedTooltipSecondary",
+                horizontalAlignment = TooltipGroup.Alignment.End,
+                verticalAlignment = TooltipGroup.Alignment.Start,
             };
             m_NameTooltip = new NameTooltip
             {
@@ -142,7 +150,8 @@ namespace ExtendedTooltip.Systems
                     try
                     {
                         m_TooltipGroup.children.Clear();
-                        m_TooltipGroup.children.Add(m_NameTooltip);
+                        // m_TooltipGroup.children.Add(m_NameTooltip);
+                        m_SecondaryTooltipGroup.children.Clear();
 
                         // ExtendedTooltips entry point
                         LocalSettingsItem settings = m_LocalSettings.Settings;
@@ -160,7 +169,9 @@ namespace ExtendedTooltip.Systems
                         }
 
                         UpdateTooltipGroupPosition();
+                        AddMouseTooltip(m_NameTooltip);
                         AddGroup(m_TooltipGroup);
+                        AddGroup(m_SecondaryTooltipGroup);
                     }
                     catch (System.Exception e)
                     {
@@ -216,7 +227,7 @@ namespace ExtendedTooltip.Systems
             // SPAWNABLES TOOLTIP
             if (m_LocalSettings.Settings.Spawnable && HasSpawnableBuildingData(selectedEntity, prefab, out int buildingLevel, out int currentCondition, out int levelingCost, out SpawnableBuildingData spawnableData))
             {
-                m_SpawnablesTooltipBuilder.Build(selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, m_TooltipGroup);
+                m_SpawnablesTooltipBuilder.Build(selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, m_TooltipGroup, m_SecondaryTooltipGroup);
             }
 
             // EFFICIENCY TOOLTIP
@@ -261,7 +272,7 @@ namespace ExtendedTooltip.Systems
             // COMPANY (Office, Industrial, Commercial) TOOLTIP
             if (m_LocalSettings.Settings.Company && CompanyUIUtils.HasCompany(EntityManager, selectedEntity, prefab, out Entity company))
             {
-                m_CompanyTooltipBuilder.Build(company, m_TooltipGroup);
+                m_CompanyTooltipBuilder.Build(company, m_TooltipGroup, m_SecondaryTooltipGroup);
             }
         }
 
@@ -361,10 +372,13 @@ namespace ExtendedTooltip.Systems
 
         private void UpdateTooltipGroupPosition()
         {
-            float2 kTooltipPointerDistance = new(0f, 16f);
             Vector3 mousePosition = InputManager.instance.mousePosition;
-            m_TooltipGroup.position = math.round(new float2(mousePosition.x, Screen.height - mousePosition.y) + kTooltipPointerDistance);
+
+            m_TooltipGroup.position = math.round(new float2(mousePosition.x, Screen.height - mousePosition.y + 50.0f));
             m_TooltipGroup.SetPropertiesChanged();
+
+            m_SecondaryTooltipGroup.position = math.round(new float2(m_TooltipGroup.position.x - 8.0f, m_TooltipGroup.position.y));
+            m_SecondaryTooltipGroup.SetPropertiesChanged();
         }
     }
 }

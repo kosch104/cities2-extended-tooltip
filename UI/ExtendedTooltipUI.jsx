@@ -126,6 +126,9 @@ const ExtendedTooltipUI = ({ react }) => {
     const [displayMode, setDisplayMode] = react.useState(0);
     useDataUpdate(react, 'extendedTooltip.displayMode', setDisplayMode);
 
+    const [extendedLayout, setExtendedLayout] = react.useState(true);
+    useDataUpdate(react, 'extendedTooltip.extendedLayout', setExtendedLayout);
+
     const [showNetToolSystemGroup, setShowNetToolSystemGroup] = react.useState(true);
     const [expandNetToolSystemGroup, setExpandNetToolSystemGroup] = react.useState(true);
     const [showNetToolMode, setShowNetToolMode] = react.useState(true);
@@ -247,6 +250,7 @@ const ExtendedTooltipUI = ({ react }) => {
                 { id: 2, label: translations['displayMode.onKey'], value: 2 },
             ],
         },
+        { id: 98, label: translations['extendedLayout'], description: translations['extendedLayout.description'], isChecked: extendedLayout },
     ]
 
     const toolSystemSettingsData = [

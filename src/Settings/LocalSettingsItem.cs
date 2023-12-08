@@ -9,6 +9,7 @@
         public bool DisableMod { get; set; } = false;
         public DisplayMode DisplayMode { get; set; } = 0;
         public string OnPressOnlyKey { get; set; } = "ALT";
+        public bool ExtendedLayout { get; set; } = true;
 
         // TOOL SYSTEM
         public bool AnarchyMode { get; set; } = true;

@@ -29,7 +29,7 @@ namespace ExtendedTooltip.TooltipBuilder
             UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
         }
 
-        public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, TooltipGroup tooltipGroup)
+        public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
         {
             if (m_Settings.SpawnableHousehold == false && m_Settings.SpawnableHouseholdDetails == false && m_Settings.SpawnableLevel == false && m_Settings.SpawnableLevelDetails == false && m_Settings.SpawnableRent == false)
                 return;
@@ -142,7 +142,8 @@ namespace ExtendedTooltip.TooltipBuilder
                         value = $"{rentLabel}: {rentValue}",
                         color = TooltipColor.Info,
                     };
-                    tooltipGroup.children.Add(rentTooltip);
+
+                    (m_Settings.ExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(rentTooltip);
                 }
 
                 if (m_Settings.SpawnableBalance && householdBalances.Count > 0)
@@ -173,7 +174,8 @@ namespace ExtendedTooltip.TooltipBuilder
                         value = $"{balanceLabel}: {balanceValue}",
                         color = (householdCount > 1 && minBalance < 0 && maxBalance < 0) || (householdCount == 1 && finalBalance < 0) ? TooltipColor.Error : TooltipColor.Info,
                     };
-                    tooltipGroup.children.Add(balanceTooltip);
+
+                    (m_Settings.ExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(balanceTooltip);
                 }
 
                 // Needs revisting, not working

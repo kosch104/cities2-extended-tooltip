@@ -4,6 +4,10 @@ This mod adds new informations to the mouse hover tooltip of several entities to
 If you want anything added to the tooltip, please let me know and open an issue.
 
 ## Updates
+- v1.0.0
+	- New Feature: Added an extended layout to improve tooltips readability
+	- New Feature: Added company/industry storage info
+	- Fixed some languages not showing
 - v0.10.0
 	- New Feature: Added balance info to households. Thx to @Biffa for the idea
 	- New Feature: Added passenger info to public transport station buildings

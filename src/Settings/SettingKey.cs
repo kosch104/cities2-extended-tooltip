@@ -46,5 +46,6 @@
         NetToolSystem = 95,
         NetToolMode = 96,
         NetToolElevation = 97,
+        ExtendedLayout = 98
     }
 }

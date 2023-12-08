@@ -88,6 +88,7 @@ namespace ExtendedTooltip.Systems
                 { SettingKey.NetToolSystem, () => m_Settings.NetToolSystem = !m_Settings.NetToolSystem },
                 { SettingKey.NetToolMode, () => m_Settings.NetToolMode = !m_Settings.NetToolMode },
                 { SettingKey.NetToolElevation, () => m_Settings.NetToolElevation = !m_Settings.NetToolElevation },
+                { SettingKey.ExtendedLayout, () => m_Settings.ExtendedLayout = !m_Settings.ExtendedLayout },
             };
 
             expandActions = new()
@@ -113,6 +114,7 @@ namespace ExtendedTooltip.Systems
             /// GENERAL
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "disableMod", () => m_Settings.DisableMod, null, null));
             AddUpdateBinding(new GetterValueBinding<int>(kGroup, "displayMode", () => (int)m_Settings.DisplayMode, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "extendedLayout", () => m_Settings.ExtendedLayout, null, null));
             AddBinding(new TriggerBinding<int>(kGroup, "onDisplayModeSelect", OnDisplayModeSelect));
 
             /// TOOL SYSTEM
@@ -204,6 +206,8 @@ namespace ExtendedTooltip.Systems
                 { "displayMode.instant", m_CustomTranslationSystem.GetTranslation("setting.displayMode.instant", "Instant (default)") },
                 { "displayMode.delayed", m_CustomTranslationSystem.GetTranslation("setting.displayMode.delayed", "Delayed") },
                 { "displayMode.onKey", m_CustomTranslationSystem.GetTranslation("setting.displayMode.onKey", "Hold key (ALT)") },
+                { "extendedLayout", m_CustomTranslationSystem.GetTranslation("setting.extendedLayout", "Extended Layout") },
+                { "extendedLayout.description", m_CustomTranslationSystem.GetTranslation("setting.extendedLayout.description", "Use a second layout group to show tooltips.") },
 
                 // TOOL SYSTEMS
                 { "toolSystem", m_CustomTranslationSystem.GetTranslation("setting.toolSystem", "Tool Systems") },
