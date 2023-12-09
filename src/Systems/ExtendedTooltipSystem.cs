@@ -142,6 +142,9 @@ namespace ExtendedTooltip.Systems
                     lastEntity = null;
                 }
 
+                m_TooltipGroup.children.Clear();
+                m_SecondaryTooltipGroup.children.Clear();
+
                 if (IsInfomodeActivated())
                 {
                     AddMouseTooltip(m_NameTooltip);
@@ -149,9 +152,7 @@ namespace ExtendedTooltip.Systems
                 {
                     try
                     {
-                        m_TooltipGroup.children.Clear();
-                        // m_TooltipGroup.children.Add(m_NameTooltip);
-                        m_SecondaryTooltipGroup.children.Clear();
+                        m_TooltipGroup.children.Add(m_NameTooltip);
 
                         // ExtendedTooltips entry point
                         LocalSettingsItem settings = m_LocalSettings.Settings;
@@ -169,7 +170,6 @@ namespace ExtendedTooltip.Systems
                         }
 
                         UpdateTooltipGroupPosition();
-                        AddMouseTooltip(m_NameTooltip);
                         AddGroup(m_TooltipGroup);
                         AddGroup(m_SecondaryTooltipGroup);
                     }
@@ -373,8 +373,9 @@ namespace ExtendedTooltip.Systems
         private void UpdateTooltipGroupPosition()
         {
             Vector3 mousePosition = InputManager.instance.mousePosition;
+            float2 tooltipDistance = new(0f, 16f);
 
-            m_TooltipGroup.position = math.round(new float2(mousePosition.x, Screen.height - mousePosition.y + 50.0f));
+            m_TooltipGroup.position = math.round(new float2(mousePosition.x, Screen.height - mousePosition.y) + tooltipDistance);
             m_TooltipGroup.SetPropertiesChanged();
 
             m_SecondaryTooltipGroup.position = math.round(new float2(m_TooltipGroup.position.x - 8.0f, m_TooltipGroup.position.y));
