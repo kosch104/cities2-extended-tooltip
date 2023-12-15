@@ -4,6 +4,8 @@ This mod adds new informations to the mouse hover tooltip of several entities to
 If you want anything added to the tooltip, please let me know and open an issue.
 
 ## Updates
+- v1.0.1
+	- Fix padding of tooltip group for higher resolutions by changing the layout a bit
 - v1.0.0
 	- New Feature: Added an extended layout to improve tooltips readability
 	- New Feature: Added company/industry storage info
