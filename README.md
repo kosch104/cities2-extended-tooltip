@@ -4,6 +4,10 @@ This mod adds new informations to the mouse hover tooltip of several entities to
 If you want anything added to the tooltip, please let me know and open an issue.
 
 ## Updates
+- v1.1.0
+	- New Feature: Added tons (t), barrels (bbl.) and liters (l, kl) for resource tooltips
+	- Fixed French translation (thx to @Edou24)
+	- Requirements updated to HookUI v0.3.5
 - v1.0.1
 	- Fix padding of tooltip group for higher resolutions by changing the layout a bit
 - v1.0.0

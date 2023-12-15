@@ -5,6 +5,7 @@ using Game.Economy;
 using Game.Prefabs;
 using Game.UI.Tooltip;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
@@ -53,6 +54,12 @@ namespace ExtendedTooltip.TooltipBuilder
             StringTooltip companyResourceTooltip = new();
             string resourceLabel;
 
+            bool showResourceUnit = resource switch
+            {
+                Resource.Media or Resource.Entertainment or Resource.Financial or Resource.Software or Resource.Telecom or Resource.Recreation => false,
+                _ => true,
+            };
+
             if (isOutput)
             {
                 if (m_EntityManager.HasComponent<ServiceAvailable>(companyEntity))
@@ -79,7 +86,33 @@ namespace ExtendedTooltip.TooltipBuilder
             companyResourceTooltip.icon = "Media/Game/Resources/" + resource.ToString() + ".svg";
             if (resourceAmount > 0)
             {
-                resourceValue = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString())} [{resourceAmount}]";
+                if (showResourceUnit)
+                {
+                    string unit = "t";
+                    if (resource == Resource.Oil)
+                    {
+                        unit = "bbl.";
+                        double densityCrudeOil = 0.8;
+                        double litersPerBarrel = 158.9873;
+                        double litersCrudeOil = resourceAmount * densityCrudeOil;
+                        double barrelsCrudeOil = litersCrudeOil / litersPerBarrel;
+                        resourceValue = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString())} [{barrelsCrudeOil:F2} {unit}]";
+                    } else if(resource == Resource.Petrochemicals)
+                    {
+                        double densityGasoline = 0.75;
+                        double gasolineValue = resourceAmount > 1000 ? resourceAmount * densityGasoline / 1000 : resourceAmount * densityGasoline;
+                        unit = resourceAmount > 1000 ? "kl" : "l";
+                        resourceValue = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString())} [{gasolineValue:F2} {unit}]";
+                    }
+                    else
+                    {
+                        double resourceValueInDouble = (double)resourceAmount / 1000;
+                        resourceValue = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString())} [{resourceValueInDouble:F2}  {unit}]";
+                    }
+                } else
+                {
+                    resourceValue = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString())} [{resourceAmount}]";
+                }
             }
             companyResourceTooltip.value = $"{resourceLabel}: {resourceValue}";
 
