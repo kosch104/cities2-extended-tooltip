@@ -5,7 +5,6 @@ using Game.Economy;
 using Game.Prefabs;
 using Game.UI.Tooltip;
 using Unity.Entities;
-using Unity.Mathematics;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
