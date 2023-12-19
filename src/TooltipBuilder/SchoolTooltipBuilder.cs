@@ -38,7 +38,7 @@ namespace ExtendedTooltip.TooltipBuilder
                 {
                     icon = "Media/Game/Icons/Population.svg",
                     value = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EDUCATION_STUDENTS", "Students") + ": " + studentCount + "/" + studentCapacity,
-                    color = (studentCount == 0) ? TooltipColor.Info : (studentCount * 100 / studentCapacity) <= 50 ? TooltipColor.Success : (studentCount * 100 / studentCapacity) <= 75 ? TooltipColor.Warning : TooltipColor.Error,
+                    color = (studentCount == 0) ? TooltipColor.Info : (studentCount * 100 / studentCapacity) <= 50 ? TooltipColor.Success : (studentCount * 100 / studentCapacity) <= 90 ? TooltipColor.Warning : TooltipColor.Error,
                 };
 
                 tooltipGroup.children.Add(studentTooltip);
