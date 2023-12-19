@@ -145,11 +145,15 @@ const ExtendedTooltipUI = ({ react }) => {
     const [showCitizenStateTooltip, setShowCitizenStateTooltip] = react.useState(true);
     const [showCitizenHappinessTooltip, setShowCitizenHappinessTooltip] = react.useState(true);
     const [showCitizenEducationTooltip, setShowCitizenEducationTooltip] = react.useState(true);
+    const [showCitizenTypeTooltip, setShowCitizenTypeTooltip] = react.useState(true);
+    const [showCitizenWealthTooltip, setShowCitizenWealthTooltip] = react.useState(true);
     useDataUpdate(react, 'extendedTooltip.citizen', setShowCitizenGroup);
     useDataUpdate(react, 'extendedTooltip.expandCitizen', setExpandCitizenGroup);
     useDataUpdate(react, 'extendedTooltip.citizenState', setShowCitizenStateTooltip);
     useDataUpdate(react, 'extendedTooltip.citizenHappiness', setShowCitizenHappinessTooltip);
     useDataUpdate(react, 'extendedTooltip.citizenEducation', setShowCitizenEducationTooltip);
+    useDataUpdate(react, 'extendedTooltip.citizenType', setShowCitizenTypeTooltip);
+    useDataUpdate(react, 'extendedTooltip.citizenWealth', setShowCitizenWealthTooltip);
 
     const [showCompanyGroup, setShowCompanyGroup] = react.useState(true);
     const [expandCompanyGroup, setExpandCompanyGroup] = react.useState(true);
@@ -213,6 +217,7 @@ const ExtendedTooltipUI = ({ react }) => {
     const [showSpawnableLevelDetails, setShowSpawnableLevelDetails] = react.useState(true);
     const [showSpawnableHousehold, setShowSpawnableHousehold] = react.useState(true);
     const [showSpawnableHouseholdDetails, setShowSpawnableHouseholdDetails] = react.useState(true);
+    const [showSpawnableHouseholdWealth, setShowSpawnableHouseholdWealth] = react.useState(true);
     const [showSpawnableRent, setShowSpawnableRent] = react.useState(true);
     const [showSpawnableBalance, setShowSpawnableBalance] = react.useState(true);
     const [showSpawnableZoneInfo, setShowSpawnableZoneInfo] = react.useState(true);
@@ -224,6 +229,7 @@ const ExtendedTooltipUI = ({ react }) => {
     useDataUpdate(react, 'extendedTooltip.spawnableHouseholdDetails', setShowSpawnableHouseholdDetails);
     useDataUpdate(react, 'extendedTooltip.spawnableRent', setShowSpawnableRent);
     useDataUpdate(react, 'extendedTooltip.spawnableBalance', setShowSpawnableBalance);
+    useDataUpdate(react, 'extendedTooltip.spawnableHouseholdWealth', setShowSpawnableHouseholdWealth);
     useDataUpdate(react, 'extendedTooltip.spawnableZoneInfo', setShowSpawnableZoneInfo);
 
     const [showVehiclesGroup, setShowVehiclesGroup] = react.useState(true);
@@ -271,6 +277,8 @@ const ExtendedTooltipUI = ({ react }) => {
                 { id: 1, label: translations['citizenState'], isChecked: showCitizenStateTooltip },
                 { id: 2, label: translations['citizenHappiness'], isChecked: showCitizenHappinessTooltip },
                 { id: 3, label: translations['citizenEducation'], isChecked: showCitizenEducationTooltip },
+                { id: 38, label: translations['citizenType'], isChecked: showCitizenTypeTooltip },
+                { id: 37, label: translations['citizenWealth'], isChecked: showCitizenWealthTooltip },
             ]
         }, 
         {
@@ -323,6 +331,7 @@ const ExtendedTooltipUI = ({ react }) => {
                 { id: 25, label: translations['spawnableLevelDetails'], isChecked: showSpawnableLevelDetails },
                 { id: 26, label: translations['spawnableHousehold'], isChecked: showSpawnableHousehold },
                 { id: 27, label: translations['spawnableHouseholdDetails'], isChecked: showSpawnableHouseholdDetails },
+                { id: 39, label: translations['spawnableHouseholdWealth'], isChecked: showSpawnableHouseholdWealth },
                 { id: 28, label: translations['spawnableRent'], isChecked: showSpawnableRent },
                 { id: 36, label: translations['spawnableBalance'], isChecked: showSpawnableBalance },
             ]

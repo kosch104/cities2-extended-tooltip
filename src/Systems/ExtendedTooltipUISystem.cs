@@ -51,6 +51,8 @@ namespace ExtendedTooltip.Systems
                 { SettingKey.CitizenState, () => m_Settings.CitizenState = !m_Settings.CitizenState },
                 { SettingKey.CitizenHappiness, () => m_Settings.CitizenHappiness = !m_Settings.CitizenHappiness },
                 { SettingKey.CitizenEducation, () => m_Settings.CitizenEducation = !m_Settings.CitizenEducation },
+                { SettingKey.CitizenWealth, () => m_Settings.CitizenWealth = !m_Settings.CitizenWealth },
+                { SettingKey.CitizenType, () => m_Settings.CitizenType = !m_Settings.CitizenType },
                 { SettingKey.Company, () => m_Settings.Company = !m_Settings.Company },
                 { SettingKey.CompanyOutput, () => m_Settings.CompanyOutput = !m_Settings.CompanyOutput },
                 { SettingKey.Efficiency, () => m_Settings.Efficiency = !m_Settings.Efficiency },
@@ -74,6 +76,7 @@ namespace ExtendedTooltip.Systems
                 { SettingKey.SpawnableLevelDetails, () => m_Settings.SpawnableLevelDetails = !m_Settings.SpawnableLevelDetails },
                 { SettingKey.SpawnableHousehold, () => m_Settings.SpawnableHousehold = !m_Settings.SpawnableHousehold },
                 { SettingKey.SpawnableHouseholdDetails, () => m_Settings.SpawnableHouseholdDetails = !m_Settings.SpawnableHouseholdDetails },
+                { SettingKey.SpawnableHouseholdWealth, () => m_Settings.SpawnableHouseholdWealth = !m_Settings.SpawnableHouseholdWealth },
                 { SettingKey.SpawnableRent, () => m_Settings.SpawnableRent = !m_Settings.SpawnableRent },
                 { SettingKey.SpawnableBalance, () => m_Settings.SpawnableBalance = !m_Settings.SpawnableBalance },
                 { SettingKey.SpawnableZoneInfo, () => m_Settings.SpawnableZoneInfo = !m_Settings.SpawnableZoneInfo },
@@ -128,6 +131,8 @@ namespace ExtendedTooltip.Systems
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizen", () => m_Settings.Citizen, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "expandCitizen", () => m_Settings.CitizenExpanded, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenState", () => m_Settings.CitizenState, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenWealth", () => m_Settings.CitizenWealth, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenType", () => m_Settings.CitizenType, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenHappiness", () => m_Settings.CitizenHappiness, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "citizenEducation", () => m_Settings.CitizenEducation, null, null));
 
@@ -179,6 +184,7 @@ namespace ExtendedTooltip.Systems
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableHouseholdDetails", () => m_Settings.SpawnableHouseholdDetails, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableLevel", () => m_Settings.SpawnableLevel, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableLevelDetails", () => m_Settings.SpawnableLevelDetails, null, null));
+            AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableHouseholdWealth", () => m_Settings.SpawnableHouseholdWealth, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableRent", () => m_Settings.SpawnableRent, null, null));
             AddUpdateBinding(new GetterValueBinding<bool>(kGroup, "spawnableBalance", () => m_Settings.SpawnableBalance, null, null));
 
@@ -234,6 +240,8 @@ namespace ExtendedTooltip.Systems
                 { "citizenState", m_CustomTranslationSystem.GetTranslation("setting.citizen.state", "Citizen state") },
                 { "citizenHappiness", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_HAPPINESS", "Citizen happiness") },
                 { "citizenEducation", m_CustomTranslationSystem.GetLocalGameTranslation("Infoviews.INFOVIEW[Education]", "Educational Facilities") },
+                { "citizenWealth", m_CustomTranslationSystem.GetLocalGameTranslation("StatisticsPanel.STAT_TITLE[Wealth]", "Citizen wealth") },
+                { "citizenType", m_CustomTranslationSystem.GetLocalGameTranslation("Tutorials.TITLE[TaxationTutorialType]", "Citizen type") },
 
                 // COMPANY
                 { "company", m_CustomTranslationSystem.GetTranslation("setting.company", "Company") },
@@ -276,6 +284,7 @@ namespace ExtendedTooltip.Systems
                 { "spawnableLevelDetails", m_CustomTranslationSystem.GetTranslation("setting.spawnable.level_details", "Level Detail")},
                 { "spawnableHousehold", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.HOUSEHOLDS", "Households")},
                 { "spawnableHouseholdDetails", m_CustomTranslationSystem.GetTranslation("setting.spawnable.household_details", "Household Details")},
+                { "spawnableHouseholdWealth", m_CustomTranslationSystem.GetLocalGameTranslation("StatisticsPanel.STAT_TITLE[Wealth]", "Household Wealth")},
                 { "spawnableRent", m_CustomTranslationSystem.GetTranslation("rent", "Rent")},
                 { "spawnableBalance", m_CustomTranslationSystem.GetTranslation("balance", "Balance")},
 

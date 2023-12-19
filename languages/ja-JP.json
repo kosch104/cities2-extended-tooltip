@@ -35,6 +35,8 @@
   "extendedtooltip.setting.extendedLayout.description": "レイアウトを2列で表示して読みやすくします。",
   "extendedtooltip.setting.citizen.state": "市民の状態",
   "extendedtooltip.setting.company": "会社",
+  "extendedtooltip.setting.company.production_rate": "{RESOURCE} [{AMOUNT} {UNIT}]",
+  "extendedtooltip.setting.company.production_rate_prefixed": "{RESOURCE} [倉庫: {AMOUNT} {UNIT}]",
   "extendedtooltip.setting.parking.fees": "料金",
   "extendedtooltip.setting.parking.capacity": "定員",
   "extendedtooltip.setting.public_transportation.waiting_time": "待ち時間",

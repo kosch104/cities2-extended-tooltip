@@ -22,6 +22,8 @@
         public bool CitizenExpanded { get; set; } = false;
         public bool Citizen { get; set; } = true;
         public bool CitizenState { get; set; } = true;
+        public bool CitizenWealth { get; set; } = true;
+        public bool CitizenType { get; set; } = true;
         public bool CitizenHappiness { get; set; } = true;
         public bool CitizenEducation { get; set; } = true;
 
@@ -73,6 +75,7 @@
         public bool SpawnableLevel { get; set; } = true;
         public bool SpawnableLevelDetails { get; set; } = true;
         public bool SpawnableRent { get; set; } = true;
+        public bool SpawnableHouseholdWealth { get; set; } = true;
         public bool SpawnableBalance { get; set; } = true;
         public bool SpawnableZoneInfo { get; set; } = true;
 

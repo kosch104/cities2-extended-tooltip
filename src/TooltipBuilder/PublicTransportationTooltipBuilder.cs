@@ -36,15 +36,25 @@ namespace ExtendedTooltip.TooltipBuilder
                 tooltipGroup.children.Add(waitingPassengersTooltip);
             }
 
-            if (m_Settings.PublicTransportWaitingTime)
+            if (m_Settings.PublicTransportWaitingTime && waitingPassengers != 0)
             {
-                // Calculate average waiting time in minutes
-                averageWaitingTime = averageWaitingTime <= 0 ? 0 : (int)math.round(averageWaitingTime / 60);
+                string unit = "s";
+                TooltipColor tooltipColor = TooltipColor.Success;
+                if (averageWaitingTime < 0)
+                    averageWaitingTime = 0;
+
+                if (averageWaitingTime > 120)
+                {
+                    averageWaitingTime = (int)math.round(averageWaitingTime / 60);
+                    unit = "m";
+                    tooltipColor = averageWaitingTime < 60 ? TooltipColor.Success : averageWaitingTime < 120 ? TooltipColor.Warning : TooltipColor.Error;
+                }
+                
                 StringTooltip averageWaitingTimeTooltip = new()
                 {
                     icon = "Media/Game/Icons/Fastforward.svg",
-                    value = $"{m_CustomTranslationSystem.GetTranslation("average_waiting_time", "~ waiting time")}: {averageWaitingTime}m",
-                    color = averageWaitingTime < 60 ? TooltipColor.Success : averageWaitingTime < 120 ? TooltipColor.Warning : TooltipColor.Error,
+                    value = $"{m_CustomTranslationSystem.GetTranslation("average_waiting_time", "~ waiting time")}: {averageWaitingTime}{unit}",
+                    color = tooltipColor,
                 };
                 tooltipGroup.children.Add(averageWaitingTimeTooltip);
             }   
@@ -52,27 +62,31 @@ namespace ExtendedTooltip.TooltipBuilder
 
         private void GetPassengerInfo(Entity selectedEntity, ref int averageWaitingTime, ref int waitingPassengers)
         {
-            if (m_EntityManager.TryGetComponent(selectedEntity, out WaitingPassengers waitingPassengersData1))
-            {
-                waitingPassengers = waitingPassengersData1.m_Count;
-            }
-
+            // Check connected routes
             if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<ConnectedRoute> dynamicBuffer))
             {
                 int num = 0;
                 for (int i = 0; i < dynamicBuffer.Length; i++)
                 {
-                    if (m_EntityManager.TryGetComponent(dynamicBuffer[i].m_Waypoint, out WaitingPassengers waitingPassengersData2))
+                    if (m_EntityManager.TryGetComponent(dynamicBuffer[i].m_Waypoint, out WaitingPassengers waitingPassengersData))
                     {
-                        waitingPassengers += waitingPassengersData2.m_Count;
-                        num += waitingPassengersData2.m_AverageWaitingTime;
+                        waitingPassengers += waitingPassengersData.m_Count;
+                        num += waitingPassengersData.m_AverageWaitingTime;
                     }
                 }
                 num /= math.max(1, dynamicBuffer.Length);
                 num -= num % 5;
-                averageWaitingTime = (ushort)num;
+                averageWaitingTime += (ushort)num;
             }
 
+            // Check building itself
+            if (m_EntityManager.TryGetComponent(selectedEntity, out WaitingPassengers waitingPassengersData2))
+            {
+                waitingPassengers += waitingPassengersData2.m_Count;
+                averageWaitingTime += waitingPassengersData2.m_AverageWaitingTime;
+            }
+
+            // Also count sub buildings (e.g extension buildings)
             if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<SubObject> subObjects))
             {
                 List<int> averageWaitingTimes = [];

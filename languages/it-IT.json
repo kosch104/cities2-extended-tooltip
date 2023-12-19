@@ -35,6 +35,8 @@
   "extendedtooltip.setting.extendedLayout.description": "Abilita un secondo layout per mostrare i tooltip in modo più organizzato",
   "extendedtooltip.setting.citizen.state": "Stato del cittadino",
   "extendedtooltip.setting.company": "Azienda",
+  "extendedtooltip.setting.company.production_rate": "{RESOURCE} [{AMOUNT} {UNIT}]",
+  "extendedtooltip.setting.company.production_rate_prefixed": "{RESOURCE} [Il magazzino: {AMOUNT} {UNIT}]",
   "extendedtooltip.setting.parking.fees": "Tariffe",
   "extendedtooltip.setting.parking.capacity": "Capacità",
   "extendedtooltip.setting.public_transportation.waiting_time": "Tempo di attesa",

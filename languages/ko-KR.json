@@ -35,6 +35,8 @@
   "extendedtooltip.setting.extendedLayout.description": "툴팁을 두 쪽으로 나눠 표시하여 보다 읽기 쉽게 합니다.",
   "extendedtooltip.setting.citizen.state": "시민 상태",
   "extendedtooltip.setting.company": "회사",
+  "extendedtooltip.setting.company.production_rate": "{RESOURCE} [{AMOUNT} {UNIT}]",
+  "extendedtooltip.setting.company.production_rate_prefixed": "{RESOURCE} [창고: {AMOUNT} {UNIT}]",
   "extendedtooltip.setting.parking.fees": "요금",
   "extendedtooltip.setting.parking.capacity": "주차 대수",
   "extendedtooltip.setting.public_transportation.waiting_time": "대기 시간",

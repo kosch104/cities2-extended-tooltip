@@ -52,6 +52,7 @@ namespace ExtendedTooltip.TooltipBuilder
             // OUTPUT Storage
             StringTooltip companyResourceTooltip = new();
             string resourceLabel;
+            bool isStorage = false;
 
             bool showResourceUnit = resource switch
             {
@@ -72,6 +73,7 @@ namespace ExtendedTooltip.TooltipBuilder
                 else
                 {
                     StorageCompanyData componentData = m_EntityManager.GetComponentData<StorageCompanyData>(companyEntityPrefab);
+                    isStorage = true;
                     resource = componentData.m_StoredResources;
                     resourceLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.COMPANY_STORES", "Stores");
                 }
@@ -95,22 +97,23 @@ namespace ExtendedTooltip.TooltipBuilder
                         double litersPerBarrel = 158.9873;
                         double litersCrudeOil = resourceAmount * densityCrudeOil;
                         double barrelsCrudeOil = litersCrudeOil / litersPerBarrel;
-                        resourceValue = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString())} [{barrelsCrudeOil:F2} {unit}]";
+                        
+                        resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", "Unknown", "RESOURCE", resourceValue, "AMOUNT", barrelsCrudeOil.ToString("F2"), "UNIT", unit);
                     } else if(resource == Resource.Petrochemicals)
                     {
                         double densityGasoline = 0.75;
                         double gasolineValue = resourceAmount > 1000 ? resourceAmount * densityGasoline / 1000 : resourceAmount * densityGasoline;
                         unit = resourceAmount > 1000 ? "kl" : "l";
-                        resourceValue = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString())} [{gasolineValue:F2} {unit}]";
+                        resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", "Unknown", "RESOURCE", resourceValue, "AMOUNT", gasolineValue.ToString("F2"), "UNIT", unit);
                     }
                     else
                     {
                         double resourceValueInDouble = (double)resourceAmount / 1000;
-                        resourceValue = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString())} [{resourceValueInDouble:F2}  {unit}]";
+                        resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", "Unknown", "RESOURCE", resourceValue, "AMOUNT", resourceValueInDouble.ToString("F2"), "UNIT", unit);
                     }
                 } else
                 {
-                    resourceValue = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString())} [{resourceAmount}]";
+                    resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", "Unknown", "RESOURCE", resourceValue, "AMOUNT", resourceAmount.ToString(), "UNIT", "");
                 }
             }
             companyResourceTooltip.value = $"{resourceLabel}: {resourceValue}";

@@ -4,6 +4,19 @@ This mod adds new informations to the mouse hover tooltip of several entities to
 If you want anything added to the tooltip, please let me know and open an issue.
 
 ## Updates
+- v1.2.0
+	- Added household wealth tooltip
+	- Added citizen wealth tooltip
+    - Added citizen type (tourist, citizen, commuter) tooltip
+	- Added "In stock" label to industrial/company/office storage tooltip
+	- Added Polish language
+	- Fixed waiting passengers tooltip on public transport stations
+	- Only show min-max rent if they are different
+	- Changed the layout for households
+	- Update Korean translation (thx to @hibiyasleep)
+	- Update Japanese translation (thx to @hibiyasleep)
+	- Update Chinese translation (thx to @hibiyasleep)
+	- Added translation for Anarchy Mode (thx to @hibiyasleep)
 - v1.1.0
 	- New Feature: Added tons (t), barrels (bbl.) and liters (l, kl) for resource tooltips
 	- Fixed French translation (thx to @Edou24)

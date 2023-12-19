@@ -7,6 +7,7 @@ using Game.Common;
 using Game.Companies;
 using Game.Economy;
 using Game.Prefabs;
+using Game.UI.InGame;
 using Game.UI.Tooltip;
 using Game.Zones;
 using System;
@@ -29,7 +30,7 @@ namespace ExtendedTooltip.TooltipBuilder
             UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
         }
 
-        public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
+        public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
         {
             if (m_Settings.SpawnableHousehold == false && m_Settings.SpawnableHouseholdDetails == false && m_Settings.SpawnableLevel == false && m_Settings.SpawnableLevelDetails == false && m_Settings.SpawnableRent == false)
                 return;
@@ -61,7 +62,7 @@ namespace ExtendedTooltip.TooltipBuilder
                     icon = "Media/Game/Icons/Zones.svg",
                     value = finalZoneName,
                 };
-                tooltipGroup.children.Add(zoneTooltip);
+                (m_Settings.ExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(zoneTooltip);
             }
 
             if (m_Settings.SpawnableLevel)
@@ -118,32 +119,30 @@ namespace ExtendedTooltip.TooltipBuilder
                     tooltipGroup.children.Add(householdTooltip);
                 }
 
-                if (m_Settings.SpawnableRent == true && householdRents.Count > 0)
+                // Needs revisting, not working
+                if (m_Settings.SpawnableHouseholdWealth && householdsResult.Length > 0)
                 {
-                    string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
-                    string rentValue;
-                    if (householdCount > 1)
-                    {
-                        int minRent = householdRents.Min();
-                        int minRentValue = minRent < 0 ? Math.Abs(minRent) : minRent;
-                        int maxRent = householdRents.Max();
-                        int maxRentValue = maxRent < 0 ? Math.Abs(maxRent) : maxRent;
-                        rentValue = m_CustomTranslationSystem.GetTranslation("common.range_value_money", "", "SIGN0", minRent < 0 ? "-" : "", "VALUE0", minRentValue.ToString(), "SIGN1", maxRent < 0 ? "-" : "", "VALUE1", maxRentValue.ToString());
-                    } else
-                    {
-                        int finalRent = householdRents.First();
-                        int finalRentValue = finalRent < 0 ? Math.Abs(finalRent) : finalRent;
-                        rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "-", "SIGN", finalRent < 0 ? "-" : "", "VALUE", finalRentValue.ToString());
-                    }
+                    HouseholdWealthKey wealthKey = householdsResult.Length == 1
+                        ? CitizenUIUtils.GetHouseholdWealth(m_EntityManager, householdsResult[0], citizenHappinessParameters)
+                        : CitizenUIUtils.GetAverageHouseholdWealth(m_EntityManager, householdsResult, citizenHappinessParameters);
 
-                    StringTooltip rentTooltip = new()
+                    TooltipColor tooltipColor = wealthKey switch
                     {
-                        icon = "Media/Game/Icons/Money.svg",
-                        value = $"{rentLabel}: {rentValue}",
-                        color = TooltipColor.Info,
+                        HouseholdWealthKey.Wretched => TooltipColor.Error,
+                        HouseholdWealthKey.Poor => TooltipColor.Warning,
+                        HouseholdWealthKey.Modest => TooltipColor.Info,
+                        _ => TooltipColor.Success,
                     };
 
-                    (m_Settings.ExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(rentTooltip);
+                    string wealthLabel = m_CustomTranslationSystem.GetLocalGameTranslation(householdsResult.Length > 1 ? "SelectedInfoPanel.AVERAGE_HOUSEHOLD_WEALTH" : "StatisticsPanel.STAT_TITLE[Wealth]", "Household wealth");
+                    string wealthValue = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_WEALTH[{wealthKey}]");
+                    StringTooltip wealthTooltip = new()
+                    {
+                        icon = "Media/Game/Icons/CitizenWealth.svg",
+                        value = $"{wealthLabel}: {wealthValue}",
+                        color = tooltipColor,
+                    };
+                    (m_Settings.ExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(wealthTooltip);
                 }
 
                 if (m_Settings.SpawnableBalance && householdBalances.Count > 0)
@@ -178,20 +177,36 @@ namespace ExtendedTooltip.TooltipBuilder
                     (m_Settings.ExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(balanceTooltip);
                 }
 
-                // Needs revisting, not working
-                /*if (householdsResult.Length > 0 && m_EntityManager.TryGetComponent(entity, out CitizenHappinessParameterData citizenHappinessParameterData))
+                if (m_Settings.SpawnableRent == true && householdRents.Count > 0)
                 {
-                    HouseholdWealthKey wealthKey = CitizenUIUtils.GetAverageHouseholdWealth(m_EntityManager, householdsResult, citizenHappinessParameterData);
-                    string wealthLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_WEALTH_TITLE", "Household wealth");
-                    string wealthValue = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_WEALTH[{wealthKey}]");
-                    StringTooltip wealthTooltip = new()
+                    string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
+                    string rentValue;
+
+                    // Only show range if there are more than 1 household and the min and max rents differ
+                    if (householdCount > 1 && householdRents.Min() != householdRents.Max())
                     {
-                        icon = "Media/Game/Icons/CitizenWealth.svg",
-                        value = $"{wealthLabel}: {wealthValue}",
+                        int minRent = householdRents.Min();
+                        int minRentValue = minRent < 0 ? Math.Abs(minRent) : minRent;
+                        int maxRent = householdRents.Max();
+                        int maxRentValue = maxRent < 0 ? Math.Abs(maxRent) : maxRent;
+                        rentValue = m_CustomTranslationSystem.GetTranslation("common.range_value_money", "", "SIGN0", minRent < 0 ? "-" : "", "VALUE0", minRentValue.ToString(), "SIGN1", maxRent < 0 ? "-" : "", "VALUE1", maxRentValue.ToString());
+                    }
+                    else
+                    {
+                        int finalRent = householdRents.First();
+                        int finalRentValue = finalRent < 0 ? Math.Abs(finalRent) : finalRent;
+                        rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "-", "SIGN", finalRent < 0 ? "-" : "", "VALUE", finalRentValue.ToString());
+                    }
+
+                    StringTooltip rentTooltip = new()
+                    {
+                        icon = "Media/Game/Icons/Money.svg",
+                        value = $"{rentLabel}: {rentValue}",
                         color = TooltipColor.Info,
                     };
-                    tooltipGroup.children.Add(wealthTooltip);
-                }*/
+
+                    (m_Settings.ExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(rentTooltip);
+                }
             }
         }
 

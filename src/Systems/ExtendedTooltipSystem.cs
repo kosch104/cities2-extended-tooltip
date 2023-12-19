@@ -44,6 +44,7 @@ namespace ExtendedTooltip.Systems
         private NameTooltip m_NameTooltip;
         private PrefabSystem m_PrefabSystem;
         private CustomTranslationSystem m_CustomTranslationSystem;
+        private EntityQuery m_CitizenHappinessParameterDataQuery;
 
         private TooltipGroup m_TooltipGroup;
         private TooltipGroup m_SecondaryTooltipGroup;
@@ -78,6 +79,7 @@ namespace ExtendedTooltip.Systems
             m_ToolRaycastSystem = World.GetOrCreateSystemManaged<ToolRaycastSystem>();
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_CustomTranslationSystem = World.GetOrCreateSystemManaged<CustomTranslationSystem>();
+            m_CitizenHappinessParameterDataQuery = GetEntityQuery(new ComponentType[] { ComponentType.ReadOnly<CitizenHappinessParameterData>() });
 
             m_CitizenTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_VehicleTooltipBuilder = new(EntityManager, m_CustomTranslationSystem, m_NameSystem);
@@ -204,7 +206,8 @@ namespace ExtendedTooltip.Systems
             
             if (m_LocalSettings.Settings.Citizen && EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
             {
-                m_CitizenTooltipBuilder.Build(selectedEntity, citizen, m_TooltipGroup);
+                CitizenHappinessParameterData citizenHappinessParameters = m_CitizenHappinessParameterDataQuery.GetSingleton<CitizenHappinessParameterData>();
+                m_CitizenTooltipBuilder.Build(selectedEntity, citizen, citizenHappinessParameters, m_TooltipGroup, m_SecondaryTooltipGroup);
                 m_TooltipGroup.SetChildrenChanged();
 
                 return; // don't have any other info. No need to check for other components
@@ -227,7 +230,8 @@ namespace ExtendedTooltip.Systems
             // SPAWNABLES TOOLTIP
             if (m_LocalSettings.Settings.Spawnable && HasSpawnableBuildingData(selectedEntity, prefab, out int buildingLevel, out int currentCondition, out int levelingCost, out SpawnableBuildingData spawnableData))
             {
-                m_SpawnablesTooltipBuilder.Build(selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, m_TooltipGroup, m_SecondaryTooltipGroup);
+                CitizenHappinessParameterData citizenHappinessParameters = m_CitizenHappinessParameterDataQuery.GetSingleton<CitizenHappinessParameterData>();
+                m_SpawnablesTooltipBuilder.Build(selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, citizenHappinessParameters, m_TooltipGroup, m_SecondaryTooltipGroup);
             }
 
             // EFFICIENCY TOOLTIP
