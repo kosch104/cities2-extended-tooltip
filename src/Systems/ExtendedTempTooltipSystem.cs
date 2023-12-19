@@ -34,7 +34,7 @@ namespace ExtendedTooltip.Systems
 
             m_AnarchyTooltip = new StringTooltip
             {
-                value = "Anarchy",
+                value = m_CustomTranslationSystem.GetTranslation("anarchyMode", "Anarchy"),
                 path = "anarchy",
                 icon = "Media/Misc/Warning.svg",
                 color = TooltipColor.Warning

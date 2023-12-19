@@ -1,6 +1,7 @@
 {
   "extendedtooltip.common.range_minmax_value_money": "[min. {SIGN0} ¢{VALUE0}] — [max. {SIGN1} ¢{VALUE1}]",
   "extendedtooltip.common.range_value_money": "{SIGN0} ¢{VALUE0} — {SIGN1} ¢{VALUE1}",
+  "extendedtooltip.anarchyMode": "Anarchie",
   "extendedtooltip.pet": "Haustier",
   "extendedtooltip.pets": "Haustiere",
   "extendedtooltip.parkinglots.utilization": "Auslastung",

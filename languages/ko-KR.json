@@ -1,6 +1,7 @@
 ﻿{
   "extendedtooltip.common.range_minmax_value_money": "[min. {SIGN0} ¢{VALUE0}] — [max. {SIGN1} ¢{VALUE1}]",
   "extendedtooltip.common.range_value_money": "{SIGN0} ¢{VALUE0} — {SIGN1} ¢{VALUE1}",
+  "extendedtooltip.anarchyMode": "규칙 무시",
   "extendedtooltip.pet": "애완동물",
   "extendedtooltip.pets": "애완동물",
   "extendedtooltip.parkinglots.utilization": "활용도",
