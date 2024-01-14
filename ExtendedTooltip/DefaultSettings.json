@@ -1,0 +1,62 @@
+{
+  "version": "1.3.0",
+
+  // GENERAL
+  "IsEnabled": true,
+  "DisplayMode": "instant",
+  "DisplayModeHotkey": "ALT",
+  "UseExtendedLayout": true,
+  "ShowCitizen": true,
+  "ShowCitizenState": true,
+  "ShowCitizenHappiness": true,
+  "ShowCitizenType": true,
+  "ShowCitizenWealth": true,
+  "ShowCitizenEducation": true,
+
+  // Company
+  "ShowCompany": true,
+  "ShowEfficiency": true,
+  "ShowEmployee": true,
+
+  // Parks
+  "ShowPark": true,
+  "ShowParkMaintenance": true,
+
+  // Parking
+  "ShowParkingFacility": true,
+  "ShowParkingFees": true,
+  "ShowParkingCapacity": true,
+
+  // Public Transport
+  "ShowPublicTransport": true,
+  "ShowPublicTransportWaitingPassengers": true,
+  "ShowPublicTransportWaitingTime": true,
+
+  // Roads
+  "ShowRoad": true,
+  "ShowRoadLength": true,
+  "ShowRoadUpkeep": true,
+  "ShowRoadCondition": true,
+
+  // Schools
+  "ShowSchool": true,
+  "ShowSchoolStudentCapacity": true,
+
+  // Spawnables
+  "ShowGrowables": true,
+  "ShowGrowablesHousehold": true,
+  "ShowGrowablesHouseholdDetails": true,
+  "ShowGrowablesLevel": true,
+  "ShowGrowablesLevelDetails": true,
+  "ShowGrowablesRent": true,
+  "ShowGrowablesZoneInfo": true,
+  "ShowGrowablesBalance": true,
+
+  // Vehicles
+  "ShowVehicle": true,
+  "ShowVehicleState": true,
+  "ShowVehicleDriver": true,
+  "ShowVehiclePostvan": true,
+  "ShowVehicleGarbageTruck": true,
+  "ShowVehiclePassengerDetails": true
+}

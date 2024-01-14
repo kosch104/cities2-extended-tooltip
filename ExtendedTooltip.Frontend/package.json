@@ -1,0 +1,23 @@
+{
+  "name": "extended.tooltip.frontend",
+  "version": "0.0.0",
+  "description": "ExtendedTooltip.Frontend",
+  "main": "gulpfile.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.8",
+    "eslint": "^8.21.0",
+    "fs-extra": "^11.2.0",
+    "gulp": "^4.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "eslintConfig": {},
+  "dependencies": {
+    "gulp-watch": "^5.0.1",
+    "hookui-framework": "github:captain-of-coit/hookui-framework",
+    "react-markdown": "^9.0.1"
+  }
+}
