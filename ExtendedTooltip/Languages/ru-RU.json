@@ -92,5 +92,6 @@
   "extendedtooltip.setting.vehicle.driver.description": "Показывает информацию о водителе выбранного автомобиля.",
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Показывает мусорную емкость выбранных мусорных грузовиков.",
   "extendedtooltip.setting.vehicle.postvan.description": "Показывает пропускную способность выбранного поста vans.",
-  "extendedtooltip.setting.vehicle.passenger_detail.description": "Показывает подробную информацию о пассажирах выбранного автомобиля."
+  "extendedtooltip.setting.vehicle.passenger_detail.description": "Показывает подробную информацию о пассажирах выбранного автомобиля.",
+  "extendedtooltip.setting.displayMode.hotkey.description": "Горячая клавиша для срабатывания подсказки для отображения."
 }

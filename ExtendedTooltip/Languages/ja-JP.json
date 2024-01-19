@@ -92,5 +92,6 @@
   "extendedtooltip.setting.vehicle.driver.description": "選択した車両のドライバー情報を表示します。",
   "extendedtooltip.setting.vehicle.garbage_truck.description": "選択したガベージトラックのゴミ容量を表示します。",
   "extendedtooltip.setting.vehicle.postvan.description": "選択したポストバンのメール容量を表示します。",
-  "extendedtooltip.setting.vehicle.passenger_detail.description": "選択した車両の乗客に関する詳細情報を表示します。"
+  "extendedtooltip.setting.vehicle.passenger_detail.description": "選択した車両の乗客に関する詳細情報を表示します。",
+  "extendedtooltip.setting.displayMode.hotkey.description": "ツールチップを表示するためのホットキー。"
 }

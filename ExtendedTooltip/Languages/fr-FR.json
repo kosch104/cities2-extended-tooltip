@@ -92,5 +92,6 @@
   "extendedtooltip.setting.vehicle.driver.description": "Affiche les informations du conducteur du véhicule sélectionné.",
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Affiche la capacité des ordures des camions sélectionnés.",
   "extendedtooltip.setting.vehicle.postvan.description": "Affiche la capacité de courrier des fourgonnettes sélectionnées.",
-  "extendedtooltip.setting.vehicle.passenger_detail.description": "Affiche des informations détaillées sur les passagers du véhicule sélectionné."
+  "extendedtooltip.setting.vehicle.passenger_detail.description": "Affiche des informations détaillées sur les passagers du véhicule sélectionné.",
+  "extendedtooltip.setting.displayMode.hotkey.description": "La touche de raccourci pour déclencher l'affichage de l'infobulle."
 }

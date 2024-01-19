@@ -92,5 +92,6 @@
   "extendedtooltip.setting.vehicle.driver.description": "Mostra le informazioni sul conducente del veicolo selezionato.",
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Mostra la capacità di immondizia dei camion di immondizia selezionati.",
   "extendedtooltip.setting.vehicle.postvan.description": "Mostra la capacità di posta dei post furgoni selezionati.",
-  "extendedtooltip.setting.vehicle.passenger_detail.description": "Mostra informazioni dettagliate sui passeggeri del veicolo selezionato."
+  "extendedtooltip.setting.vehicle.passenger_detail.description": "Mostra informazioni dettagliate sui passeggeri del veicolo selezionato.",
+  "extendedtooltip.setting.displayMode.hotkey.description": "Il tasto di scelta rapida per attivare la visualizzazione del tooltip."
 }

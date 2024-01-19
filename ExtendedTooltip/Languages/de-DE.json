@@ -92,5 +92,6 @@
   "extendedtooltip.setting.vehicle.driver.description": "Zeigt Fahrerinformationen des ausgewählten Fahrzeugs.",
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Zeigt die Müllkapazität des ausgewählten Müllwagens an.",
   "extendedtooltip.setting.vehicle.postvan.description": "Zeigt die Kapazität des ausgewählten Postwagens an.",
-  "extendedtooltip.setting.vehicle.passenger_detail.description": "Zeigt detaillierte Informationen über die Fahrgäste des ausgewählten Fahrzeugs."
+  "extendedtooltip.setting.vehicle.passenger_detail.description": "Zeigt detaillierte Informationen über die Fahrgäste des ausgewählten Fahrzeugs.",
+  "extendedtooltip.setting.displayMode.hotkey.description": "Der Hotkey, mit dem der Tooltip angezeigt wird."
 }

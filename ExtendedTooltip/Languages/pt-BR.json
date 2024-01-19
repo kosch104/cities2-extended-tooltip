@@ -92,5 +92,6 @@
   "extendedtooltip.setting.vehicle.driver.description": "Mostra informações do motorista do veículo selecionado.",
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Mostra a capacidade de lixo dos caminhões de lixo selecionados.",
   "extendedtooltip.setting.vehicle.postvan.description": "Mostra a capacidade do e-mail dos carrinhos de post selecionados.",
-  "extendedtooltip.setting.vehicle.passenger_detail.description": "Mostra informações detalhadas sobre os passageiros do veículo selecionado."
+  "extendedtooltip.setting.vehicle.passenger_detail.description": "Mostra informações detalhadas sobre os passageiros do veículo selecionado.",
+  "extendedtooltip.setting.displayMode.hotkey.description": "A tecla de atalho para acionar a dica para mostrar."
 }

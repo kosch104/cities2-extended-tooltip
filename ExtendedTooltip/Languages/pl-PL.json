@@ -92,5 +92,6 @@
   "extendedtooltip.setting.vehicle.driver.description": "Pokazuje informacje dla kierowcy wybranego pojazdu.",
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Pokazuje pojemność śmieci wybranych samochodów dostawczych.",
   "extendedtooltip.setting.vehicle.postvan.description": "Pokazuje pojemność mailową wybranych vanów postów.",
-  "extendedtooltip.setting.vehicle.passenger_detail.description": "Pokazuje szczegółowe informacje o pasażerach wybranego pojazdu."
+  "extendedtooltip.setting.vehicle.passenger_detail.description": "Pokazuje szczegółowe informacje o pasażerach wybranego pojazdu.",
+  "extendedtooltip.setting.displayMode.hotkey.description": "Skrót klawiszowy do wyświetlenia podpowiedzi."
 }
