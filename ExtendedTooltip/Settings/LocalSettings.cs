@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace ExtendedTooltip.Settings
 {
-    public class LocalSettings<IModel>
+    public class LocalSettings
     {
-        private IModel m_SettingsModel;
-        public IModel SettingsModel => m_SettingsModel;
+        public ModSettings m_ModSettings { get; set; }
+
+        private readonly JsonSerializerSettings m_SerializerSettings = new()
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            Formatting = Formatting.Indented
+        };
 
         public void Init() => Load();
         public void Reload() => Load();
@@ -18,7 +23,7 @@ namespace ExtendedTooltip.Settings
         /// Save settings to a local JSON file
         /// </summary>
         /// <param name="settings"></param>
-        public async Task Save()
+        public void Save()
         {
             string assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string filename = "UserSettings.json";
@@ -26,9 +31,8 @@ namespace ExtendedTooltip.Settings
 
             try
             {
-                string updatedSettingsJson = JsonConvert.SerializeObject(m_SettingsModel);
-                using StreamWriter writer = new(fullFilePath, false, Encoding.UTF8);
-                await writer.WriteAsync(updatedSettingsJson);
+                string updatedSettingsJson = JsonConvert.SerializeObject(m_ModSettings, m_SerializerSettings);
+                File.WriteAllText(fullFilePath, updatedSettingsJson, Encoding.UTF8);
             }
             catch (System.Exception e)
             {
@@ -64,11 +68,11 @@ namespace ExtendedTooltip.Settings
             {
                 // Access settings
                 string settingsJson = File.ReadAllText(fullFilePath);
-                IModel localSettingsItem = JsonConvert.DeserializeObject<IModel>(settingsJson);
+                ModSettings localSettingsItem = JsonConvert.DeserializeObject<ModSettings>(settingsJson);
 
                 if (localSettingsItem != null)
                 {
-                    m_SettingsModel = localSettingsItem;
+                    m_ModSettings = localSettingsItem;
                 }
             }
             catch (System.Exception e)

@@ -1,7 +1,7 @@
 import React from "react";
-import Example from "./example.jsx";
-import Changelog from "./components/changelog.jsx";
+// import Example from "./example.jsx";
 import TabSettings from "./_tab_settings.jsx";
+import About from "./_about.jsx";
 import "./styles.jsx";
 
 const ExtendedTooltipButton = ({ react, setupController }) => {
@@ -38,7 +38,20 @@ const ExtendedTooltipButton = ({ react, setupController }) => {
     return <>
         <div className="spacer_oEi"></div>
         <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} class="button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm">
-            <Icon className="icon-lg" icon="coui://GameUI/Media/Game/Notifications/LeveledUp.svg"></Icon>
+            <svg className="icon" viewBox="0 0 24 24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns: dc="http://purl.org/dc/elements/1.1/">
+                <g transform="translate(0 -1028.4)">
+                    <path d="m22 1030.4c1.105 0 2 0.9 2 2v3 2 3c0 1.1-0.895 2-2 2v4l-4.875-4h-2.125-6c-1.1046 0-2-0.9-2-2v-3-2-3c0-1.1 0.8954-2 2-2h6 1 6z" fill="#2980b9" />
+                    <path d="m22 1029.4c1.105 0 2 0.9 2 2v3 2 3c0 1.1-0.895 2-2 2v4l-4.875-4h-2.125-6c-1.1046 0-2-0.9-2-2v-3-2-3c0-1.1 0.8954-2 2-2h6 1 6z" fill="#3498db" />
+                    <path d="m2 1036.4c-1.1046 0-2 0.9-2 2v3 2 3c0 1.1 0.89543 2 2 2v4l4.875-4h2.125 6c1.105 0 2-0.9 2-2v-3-2-3c0-1.1-0.895-2-2-2h-6-1-6z" fill="#27ae60" />
+                    <path d="m2 1035.4c-1.1046 0-2 0.9-2 2v3 2 3c0 1.1 0.89543 2 2 2v4l4.875-4h2.125 6c1.105 0 2-0.9 2-2v-3-2-3c0-1.1-0.895-2-2-2h-6-1-6z" fill="#2ecc71" />
+                    <path d="m6 13c0 0.552-0.4477 1-1 1s-1-0.448-1-1 0.4477-1 1-1 1 0.448 1 1z" transform="matrix(1.5 0 0 1.5 -3 1023.4)" fill="#27ae60" />
+                    <path d="m6 13c0 0.552-0.4477 1-1 1s-1-0.448-1-1 0.4477-1 1-1 1 0.448 1 1z" transform="matrix(1.5 0 0 1.5 -3 1022.4)" fill="#ecf0f1" />
+                    <path d="m6 13c0 0.552-0.4477 1-1 1s-1-0.448-1-1 0.4477-1 1-1 1 0.448 1 1z" transform="matrix(1.5 0 0 1.5 1 1023.4)" fill="#27ae60" />
+                    <path d="m6 13c0 0.552-0.4477 1-1 1s-1-0.448-1-1 0.4477-1 1-1 1 0.448 1 1z" transform="matrix(1.5 0 0 1.5 1 1022.4)" fill="#ecf0f1" />
+                    <path d="m6 13c0 0.552-0.4477 1-1 1s-1-0.448-1-1 0.4477-1 1-1 1 0.448 1 1z" transform="matrix(1.5 0 0 1.5 5 1023.4)" fill="#27ae60" />
+                    <path d="m6 13c0 0.552-0.4477 1-1 1s-1-0.448-1-1 0.4477-1 1-1 1 0.448 1 1z" transform="matrix(1.5 0 0 1.5 5 1022.4)" fill="#ecf0f1" />
+                </g>
+            </svg>
             <ToolTip visible={tooltipVisible} float="up" align="right">
                 <ToolTipContent title="Extended Tooltip" description={description} />
             </ToolTip>
@@ -48,52 +61,26 @@ const ExtendedTooltipButton = ({ react, setupController }) => {
 window.$_gooee.register("extendedtooltip", "ExtendedTooltipIconButton", ExtendedTooltipButton, "bottom-right-toolbar", "extendedtooltip");
 
 const ExtendedTooltipContainer = ({ react, setupController }) => {
-    const { Grid, TabModal, Scrollable } = window.$_gooee.framework;
-    const { model, update } = setupController();
+    const { TabModal } = window.$_gooee.framework;
+    const { model, update, trigger } = setupController();
+
+    if (model.Translations === undefined || model.DisplayModeDelay === undefined) {
+        return <div></div>;
+    };
+    const translations = model.Translations;
 
     const tabs = [
         {
             name: "SETTINGS",
-            label: <div>Settings</div>,
-            content: <TabSettings react={react} controller={setupController} />
+            label: <div>{translations.uiTabSettings}</div>,
+            content: <TabSettings react={react} model={model} update={update} trigger={trigger} />
         },
         {
-            name: "WHATSNEW",
-            label: <div className="d-flex flex-row w-x">
-                <div className="align-self-flex-start icon-sm fa fa-solid-stop mr-2"></div>
-                <div className="flex-1 w-x">What's new!</div>
-            </div>,
-            content: <div>
-                <Grid className="h-100" auto>
-                    <div>
-                        <h2 className="text-primary mb-2">What's new!</h2>
-                        <div className="bg-black-trans-less-faded rounded-sm">
-                            <div className="p-4">
-                                <p className="mb-2">Welcome to ExtendedTooltip!</p>
-                                <p>This mod is developed by Cities2Modding community.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <h2 className="text-muted mb-2">Changelog</h2>
-                        <div>
-                            <p>These are the last updates of ExtendedTooltip. You can always see more under:</p>
-                        </div>
-                        <div className="bg-black-trans-less-faded rounded-sm flex-1">
-                            <Scrollable>
-                                <div className="p-4">
-                                    <Changelog/>
-                                </div>
-                            </Scrollable>
-                        </div>
-                    </div>
-                </Grid>
-            </div>
-        },  {
             name: "ABOUT",
-            label: <div>About</div>,
-            content: <div>Test</div>
-        }];
+            label: <div>{translations.uiTabAbout}</div>,
+            content: <About react={react} model={model} update={update} />
+        }
+    ];
 
     const closeModal = () => {
         update("IsVisible", false);
@@ -104,6 +91,7 @@ const ExtendedTooltipContainer = ({ react, setupController }) => {
 };
 window.$_gooee.register("extendedtooltip", "ExtendedTooltipContainer", ExtendedTooltipContainer, "main-container", "extendedtooltip");
 
+/*
 const ExtendedTooltipExampleButton = ({ react, setupController }) => {
     const [tooltipVisible, setTooltipVisible] = react.useState(false);
     const onMouseEnter = () => {
@@ -141,3 +129,4 @@ const ExtendedTooltipExampleButton = ({ react, setupController }) => {
 };
 window.$_gooee.register("extendedtooltip", "ExtendedTooltipExampleButton", ExtendedTooltipExampleButton, "bottom-right-toolbar", "extendedtooltip");
 window.$_gooee.register("extendedTooltip", "Example", Example, "main-container", "extendedtooltip");
+*/

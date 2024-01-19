@@ -1,32 +1,20 @@
-﻿using ExtendedTooltip.Settings;
-using Gooee.Plugins;
-using System.Collections.Generic;
+﻿using ExtendedTooltip.Models;
 
-namespace ExtendedTooltip.Models
+namespace ExtendedTooltip.Settings
 {
-    public class ExtendedTooltipModel : Model
+    public class ModSettings
     {
         /// <summary>
         /// MOD RELATED OPTIONS
         /// </summary>
 
-        // LOCALES
-        public string Locale { get; set; } = "en";
-        public Dictionary<string, string> Translations { get; set; } = [];
-
-        // UI
-        public bool IsVisible { get; set; } = false;
-        public string ActiveTab { get; set; } = "settings";
-        public bool HasUpdate { get; set; } = false;
-        public bool ShowExample { get; set; } = false;
-        public string Version { get; set; } = "0.0.0";
-
+        // U
         // GENERAL
         public bool IsEnabled { get; set; } = true;
         public bool UseExtendedLayout { get; set; } = true;
         public string DisplayMode { get; set; } = "instant";
         public string DisplayModeHotkey { get; set; } = "ALT";
-        public string DisplayModeDelay { get; set; } = "220";
+        public int DisplayModeDelay { get; set; } = 220;
 
         /// <summary>
         ///  TOOLTIPS
@@ -93,16 +81,16 @@ namespace ExtendedTooltip.Models
         public bool ShowVehicleGarbageTruck { get; set; } = true;
         public bool ShowVehiclePassengerDetails { get; set; } = true;
 
-        // CONVERSION TO MOD SETTINGS
-        public static implicit operator ModSettings(ExtendedTooltipModel model)
+        // CONVERSIONS TO EXTENDED TOOLTIP MODEL
+        public static implicit operator ExtendedTooltipModel(ModSettings settings)
         {
-            var destination = new ModSettings();
-            foreach (var sourceProperty in model.GetType().GetProperties())
+            var destination = new ExtendedTooltipModel();
+            foreach (var sourceProperty in settings.GetType().GetProperties())
             {
                 var destinationProperty = destination.GetType().GetProperty(sourceProperty.Name);
                 if (destinationProperty != null && destinationProperty.PropertyType == sourceProperty.PropertyType)
                 {
-                    destinationProperty.SetValue(destination, sourceProperty.GetValue(model));
+                    destinationProperty.SetValue(destination, sourceProperty.GetValue(settings));
                 }
             }
 

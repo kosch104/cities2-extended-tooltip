@@ -1,4 +1,5 @@
 ﻿using Colossal.Entities;
+using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
 using Game.Objects;
 using Game.Routes;
@@ -19,14 +20,15 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)
         {
-            if (m_Model.ShowPublicTransportWaitingPassengers == false && m_Model.ShowPublicTransportWaitingTime == false)
+            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            if (modSettings.ShowPublicTransportWaitingPassengers == false && modSettings.ShowPublicTransportWaitingTime == false)
                 return;
 
             int waitingPassengers = 0;
             int averageWaitingTime = 0;
             GetPassengerInfo(selectedEntity, ref averageWaitingTime, ref waitingPassengers);
 
-            if (m_Model.ShowPublicTransportWaitingPassengers)
+            if (modSettings.ShowPublicTransportWaitingPassengers)
             {
                 StringTooltip waitingPassengersTooltip = new()
                 {
@@ -36,7 +38,7 @@ namespace ExtendedTooltip.TooltipBuilder
                 tooltipGroup.children.Add(waitingPassengersTooltip);
             }
 
-            if (m_Model.ShowPublicTransportWaitingTime && waitingPassengers != 0)
+            if (modSettings.ShowPublicTransportWaitingTime && waitingPassengers != 0)
             {
                 string unit = "s";
                 TooltipColor tooltipColor = TooltipColor.Success;

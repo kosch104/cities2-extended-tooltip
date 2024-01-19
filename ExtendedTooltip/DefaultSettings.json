@@ -5,6 +5,7 @@
   "IsEnabled": true,
   "DisplayMode": "instant",
   "DisplayModeHotkey": "ALT",
+  "DisplayModeDelay":  100,
   "UseExtendedLayout": true,
   "ShowCitizen": true,
   "ShowCitizenState": true,

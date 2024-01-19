@@ -1,4 +1,5 @@
 ﻿using Colossal.Entities;
+using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
 using Game.Companies;
 using Game.Economy;
@@ -18,32 +19,30 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity companyEntity, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
         {
+            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
             // Company output tooltip
-            if (m_Model.ShowCompanyOutput)
+            Entity companyEntityPrefab = m_EntityManager.GetComponentData<PrefabRef>(companyEntity).m_Prefab;
+
+            // Company resource section
+            if (m_EntityManager.TryGetBuffer(companyEntity, true, out DynamicBuffer<Resources> resources) && m_EntityManager.TryGetComponent(companyEntityPrefab, out IndustrialProcessData industrialProcessData))
             {
-                Entity companyEntityPrefab = m_EntityManager.GetComponentData<PrefabRef>(companyEntity).m_Prefab;
-
-                // Company resource section
-                if (m_EntityManager.TryGetBuffer(companyEntity, true, out DynamicBuffer<Resources> resources) && m_EntityManager.TryGetComponent(companyEntityPrefab, out IndustrialProcessData industrialProcessData))
+                Resource input1 = industrialProcessData.m_Input1.m_Resource;
+                Resource input2 = industrialProcessData.m_Input2.m_Resource;
+                Resource output = industrialProcessData.m_Output.m_Resource;
+                
+                if (input1 > 0 && input1 != Resource.NoResource && input1 != output)
                 {
-                    Resource input1 = industrialProcessData.m_Input1.m_Resource;
-                    Resource input2 = industrialProcessData.m_Input2.m_Resource;
-                    Resource output = industrialProcessData.m_Output.m_Resource;
-                    
-                    if (input1 > 0 && input1 != Resource.NoResource && input1 != output)
-                    {
-                        (m_Model.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, input1));
-                    }
-
-                    if (input2 > 0 && input2 != Resource.NoResource && input2 != output)
-                    {
-                        (m_Model.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, input2));
-                    }
-
-                    (m_Model.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, output, true));
-
-                    return;
+                    (modSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, input1));
                 }
+
+                if (input2 > 0 && input2 != Resource.NoResource && input2 != output)
+                {
+                    (modSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, input2));
+                }
+
+                (modSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, output, true));
+
+                return;
             }
         }
 

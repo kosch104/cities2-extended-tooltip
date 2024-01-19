@@ -12,7 +12,7 @@ namespace ExtendedTooltip.Systems
         private CustomTranslationSystem m_CustomTranslationSystem;
         private ExtendedTooltipSystem m_ExtendedTooltipSystem;
 
-        private LocalSettings<ExtendedTooltipModel> m_Settings;
+        private LocalSettings m_Settings;
         private StringTooltip m_NetToolMode;
         private StringTooltip m_AnarchyTooltip;
 
@@ -45,8 +45,8 @@ namespace ExtendedTooltip.Systems
         [Preserve]
         protected override void OnUpdate()
         {
-            ExtendedTooltipModel model = m_Settings.SettingsModel;
-            if (m_ToolSystem != null && model.ShowNetToolSystem)
+            ModSettings modSettings = m_Settings.m_ModSettings;
+            if (m_ToolSystem != null && modSettings.ShowNetToolSystem)
             {
                 // Add anarchy tooltip if the active tool is ObjectToolSystem or NetToolSystem and ignoreErrors is true
                 /*if (model.ShowAnarchyMode && m_ToolSystem.ignoreErrors == true
@@ -56,13 +56,13 @@ namespace ExtendedTooltip.Systems
                     AddMouseTooltip(m_AnarchyTooltip);
                 }*/
 
-                if (model.ShowNetToolMode && m_ToolSystem.activeTool is NetToolSystem)
+                if (modSettings.ShowNetToolMode && m_ToolSystem.activeTool is NetToolSystem)
                 {
                     m_NetToolMode.icon = $"Media/Tools/Net Tool/{m_NetToolSystem.mode}.svg";
                     m_NetToolMode.value = m_CustomTranslationSystem.GetLocalGameTranslation($"ToolOptions.TOOLTIP_TITLE[{m_NetToolSystem.mode}]");
 
                     // Add elevation to tooltip if it's not 0.0f
-                    if (model.ShowNetToolElevation && m_NetToolSystem.elevation != 0.0f)
+                    if (modSettings.ShowNetToolElevation && m_NetToolSystem.elevation != 0.0f)
                     {
                         // Add + sign for positive elevation (- is added by default)
                         string sign = (m_NetToolSystem.elevation > 0.0f) ? "+" : "";

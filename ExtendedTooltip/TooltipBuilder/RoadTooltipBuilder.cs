@@ -1,4 +1,5 @@
 ﻿using Colossal.Entities;
+using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
 using Game.Net;
 using Game.Prefabs;
@@ -19,6 +20,8 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)
         {
+            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+
             float length = 0f;
             float worstCondition = 0f;
             float bestCondition = 100f;
@@ -44,7 +47,7 @@ namespace ExtendedTooltip.TooltipBuilder
             {
 
                 Entity edge = buffer[i].m_Edge;
-                if (m_Model.ShowRoadLength && m_EntityManager.TryGetComponent(edge, out Road _) && m_EntityManager.TryGetComponent(edge, out Curve curve))
+                if (modSettings.ShowRoadLength && m_EntityManager.TryGetComponent(edge, out Road _) && m_EntityManager.TryGetComponent(edge, out Curve curve))
                 {
                     length += curve.m_Length;
 
@@ -116,14 +119,14 @@ namespace ExtendedTooltip.TooltipBuilder
                     condition += math.csum(wear) * 0.5f;
                 }
 
-                if (m_Model.ShowRoadUpkeep && m_EntityManager.TryGetComponent(edge, out PrefabRef prefabRef) && m_EntityManager.TryGetComponent(prefabRef.m_Prefab, out PlaceableNetData placeableNetData))
+                if (modSettings.ShowRoadUpkeep && m_EntityManager.TryGetComponent(edge, out PrefabRef prefabRef) && m_EntityManager.TryGetComponent(prefabRef.m_Prefab, out PlaceableNetData placeableNetData))
                 {
                     upkeep += placeableNetData.m_DefaultUpkeepCost;
                 }
             }
 
             // No need to calc if both are disabled
-            if (m_Model.ShowRoadUpkeep == false && m_Model.ShowRoadCondition == false && m_Model.ShowRoadLength == false)
+            if (modSettings.ShowRoadUpkeep == false && modSettings.ShowRoadCondition == false && modSettings.ShowRoadLength == false)
                 return;
 
             // Traffic volume and flow need some work
@@ -141,7 +144,7 @@ namespace ExtendedTooltip.TooltipBuilder
             UnityEngine.Debug.Log(string.Join(", ", volume));
             UnityEngine.Debug.Log(string.Join(", ", flow));*/
 
-            if (m_Model.ShowRoadLength)
+            if (modSettings.ShowRoadLength)
             {
                 // 1 = km , 0 = m
                 int lengthFormat = length >= 1000 ? 1 : 0;
@@ -155,7 +158,7 @@ namespace ExtendedTooltip.TooltipBuilder
                 tooltipGroup.children.Add(lengthTooltip);
             }
 
-            if (m_Model.ShowRoadUpkeep)
+            if (modSettings.ShowRoadUpkeep)
             {
                 int finalUpkeep = Convert.ToInt16(upkeep);
                 StringTooltip upkeepTooltip = new()
@@ -171,7 +174,7 @@ namespace ExtendedTooltip.TooltipBuilder
                 tooltipGroup.children.Add(upkeepTooltip);
             }
             
-            if (m_Model.ShowRoadCondition)
+            if (modSettings.ShowRoadCondition)
             {
                 bestCondition = 100f - bestCondition / 10f * 100f;
                 worstCondition = 100f - worstCondition / 10f * 100f;

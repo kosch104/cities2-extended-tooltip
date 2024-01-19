@@ -1,4 +1,5 @@
-﻿using ExtendedTooltip.Systems;
+﻿using ExtendedTooltip.Settings;
+using ExtendedTooltip.Systems;
 using Game.Prefabs;
 using Game.UI.Tooltip;
 using Unity.Entities;
@@ -12,12 +13,13 @@ namespace ExtendedTooltip.TooltipBuilder
         public ParkTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
-            UnityEngine.Debug.Log($"Created ParkTooltipBuilder.");
+            Debug.Log($"Created ParkTooltipBuilder.");
         }
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
-            if (m_Model.ShowParkMaintenance == false)
+            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            if (modSettings.ShowParkMaintenance == false)
                 return;
 
             int maintenance = 0;

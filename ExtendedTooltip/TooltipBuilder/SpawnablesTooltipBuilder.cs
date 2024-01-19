@@ -1,11 +1,13 @@
 ﻿using Colossal.Entities;
 using Colossal.Mathematics;
+using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Citizens;
 using Game.Common;
 using Game.Companies;
 using Game.Economy;
+using Game.Modding;
 using Game.Prefabs;
 using Game.UI.InGame;
 using Game.UI.Tooltip;
@@ -22,6 +24,7 @@ namespace ExtendedTooltip.TooltipBuilder
     public class SpawnablesTooltipBuilder : TooltipBuilderBase
     {
         private readonly PrefabSystem m_PrefabSystem;
+        private ModSettings m_ModSettings;
         
         public SpawnablesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem, PrefabSystem prefabSystem)
         : base(entityManager, customTranslationSystem)
@@ -32,10 +35,11 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
         {
-            if (m_Model.ShowGrowablesHousehold == false && m_Model.ShowGrowablesHouseholdDetails == false && m_Model.ShowGrowablesLevel == false && m_Model.ShowGrowablesLevelDetails == false && m_Model.ShowGrowablesRent == false)
+            m_ModSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            if (m_ModSettings.ShowGrowablesHousehold == false && m_ModSettings.ShowGrowablesHouseholdDetails == false && m_ModSettings.ShowGrowablesLevel == false && m_ModSettings.ShowGrowablesLevelDetails == false && m_ModSettings.ShowGrowablesRent == false)
                 return;
 
-            if (m_Model.ShowGrowablesZoneInfo)
+            if (m_ModSettings.ShowGrowablesZoneInfo)
             {
                 ZoneData zoneData = m_EntityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);
                 ZonePrefab zonePrefab = m_PrefabSystem.GetPrefab<ZonePrefab>(spawnableBuildingData.m_ZonePrefab);
@@ -62,10 +66,10 @@ namespace ExtendedTooltip.TooltipBuilder
                     icon = "Media/Game/Icons/Zones.svg",
                     value = finalZoneName,
                 };
-                (m_Model.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(zoneTooltip);
+                (m_ModSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(zoneTooltip);
             }
 
-            if (m_Model.ShowGrowablesLevel)
+            if (m_ModSettings.ShowGrowablesLevel)
             {
                 TooltipColor buildingLevelColor = TooltipColor.Info;
                 string buildingLevelLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LEVEL", "Level");
@@ -81,7 +85,7 @@ namespace ExtendedTooltip.TooltipBuilder
                     buildingLevelColor = TooltipColor.Error;
                 }
 
-                if (m_Model.ShowGrowablesLevelDetails == true && levelingCost > 0)
+                if (m_ModSettings.ShowGrowablesLevelDetails == true && levelingCost > 0)
                 {
                     buildingLevelValue += $" [¢{currentCondition} / ¢{levelingCost}]";
                 }
@@ -103,10 +107,10 @@ namespace ExtendedTooltip.TooltipBuilder
             List<int> householdRents = [];
             List<int> householdBalances = [];
             NativeList<Entity> householdsResult = new(Allocator.Temp);
-            if ((m_Model.ShowGrowablesHousehold == true || m_Model.ShowGrowablesRent == true) && CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdRents, ref householdBalances, ref householdsResult, entity, prefab))
+            if ((m_ModSettings.ShowGrowablesHousehold == true || m_ModSettings.ShowGrowablesRent == true) && CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdRents, ref householdBalances, ref householdsResult, entity, prefab))
             {
                 BuildHouseholdCitizenInfo(householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
-                if (m_Model.ShowGrowablesHousehold)
+                if (m_ModSettings.ShowGrowablesHousehold)
                 {
                     int householdCapacityPercentage = householdCount == 0 ? 0 : (int)math.round(100 * householdCount / maxHouseholds);
                     TooltipColor householdTooltipColor = (householdCount == 0 || householdCapacityPercentage < 50) ? TooltipColor.Error : householdCapacityPercentage < 80 ? TooltipColor.Warning : TooltipColor.Success;
@@ -120,7 +124,7 @@ namespace ExtendedTooltip.TooltipBuilder
                 }
 
                 // Needs revisting, not working
-                if (m_Model.ShowGrowablesHouseholdWealth && householdsResult.Length > 0)
+                if (m_ModSettings.ShowGrowablesHouseholdWealth && householdsResult.Length > 0)
                 {
                     HouseholdWealthKey wealthKey = householdsResult.Length == 1
                         ? CitizenUIUtils.GetHouseholdWealth(m_EntityManager, householdsResult[0], citizenHappinessParameters)
@@ -142,10 +146,10 @@ namespace ExtendedTooltip.TooltipBuilder
                         value = $"{wealthLabel}: {wealthValue}",
                         color = tooltipColor,
                     };
-                    (m_Model.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(wealthTooltip);
+                    (m_ModSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(wealthTooltip);
                 }
 
-                if (m_Model.ShowGrowablesBalance && householdBalances.Count > 0)
+                if (m_ModSettings.ShowGrowablesBalance && householdBalances.Count > 0)
                 {
                     string balanceLabel = m_CustomTranslationSystem.GetTranslation("balance", "Balance");
                     string balanceValue;
@@ -174,10 +178,10 @@ namespace ExtendedTooltip.TooltipBuilder
                         color = (householdCount > 1 && minBalance < 0 && maxBalance < 0) || (householdCount == 1 && finalBalance < 0) ? TooltipColor.Error : TooltipColor.Info,
                     };
 
-                    (m_Model.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(balanceTooltip);
+                    (m_ModSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(balanceTooltip);
                 }
 
-                if (m_Model.ShowGrowablesRent == true && householdRents.Count > 0)
+                if (m_ModSettings.ShowGrowablesRent == true && householdRents.Count > 0)
                 {
                     string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
                     string rentValue;
@@ -205,7 +209,7 @@ namespace ExtendedTooltip.TooltipBuilder
                         color = TooltipColor.Info,
                     };
 
-                    (m_Model.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(rentTooltip);
+                    (m_ModSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(rentTooltip);
                 }
             }
         }
@@ -299,7 +303,7 @@ namespace ExtendedTooltip.TooltipBuilder
             // If residential building is > low density (only 1 household) show the household label only
             if (maxHouseholds > 1)
             {
-                if (m_Model.ShowGrowablesHouseholdDetails)
+                if (m_ModSettings.ShowGrowablesHouseholdDetails)
                 {
                     if (pets > 0)
                     {
@@ -317,7 +321,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }
             else // low densitiy housing only has 1 household
             {
-                if (m_Model.ShowGrowablesHouseholdDetails && pets > 0)
+                if (m_ModSettings.ShowGrowablesHouseholdDetails && pets > 0)
                 {
                     finalInfoString = $"{residentsValue} {residentsLabel} [{petsValue} {petsLabel}]";
                 } else

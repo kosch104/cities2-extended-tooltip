@@ -1,4 +1,5 @@
 ﻿using Colossal.Entities;
+using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Prefabs;
@@ -7,9 +8,9 @@ using Unity.Entities;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
-    public class SchoolTooltipBuilder : TooltipBuilderBase
+    public class EducationTooltipBuilder : TooltipBuilderBase
     {
-        public SchoolTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
+        public EducationTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
             UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
@@ -17,7 +18,8 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
-            if (m_Model.ShowSchoolStudentCapacity == false)
+            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            if (modSettings.ShowEducationStudentCapacity == false)
                 return;
 
             // Add student info if available

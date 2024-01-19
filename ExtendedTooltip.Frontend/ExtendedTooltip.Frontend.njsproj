@@ -35,6 +35,7 @@
     <Content Include="src\jsx\example.jsx" />
     <Content Include="src\jsx\styles.jsx" />
     <Content Include="src\jsx\ui.jsx" />
+    <Content Include="src\jsx\_about.jsx" />
     <Content Include="src\jsx\_tab_settings.jsx" />
     <Content Include="src\style\style.scss" />
   </ItemGroup>
