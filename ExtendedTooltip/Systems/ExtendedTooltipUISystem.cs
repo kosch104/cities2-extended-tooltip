@@ -1,5 +1,6 @@
 ﻿using Colossal.UI.Binding;
 using ExtendedTooltip.Settings;
+using Game.SceneFlow;
 using Game.UI;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,6 @@ namespace ExtendedTooltip.Systems
             m_ModSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
 
             CreateLanguages();
-
             AddBinding(new TriggerBinding<string>(kGroup, "launchUrl", OpenURL));
 
             UnityEngine.Debug.Log("ExtendedTooltipUISystem created.");
@@ -151,7 +151,7 @@ namespace ExtendedTooltip.Systems
                 { "publicTransport", m_CustomTranslationSystem.GetLocalGameTranslation("TransportInfoPanel.PUBLIC_TRANSPORT_TITLE", "Public Transport")},
                 { "publicTransportDescription", m_CustomTranslationSystem.GetTranslation("setting.public_transportation.description", "Manage tooltips that show information about public transportation.") },
                 { "publicTransportWaitingPassengers", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.WAITING_PASSENGERS", "Waiting Passengers")},
-                { "publicTransportWaitingPassengersDescription", m_CustomTranslationSystem.GetLocalGameTranslation("setting.public_transportation.waiting_passengers.description", "Shows the current waiting passengers.")},
+                { "publicTransportWaitingPassengersDescription", m_CustomTranslationSystem.GetTranslation("setting.public_transportation.waiting_passengers.description", "Shows the current waiting passengers.")},
                 { "publicTransportWaitingTime", m_CustomTranslationSystem.GetTranslation("setting.public_transportation.waiting_time", "Waiting Time")},
                 { "publicTransportWaitingTimeDescription", m_CustomTranslationSystem.GetTranslation("setting.public_transportation.waiting_time.description", "Shows the average waiting time for buildings with stations.")},
 

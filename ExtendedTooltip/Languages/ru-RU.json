@@ -25,7 +25,7 @@
   "extendedtooltip.setting.enableMod": "Включить мод",
   "extendedtooltip.setting.enableMod.description": "Включить/выключить мод глобально.",
   "extendedtooltip.setting.displayMode": "Режим отображения",
-  "extendedtooltip.setting.displayMode.instant": "Мгновенный (по умолчанию)",
+  "extendedtooltip.setting.displayMode.instant": "Мгновенно",
   "extendedtooltip.setting.displayMode.delayed": "С задержкой",
   "extendedtooltip.setting.displayMode.hotkey": "Кнопка",
   "extendedtooltip.setting.extendedLayout": "Расширенный макет",

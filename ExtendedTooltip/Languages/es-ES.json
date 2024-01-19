@@ -25,7 +25,7 @@
   "extendedtooltip.setting.enableMod": "Disable Mod",
   "extendedtooltip.setting.enableMod.description": "Activar/Desactivar el mod globalmente.",
   "extendedtooltip.setting.displayMode": "Modo de visualización",
-  "extendedtooltip.setting.displayMode.instant": "Instantánea (por defecto)",
+  "extendedtooltip.setting.displayMode.instant": "Instantáneo",
   "extendedtooltip.setting.displayMode.delayed": "Retraso",
   "extendedtooltip.setting.displayMode.hotkey": "Tecla rápida",
   "extendedtooltip.setting.extendedLayout": "Diseño extendido",

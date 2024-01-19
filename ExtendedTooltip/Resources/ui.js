@@ -1950,15 +1950,15 @@
     };
     const displayModeOptions = [
       {
-        label: "Instant",
+        label: translations.displayModeInstant,
         value: "instant"
       },
       {
-        label: "Delayed",
+        label: translations.displayModeDelayed,
         value: "delayed"
       },
       {
-        label: "Hotkey",
+        label: translations.displayModeHotkey,
         value: "hotkey"
       }
     ];
