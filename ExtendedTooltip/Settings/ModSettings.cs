@@ -15,6 +15,7 @@ namespace ExtendedTooltip.Settings
         public string DisplayMode { get; set; } = "instant";
         public string DisplayModeHotkey { get; set; } = "ALT";
         public int DisplayModeDelay { get; set; } = 220;
+        public bool DisplayModeDelayOnMoveables { get; set; } = false;
 
         /// <summary>
         ///  TOOLTIPS

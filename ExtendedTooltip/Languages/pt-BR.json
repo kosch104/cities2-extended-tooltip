@@ -93,5 +93,13 @@
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Mostra a capacidade de lixo dos caminhões de lixo selecionados.",
   "extendedtooltip.setting.vehicle.postvan.description": "Mostra a capacidade do e-mail dos carrinhos de post selecionados.",
   "extendedtooltip.setting.vehicle.passenger_detail.description": "Mostra informações detalhadas sobre os passageiros do veículo selecionado.",
-  "extendedtooltip.setting.displayMode.hotkey.description": "A tecla de atalho para acionar a dica para mostrar."
+  "extendedtooltip.setting.displayMode.hotkey.description": "A tecla de atalho para acionar a dica para mostrar.",
+  "extendedtooltip.ui.tab.tooltips": "Dicas",
+  "extendedtooltip.ui.tab.tooltips.description": "Gerenciar e personalizar dicas",
+  "extendedtooltip.ui.on_off": "Ativado/Desligado",
+  "extendedtooltip.ui.tab.settings": "Configurações",
+  "extendedtooltip.ui.tab.about": "Sobre",
+  "extendedtooltip.setting.growables.description": "Gerencie dicas de ferramentas para edifícios de zonas como residenciais, comerciais, escritórios e industriais.",
+  "extendedtooltip.setting.displayMode.delay.on_moveables": "Em bens móveis",
+  "extendedtooltip.setting.displayMode.delay.on_moveables.description": "Também ativa o atraso em entidades móveis, como cidadãos ou veículos."
 }

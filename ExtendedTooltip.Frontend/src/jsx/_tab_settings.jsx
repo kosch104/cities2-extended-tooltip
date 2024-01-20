@@ -350,7 +350,11 @@ const TabSettings = ({ react, model, update, trigger }) => {
                                 </div>
                             </Grid>
                             <small className="form-text text-muted mt-2">{translations.displayModeDelayDescription}</small>
-                        </FormGroup>: null}
+                        </FormGroup> : null}
+                        {model.DisplayMode == 'delayed' ? <FormGroup label={translations.displayModeDelayOnMoveables}>
+                            <FormCheckBox checked={model.DisplayModeDelayOnMoveables} label={translations.uiOnOff} onToggle={value => onSettingsToggle("DisplayModeDelayOnMoveables", value)} />
+                            <small className="text-muted mb-2">{translations.displayModeDelayOnMoveablesDescription}</small>
+                        </FormGroup> : null}
                     </div>
                 </div>
                 <div className="bg-black-trans-less-faded rounded-sm mb-4">

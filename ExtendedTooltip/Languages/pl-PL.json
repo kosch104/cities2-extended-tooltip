@@ -93,5 +93,13 @@
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Pokazuje pojemność śmieci wybranych samochodów dostawczych.",
   "extendedtooltip.setting.vehicle.postvan.description": "Pokazuje pojemność mailową wybranych vanów postów.",
   "extendedtooltip.setting.vehicle.passenger_detail.description": "Pokazuje szczegółowe informacje o pasażerach wybranego pojazdu.",
-  "extendedtooltip.setting.displayMode.hotkey.description": "Skrót klawiszowy do wyświetlenia podpowiedzi."
+  "extendedtooltip.setting.displayMode.hotkey.description": "Skrót klawiszowy do wyświetlenia podpowiedzi.",
+  "extendedtooltip.ui.tab.tooltips": "Porady",
+  "extendedtooltip.ui.tab.tooltips.description": "Zarządzaj i dostosuj podpowiedzi.",
+  "extendedtooltip.ui.on_off": "Włącz/Wył.",
+  "extendedtooltip.ui.tab.settings": "Ustawienia",
+  "extendedtooltip.ui.tab.about": "O programie",
+  "extendedtooltip.setting.growables.description": "Zarządzaj podpowiedziami dla budynków strefowych, takich jak budynki mieszkalne, komercyjne, biurowe i przemysłowe.",
+  "extendedtooltip.setting.displayMode.delay.on_moveables": "Na ruchomościach",
+  "extendedtooltip.setting.displayMode.delay.on_moveables.description": "Aktywuje również opóźnienie dla ruchomych jednostek, takich jak obywatele lub pojazdy."
 }

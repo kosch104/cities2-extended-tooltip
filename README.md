@@ -3,48 +3,6 @@
 This mod adds new informations to the mouse hover tooltip of several entities to the game.
 If you want anything added to the tooltip, please let me know and open an issue.
 
-## Updates
-- v1.2.0
-	- Added household wealth tooltip
-	- Added citizen wealth tooltip
-    - Added citizen type (tourist, citizen, commuter) tooltip
-	- Added "In stock" label to industrial/company/office storage tooltip
-	- Added Polish language
-	- Fixed waiting passengers tooltip on public transport stations
-	- Only show min-max rent if they are different
-	- Changed the layout for households
-	- Update Korean translation (thx to @hibiyasleep)
-	- Update Japanese translation (thx to @hibiyasleep)
-	- Update Chinese translation (thx to @hibiyasleep)
-	- Added translation for Anarchy Mode (thx to @hibiyasleep)
-- v1.1.0
-	- New Feature: Added tons (t), barrels (bbl.) and liters (l, kl) for resource tooltips
-	- Fixed French translation (thx to @Edou24)
-	- Requirements updated to HookUI v0.3.5
-- v1.0.1
-	- Fix padding of tooltip group for higher resolutions by changing the layout a bit
-- v1.0.0
-	- New Feature: Added an extended layout to improve tooltips readability
-	- New Feature: Added company/industry storage info
-	- Fixed some languages not showing
-- v0.10.0
-	- New Feature: Added balance info to households. Thx to @Biffa for the idea
-	- New Feature: Added passenger info to public transport station buildings
-	- New Feature: Added more detailed rent info to buildings with 1+ households
-	- Fixed citizen state tooltip. Thx @Rotiti for reporting
-	- Added color indictator to low density households. Thx @Scaristotle for reporting
-- v0.9.1
-	- Added Anarchy Mode indicator for terrain tool
-- v0.9.0
-	- New Feature: Anarchy Mode indicator
-	- New Feature: Net Tool Tooltips
-		- Shows the current net tool mode
-		- Shows the elevation
-- v0.8.0
-	- Added delayed mode
-- v0.1.0
-	- Initial release
-
 ## Requirement
 - [BepInEx v5](https://thunderstore.io/c/cities-skylines-ii/p/BepInEx/BepInExPack/) or v6 bleeding edge
 - [HookUI v0.3.3](https://thunderstore.io/c/cities-skylines-ii/p/CaptainOfCoit/HookUI/)

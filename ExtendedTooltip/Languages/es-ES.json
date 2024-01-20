@@ -93,5 +93,13 @@
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Muestra la capacidad de basura de los camiones de basura seleccionados.",
   "extendedtooltip.setting.vehicle.postvan.description": "Muestra la capacidad de correo de las furgonetas de post seleccionadas.",
   "extendedtooltip.setting.vehicle.passenger_detail.description": "Muestra información detallada sobre los pasajeros del vehículo seleccionado.",
-  "extendedtooltip.setting.displayMode.hotkey.description": "La tecla de acceso rápido para activar la descripción para mostrar."
+  "extendedtooltip.setting.displayMode.hotkey.description": "La tecla de acceso rápido para activar la descripción para mostrar.",
+  "extendedtooltip.ui.tab.tooltips": "Consejos",
+  "extendedtooltip.ui.tab.tooltips.description": "Administrar y personalizar las descripciones.",
+  "extendedtooltip.ui.on_off": "On/Off",
+  "extendedtooltip.ui.tab.settings": "Ajustes",
+  "extendedtooltip.ui.tab.about": "Acerca de",
+  "extendedtooltip.setting.growables.description": "Gestiona los tooltips de los edificios zonales como residenciales, comerciales, oficinas e insdustriales.",
+  "extendedtooltip.setting.displayMode.delay.on_moveables": "Sobre los bienes muebles",
+  "extendedtooltip.setting.displayMode.delay.on_moveables.description": "También activa el retardo en entidades móviles como ciudadanos o vehículos."
 }

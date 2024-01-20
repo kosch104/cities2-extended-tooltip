@@ -32,6 +32,8 @@
   "extendedtooltip.setting.displayMode.hotkey.description": "The hotkey to trigger the tooltip to show.",
   "extendedtooltip.setting.displayMode.delay": "Delay",
   "extendedtooltip.setting.displayMode.delay.description": "Set the delay the tooltips will show up.",
+  "extendedtooltip.setting.displayMode.delay.on_moveables": "Delay moveables too",
+  "extendedtooltip.setting.displayMode.delay.on_moveables.description": "Also activates the delay on moveable entities like citizens or vehicles.",
   "extendedtooltip.setting.extendedLayout": "Extended Layout",
   "extendedtooltip.setting.extendedLayout.description": "Enables a second layout to show tooltips more organized.",
   "extendedtooltip.setting.general": "General",
@@ -93,5 +95,10 @@
   "extendedtooltip.setting.vehicle.driver.description": "Shows driver information of the selected vehicle.",
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Shows garbage capacity of the selected garbage trucks.",
   "extendedtooltip.setting.vehicle.postvan.description": "Shows mail capacity of the selected post vans.",
-  "extendedtooltip.setting.vehicle.passenger_detail.description": "Shows detailed information about the passengers of the selected vehicle."
+  "extendedtooltip.setting.vehicle.passenger_detail.description": "Shows detailed information about the passengers of the selected vehicle.",
+  "extendedtooltip.ui.tab.tooltips": "Tooltips",
+  "extendedtooltip.ui.tab.tooltips.description": "Manage and customize the tooltips.",
+  "extendedtooltip.ui.on_off": "On/Off",
+  "extendedtooltip.ui.tab.settings": "Settings",
+  "extendedtooltip.ui.tab.about": "About"
 }

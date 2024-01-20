@@ -94,6 +94,8 @@ namespace ExtendedTooltip.Systems
                 { "displayModeHotkeyDescription", m_CustomTranslationSystem.GetTranslation("setting.displayMode.hotkey.description", "The hotkey to trigger the tooltip to show.") },
                 { "displayModeDelay", m_CustomTranslationSystem.GetTranslation("setting.displayMode.delay", "Delay") },
                 { "displayModeDelayDescription", m_CustomTranslationSystem.GetTranslation("setting.displayMode.delay.description", "The amount of delay to show up the tooltip.") },
+                { "displayModeDelayOnMoveables", m_CustomTranslationSystem.GetTranslation("setting.displayMode.delay.on_moveables", "On Moveables") },
+                { "displayModeDelayOnMoveablesDescription", m_CustomTranslationSystem.GetTranslation("setting.displayMode.delay.on_moveables.description", "Activates the delay on moveable entities like citizens or vehicles.") },
                 { "extendedLayout", m_CustomTranslationSystem.GetTranslation("setting.extendedLayout", "Extended Layout") },
                 { "extendedLayoutDescription", m_CustomTranslationSystem.GetTranslation("setting.extendedLayout.description", "Use a second layout group to show tooltips.") },
 
@@ -121,7 +123,7 @@ namespace ExtendedTooltip.Systems
 
                 // CITIZEN
                 { "citizen", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_TYPE[Citizen]", "Citizens") },
-                { "citizenDescription", m_CustomTranslationSystem.GetLocalGameTranslation("setting.citizen.description", "Manage tooltips while hover a citizen.")},
+                { "citizenDescription", m_CustomTranslationSystem.GetTranslation("setting.citizen.description", "Manage tooltips while hover a citizen.")},
                 { "citizenState", m_CustomTranslationSystem.GetTranslation("setting.citizen.state", "Citizen state") },
                 { "citizenStateDescription", m_CustomTranslationSystem.GetTranslation("setting.citizen.state.description", "Shows the current state of the selected citizen.") },
                 { "citizenHappiness", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_HAPPINESS", "Citizen happiness") },
@@ -197,13 +199,13 @@ namespace ExtendedTooltip.Systems
                 { "vehicleState", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.VEHICLE_STATE", "Status")},
                 { "vehicleStateDescription", m_CustomTranslationSystem.GetTranslation("setting.vehicle.state.description", "Shows the current state of the selected vehicle.")},
                 { "vehicleDriver", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.DRIVER", "Driver")},
-                { "vehicleDriverDescription", m_CustomTranslationSystem.GetLocalGameTranslation("setting.vehicle.driver.description", "Shows driver information of the selected vehicle.")},
+                { "vehicleDriverDescription", m_CustomTranslationSystem.GetTranslation("setting.vehicle.driver.description", "Shows driver information of the selected vehicle.")},
                 { "vehicleGarbageTruck", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.GARBAGE_VEHICLE_TITLE[GarbageTruck]", "Garbage Truck")},
-                { "vehicleGarbageTruckDescription", m_CustomTranslationSystem.GetLocalGameTranslation("setting.vehicle.garbage_truck.description", "Shows garbage capacity of the selected garbage trucks.")},
+                { "vehicleGarbageTruckDescription", m_CustomTranslationSystem.GetTranslation("setting.vehicle.garbage_truck.description", "Shows garbage capacity of the selected garbage trucks.")},
                 { "vehiclePostvan", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.POST_VEHICLE_TITLE", "Postvan")},
-                { "vehiclePostvanDescription", m_CustomTranslationSystem.GetLocalGameTranslation("setting.vehicle.postvan.description", "Shows mail capacity of the selected post vans.")},
+                { "vehiclePostvanDescription", m_CustomTranslationSystem.GetTranslation("setting.vehicle.postvan.description", "Shows mail capacity of the selected post vans.")},
                 { "vehiclePassengerDetail", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.PASSENGERS_TITLE", "Passengers")},
-                { "vehiclePassengerDetailDescription", m_CustomTranslationSystem.GetLocalGameTranslation("setting.vehicle.passenger_detail.description", "Shows detailed information about the passengers of the selected vehicle.")},
+                { "vehiclePassengerDetailDescription", m_CustomTranslationSystem.GetTranslation("setting.vehicle.passenger_detail.description", "Shows detailed information about the passengers of the selected vehicle.")},
             };
         }
     }

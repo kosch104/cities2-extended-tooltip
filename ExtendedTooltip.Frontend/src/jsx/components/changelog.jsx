@@ -9,6 +9,32 @@ function Changelog({react}) {
                 <div className="d-flex flex-row w-x">
                     <Icon fa className="align-self-flex-start icon-sm mr-2" icon="solid-circle-chevron-right" />
                     <div className="flex-1 w-x">
+                        <b className="mb-1">v1.4.0</b>
+                    </div>
+                </div>
+                <ul className="fs-sm">
+                    <li>Feature: Added option to add the delay also to moveable objects (e.g. vehicles, citizen)</li>
+                    <li>Fix: Hotkey selection only worked for ALT key</li>
+                    <li>Language: Added Simplified proper Chinese translation (thx to Ankyu_Fubuki)</li>
+                </ul>
+            </div>
+            <div className="mb-2">
+                <div className="d-flex flex-row w-x">
+                    <Icon fa className="align-self-flex-start icon-sm mr-2" icon="solid-circle-chevron-right" />
+                    <div className="flex-1 w-x">
+                        <b className="mb-1">v1.3.0</b>
+                    </div>
+                </div>
+                <ul className="fs-sm">
+                    <li>IMPORTANT: Mod botton moved to the bottom right corner!</li>
+                    <li>Revamped the UI of the mod using Gooee framework!</li>
+                    <li>Updated translations</li>
+                </ul>
+            </div>
+            <div className="mb-2">
+                <div className="d-flex flex-row w-x">
+                    <Icon fa className="align-self-flex-start icon-sm mr-2" icon="solid-circle-chevron-right" />
+                    <div className="flex-1 w-x">
                         <b className="mb-1">v1.2.0</b>
                     </div>
                 </div>

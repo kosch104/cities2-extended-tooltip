@@ -31,7 +31,6 @@ namespace ExtendedTooltip.Systems
     {
         public LocalSettings m_LocalSettings;
         public bool m_LocalSettingsLoaded = false;
-        public bool hotkeyPressed = false;
 
         Entity? lastEntity;
         float timer = 0f;
@@ -132,7 +131,7 @@ namespace ExtendedTooltip.Systems
                 Entity prefab = prefabRef.m_Prefab;
                 AdjustTargets(ref entity, ref prefab);
 
-                hotkeyPressed = Input.GetKey(KeyCode.LeftAlt);
+                
 
                 m_NameTooltip.icon = m_ImageSystem.GetInstanceIcon(entity, prefab);
                 m_NameTooltip.entity = entity;
@@ -161,9 +160,9 @@ namespace ExtendedTooltip.Systems
                         if (modSettings.IsEnabled)
                         {
                             timer += World.Time.DeltaTime;
-                            if ((modSettings.DisplayMode == "instant" && hotkeyPressed)
-                                || (modSettings.DisplayMode != "hotkey" && modSettings.DisplayMode != "delayed")
-                                || (modSettings.DisplayMode == "delayed" && timer > (modSettings.DisplayModeDelay / 1000f))
+                            if (modSettings.DisplayMode == "instant"
+                                || (modSettings.DisplayMode == "hotkey" && IsHotkeyPressed(modSettings))
+                                || (modSettings.DisplayMode == "delayed" && (timer > (float)(modSettings.DisplayModeDelay / 1000f) || (IsMoveable(entity) && !modSettings.DisplayModeDelayOnMoveables)))
                             )
                             {
                                 CreateExtendedTooltips(entity, prefab);
@@ -384,6 +383,22 @@ namespace ExtendedTooltip.Systems
 
             m_SecondaryTooltipGroup.position = math.round(new float2(m_TooltipGroup.position.x - 8.0f, m_TooltipGroup.position.y));
             m_SecondaryTooltipGroup.SetPropertiesChanged();
+        }
+
+        private bool IsMoveable(Entity entity)
+        {
+            return EntityManager.HasComponent<Vehicle>(entity) || EntityManager.HasComponent<Citizen>(entity);
+        }
+
+        private bool IsHotkeyPressed(ModSettings settings)
+        {
+            return settings.DisplayModeHotkey switch
+            {
+                "CTRL" => Input.GetKey(KeyCode.LeftControl),
+                "SHIFT" => Input.GetKey(KeyCode.LeftShift),
+                "ALT" => Input.GetKey(KeyCode.LeftAlt),
+                _ => false,
+            };
         }
     }
 }

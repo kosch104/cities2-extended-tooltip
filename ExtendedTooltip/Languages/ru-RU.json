@@ -93,5 +93,13 @@
   "extendedtooltip.setting.vehicle.garbage_truck.description": "Показывает мусорную емкость выбранных мусорных грузовиков.",
   "extendedtooltip.setting.vehicle.postvan.description": "Показывает пропускную способность выбранного поста vans.",
   "extendedtooltip.setting.vehicle.passenger_detail.description": "Показывает подробную информацию о пассажирах выбранного автомобиля.",
-  "extendedtooltip.setting.displayMode.hotkey.description": "Горячая клавиша для срабатывания подсказки для отображения."
+  "extendedtooltip.setting.displayMode.hotkey.description": "Горячая клавиша для срабатывания подсказки для отображения.",
+  "extendedtooltip.ui.tab.tooltips": "Подсказки",
+  "extendedtooltip.ui.tab.tooltips.description": "Управление и настройка подсказок.",
+  "extendedtooltip.ui.on_off": "Вкл/Выкл",
+  "extendedtooltip.ui.tab.settings": "Настройки",
+  "extendedtooltip.ui.tab.about": "О программе",
+  "extendedtooltip.setting.growables.description": "Управление подсказками для зданий зон, таких как жилые дома, реклама, офисы и интуиции.",
+  "extendedtooltip.setting.displayMode.delay.on_moveables": "О движимом имуществе",
+  "extendedtooltip.setting.displayMode.delay.on_moveables.description": "Также активирует задержку на подвижных сущностях, таких как граждане или транспортные средства."
 }

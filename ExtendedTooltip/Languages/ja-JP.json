@@ -93,5 +93,13 @@
   "extendedtooltip.setting.vehicle.garbage_truck.description": "選択したガベージトラックのゴミ容量を表示します。",
   "extendedtooltip.setting.vehicle.postvan.description": "選択したポストバンのメール容量を表示します。",
   "extendedtooltip.setting.vehicle.passenger_detail.description": "選択した車両の乗客に関する詳細情報を表示します。",
-  "extendedtooltip.setting.displayMode.hotkey.description": "ツールチップを表示するためのホットキー。"
+  "extendedtooltip.setting.displayMode.hotkey.description": "ツールチップを表示するためのホットキー。",
+  "extendedtooltip.ui.tab.tooltips": "ツールチップ",
+  "extendedtooltip.ui.tab.tooltips.description": "ツールチップを管理およびカスタマイズします。",
+  "extendedtooltip.ui.on_off": "オン/オフ",
+  "extendedtooltip.ui.tab.settings": "設定",
+  "extendedtooltip.ui.tab.about": "About",
+  "extendedtooltip.setting.growables.description": "住宅、コマーシャル、オフィス、そして名声などのゾーンの建物のためのツールチップを管理します。",
+  "extendedtooltip.setting.displayMode.delay.on_moveables": "ムーバブルについて",
+  "extendedtooltip.setting.displayMode.delay.on_moveables.description": "また、市民や車のような移動可能なエンティティのディレイを有効にする。"
 }
