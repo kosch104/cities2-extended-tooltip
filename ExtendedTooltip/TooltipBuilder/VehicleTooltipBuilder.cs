@@ -26,7 +26,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
-            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
 
             bool isPersonalCar = m_EntityManager.HasComponent<Game.Vehicles.PersonalCar>(selectedEntity);
             bool isPoliceCar = m_EntityManager.HasComponent<Game.Vehicles.PoliceCar>(selectedEntity);

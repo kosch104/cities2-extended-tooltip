@@ -2,13 +2,12 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ExtendedTooltip.Settings
 {
     public class LocalSettings
     {
-        public ModSettings m_ModSettings { get; set; }
+        public ModSettings ModSettings { get; set; }
 
         private readonly JsonSerializerSettings m_SerializerSettings = new()
         {
@@ -31,7 +30,7 @@ namespace ExtendedTooltip.Settings
 
             try
             {
-                string updatedSettingsJson = JsonConvert.SerializeObject(m_ModSettings, m_SerializerSettings);
+                string updatedSettingsJson = JsonConvert.SerializeObject(ModSettings, m_SerializerSettings);
                 File.WriteAllText(fullFilePath, updatedSettingsJson, Encoding.UTF8);
             }
             catch (System.Exception e)
@@ -72,7 +71,7 @@ namespace ExtendedTooltip.Settings
 
                 if (localSettingsItem != null)
                 {
-                    m_ModSettings = localSettingsItem;
+                    ModSettings = localSettingsItem;
                 }
             }
             catch (System.Exception e)

@@ -19,7 +19,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity entity, Citizen citizen, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
         {
-            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
 
             // State
             if (modSettings.ShowCitizenState)

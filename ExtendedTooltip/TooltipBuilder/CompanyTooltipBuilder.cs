@@ -19,7 +19,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity companyEntity, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
         {
-            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
             // Company output tooltip
             Entity companyEntityPrefab = m_EntityManager.GetComponentData<PrefabRef>(companyEntity).m_Prefab;
 

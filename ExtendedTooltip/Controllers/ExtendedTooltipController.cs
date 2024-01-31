@@ -22,10 +22,10 @@ namespace ExtendedTooltip.Controllers
         public void DoSave()
         {
             var settings = m_ExtendedTooltipUISystem.m_ExtendedTooltipSystem.m_LocalSettings;
-            settings.m_ModSettings = Model;
+            settings.ModSettings = Model;
             if (short.TryParse(Model.DisplayModeDelay, out short delay))
             {
-                settings.m_ModSettings.DisplayModeDelay = delay;
+                settings.ModSettings.DisplayModeDelay = delay;
             } else
             {
                 UnityEngine.Debug.Log("Could not parse display mode delay to short. Skip.");

@@ -35,7 +35,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
         {
-            m_ModSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            m_ModSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
             if (m_ModSettings.ShowGrowablesHousehold == false && m_ModSettings.ShowGrowablesHouseholdDetails == false && m_ModSettings.ShowGrowablesLevel == false && m_ModSettings.ShowGrowablesLevelDetails == false && m_ModSettings.ShowGrowablesRent == false)
                 return;
 

@@ -21,7 +21,7 @@ namespace ExtendedTooltip.Systems
             base.OnCreate();
             m_ExtendedTooltipSystem = World.GetOrCreateSystemManaged<ExtendedTooltipSystem>();
             m_CustomTranslationSystem = World.GetOrCreateSystemManaged<CustomTranslationSystem>();
-            m_ModSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            m_ModSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
 
             CreateLanguages();
             AddBinding(new TriggerBinding<string>(kGroup, "launchUrl", OpenURL));

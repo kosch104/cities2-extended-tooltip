@@ -5,6 +5,6 @@
   "description": "Adds advanced information to the game tooltips to your fingertips. Customizable to your liking.",
   "dependencies": [
     "BepInEx-BepInExPack-5.4.2100",
-    "CaptainOfCoit-HookUI-0.3.5"
+    "Cities2Modding-HookUI-0.3.7"
   ]
 }

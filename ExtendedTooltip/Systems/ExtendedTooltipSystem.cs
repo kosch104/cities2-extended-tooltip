@@ -156,7 +156,7 @@ namespace ExtendedTooltip.Systems
                         m_TooltipGroup.children.Add(m_NameTooltip);
 
                         // ExtendedTooltips entry point
-                        ModSettings modSettings = m_LocalSettings.m_ModSettings;
+                        ModSettings modSettings = m_LocalSettings.ModSettings;
                         if (modSettings.IsEnabled)
                         {
                             timer += World.Time.DeltaTime;
@@ -200,7 +200,7 @@ namespace ExtendedTooltip.Systems
 
         private void CreateExtendedTooltips(Entity selectedEntity, Entity prefab)
         {
-            ModSettings modSettings = m_LocalSettings.m_ModSettings;
+            ModSettings modSettings = m_LocalSettings.ModSettings;
 
             // CITIZEN TOOLTIP
             if (modSettings.ShowCitizen && EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))

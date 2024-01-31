@@ -45,7 +45,7 @@ namespace ExtendedTooltip.Systems
         [Preserve]
         protected override void OnUpdate()
         {
-            ModSettings modSettings = m_Settings.m_ModSettings;
+            ModSettings modSettings = m_Settings.ModSettings;
             if (m_ToolSystem != null && modSettings.ShowNetToolSystem)
             {
                 // Add anarchy tooltip if the active tool is ObjectToolSystem or NetToolSystem and ignoreErrors is true

@@ -20,7 +20,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)
         {
-            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.m_ModSettings;
+            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
             if (modSettings.ShowPublicTransportWaitingPassengers == false && modSettings.ShowPublicTransportWaitingTime == false)
                 return;
 
