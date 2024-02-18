@@ -31,9 +31,10 @@ namespace ExtendedTooltip
     }
 
     [ControllerTypes(typeof(ExtendedTooltipController))]
-    public class ExtendedTooltip : IGooeePluginWithControllers
+    public class ExtendedTooltip : IGooeePluginWithControllers, IGooeeChangeLog, IGooeeStyleSheet
     {
         public string Name => "ExtendedTooltip";
+        public string Version => MyPluginInfo.PLUGIN_VERSION;
         public string ScriptResource => "ExtendedTooltip.Resources.ui.js";
         public string StyleResource => null;
         public IController[] Controllers { get; set; }

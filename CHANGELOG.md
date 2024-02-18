@@ -1,3 +1,9 @@
+- v1.6.0
+	- Add bulldozer tooltips
+	- Added company rent
+	- Added company profitability
+- v1.5.0
+	- Update HookUI version
 - v1.4.0
 	- Feature: Added option to add the delay also to moveable objects (e.g. vehicles, citizen)
 	- Fix: Hotkey selection only worked for ALT key

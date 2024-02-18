@@ -23,6 +23,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Scripting;
+using static Colossal.AssetPipeline.Diagnostic.Report;
 
 namespace ExtendedTooltip.Systems
 {
@@ -43,6 +44,7 @@ namespace ExtendedTooltip.Systems
         private NameTooltip m_NameTooltip;
         private PrefabSystem m_PrefabSystem;
         private CustomTranslationSystem m_CustomTranslationSystem;
+
         private EntityQuery m_CitizenHappinessParameterDataQuery;
 
         private TooltipGroup m_TooltipGroup;
@@ -116,22 +118,10 @@ namespace ExtendedTooltip.Systems
         [Preserve]
         protected override void OnUpdate()
         {
-            if (m_ToolSystem.activeTool == m_DefaultTool
-                && m_ToolRaycastSystem.GetRaycastResult(out RaycastResult raycastResult) && (EntityManager.HasComponent<Building>(raycastResult.m_Owner)
-                || EntityManager.HasComponent<Game.Routes.TransportStop>(raycastResult.m_Owner)
-                || EntityManager.HasComponent<Game.Objects.OutsideConnection>(raycastResult.m_Owner)
-                || EntityManager.HasComponent<Route>(raycastResult.m_Owner)
-                || EntityManager.HasComponent<Creature>(raycastResult.m_Owner)
-                || EntityManager.HasComponent<Vehicle>(raycastResult.m_Owner)
-                || EntityManager.HasComponent<Aggregate>(raycastResult.m_Owner)
-                || EntityManager.HasComponent<Game.Objects.NetObject>(raycastResult.m_Owner))
-                && EntityManager.TryGetComponent(raycastResult.m_Owner, out PrefabRef prefabRef)
-            ) {
+            if (IsValidDefaultToolRaycast(out RaycastResult raycastResult, out PrefabRef prefabRef)) {
                 Entity entity = raycastResult.m_Owner;
                 Entity prefab = prefabRef.m_Prefab;
                 AdjustTargets(ref entity, ref prefab);
-
-                
 
                 m_NameTooltip.icon = m_ImageSystem.GetInstanceIcon(entity, prefab);
                 m_NameTooltip.entity = entity;
@@ -184,6 +174,28 @@ namespace ExtendedTooltip.Systems
             }
         }
 
+        private bool IsValidDefaultToolRaycast(out RaycastResult raycastResult, out PrefabRef prefabRef)
+        {
+            if (m_ToolSystem.activeTool == m_DefaultTool && m_ToolRaycastSystem.GetRaycastResult(out raycastResult)
+                && (EntityManager.HasComponent<Building>(raycastResult.m_Owner)
+                || EntityManager.HasComponent<Game.Routes.TransportStop>(raycastResult.m_Owner)
+                || EntityManager.HasComponent<Game.Objects.OutsideConnection>(raycastResult.m_Owner)
+                || EntityManager.HasComponent<Route>(raycastResult.m_Owner)
+                || EntityManager.HasComponent<Creature>(raycastResult.m_Owner)
+                || EntityManager.HasComponent<Vehicle>(raycastResult.m_Owner)
+                || EntityManager.HasComponent<Aggregate>(raycastResult.m_Owner)
+                || EntityManager.HasComponent<Game.Objects.NetObject>(raycastResult.m_Owner))
+                && EntityManager.TryGetComponent(raycastResult.m_Owner, out prefabRef))
+            {
+                return true;
+            }
+
+            raycastResult = default;
+            prefabRef = default;
+
+            return false;
+        }
+
         private void LoadSettings()
         {
             try
@@ -227,10 +239,11 @@ namespace ExtendedTooltip.Systems
             }
 
             // SPAWNABLES TOOLTIP
+            bool IsMixed = IsMixedBuilding(prefab);
             if (modSettings.ShowGrowables && HasSpawnableBuildingData(selectedEntity, prefab, out int buildingLevel, out int currentCondition, out int levelingCost, out SpawnableBuildingData spawnableData))
             {
                 CitizenHappinessParameterData citizenHappinessParameters = m_CitizenHappinessParameterDataQuery.GetSingleton<CitizenHappinessParameterData>();
-                m_SpawnablesTooltipBuilder.Build(selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, citizenHappinessParameters, m_TooltipGroup, m_SecondaryTooltipGroup);
+                m_SpawnablesTooltipBuilder.Build(m_DefaultTool, IsMixed, selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, citizenHappinessParameters, m_TooltipGroup, m_SecondaryTooltipGroup);
             }
 
             // EFFICIENCY TOOLTIP
@@ -275,7 +288,7 @@ namespace ExtendedTooltip.Systems
             // COMPANY (Office, Industrial, Commercial) TOOLTIP
             if (modSettings.ShowCompanyOutput && CompanyUIUtils.HasCompany(EntityManager, selectedEntity, prefab, out Entity company))
             {
-                m_CompanyTooltipBuilder.Build(company, m_TooltipGroup, m_SecondaryTooltipGroup);
+                m_CompanyTooltipBuilder.Build(company, m_TooltipGroup, m_SecondaryTooltipGroup, IsMixed);
             }
         }
 
@@ -285,6 +298,12 @@ namespace ExtendedTooltip.Systems
                 !EntityManager.HasComponent<Abandoned>(selectedEntity) &&
                 !EntityManager.HasComponent<Destroyed>(selectedEntity) &&
                 (!CompanyUIUtils.HasCompany(EntityManager, selectedEntity, selectedPrefab, out Entity entity) || entity != Entity.Null);
+        }
+
+        private bool IsMixedBuilding(Entity prefab)
+        {
+            BuildingPropertyData buildingPropertyData = EntityManager.GetComponentData<BuildingPropertyData>(prefab);
+            return buildingPropertyData.CountProperties(AreaType.Residential) + buildingPropertyData.CountProperties(AreaType.Commercial) > 1;
         }
 
         private bool HasEmployees(Entity entity, Entity prefab)
@@ -388,6 +407,11 @@ namespace ExtendedTooltip.Systems
         private bool IsMoveable(Entity entity)
         {
             return EntityManager.HasComponent<Vehicle>(entity) || EntityManager.HasComponent<Citizen>(entity);
+        }
+
+        private bool IsMixedZone(Entity selectedEntity)
+        {
+            return EntityManager.HasComponent<ResidentialProperty>(selectedEntity) && EntityManager.HasComponent<CommercialProperty>(selectedEntity);
         }
 
         private bool IsHotkeyPressed(ModSettings settings)

@@ -12,7 +12,7 @@
 			https://nuget.samboy.dev/v3/index.json
 		</RestoreAdditionalProjectSources>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<LangVersion>latest</LangVersion>
 		<AssemblyVersion>$(PluginVersion)</AssemblyVersion>
 		<FileVersion>$(PluginVersion)</FileVersion>
@@ -105,6 +105,10 @@
 		</Reference>
 		<Reference Include="cohtml.Net">
 			<HintPath>$(Cities2_Game_Location)\Cities2_Data\Managed\cohtml.Net.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Gooee">
+			<HintPath>$(Cities2_Game_Location)\BepInEx\plugins\Gooee\Gooee.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Game">
@@ -403,10 +407,6 @@
 			<HintPath>$(Cities2_Assembly_Location)\UnityEngine.XRModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
-		<Reference Include="Gooee">
-			<HintPath>$(Cities2_Game_Location)\BepInEx\plugins\Gooee\Gooee.dll</HintPath>
-			<Private>True</Private>
-		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -418,8 +418,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
 		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
-		<PackageReference Include="HarmonyX" Version="2.*" />
+		<PackageReference Include="HarmonyX" Version="2.10.2" />
 		<PackageReference Include="System.Text.Json" Version="8.0.0" />
 	</ItemGroup>
 
@@ -431,17 +432,17 @@
 		<PackageReference Include="BepInEx.Core" Version="5.*" IncludeAssets="compile" />
 	</ItemGroup>
 
+	<PropertyGroup Condition="'$(BepInExVersion)' == '6'">
+		<DefineConstants>$(DefineConstants);BEPINEX_V6</DefineConstants>
+	</PropertyGroup>
+
 	<ItemGroup>
 	  <None Update="DefaultSettings.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 
-	<PropertyGroup Condition="'$(BepInExVersion)' == '6'">
-		<DefineConstants>$(DefineConstants);BEPINEX_V6</DefineConstants>
-	</PropertyGroup>
-
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="if not exist &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Buffers.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Memory.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Numerics.Vectors.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Runtime.CompilerServices.Unsafe.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Encodings.Web.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Json.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.Tasks.Extensions.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)Microsoft.Bcl.AsyncInterfaces.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)Gooee.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)\Resources\FA.zip&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)DefaultSettings.json&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)build.ps1&quot; &quot;$(ProjectName)&quot; &quot;$(PluginVersion)&quot; &quot;$(ProjectDir)\&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\\&quot; $(BepInExVersion)" />
+		<Exec Command="if not exist &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Buffers.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Memory.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Numerics.Vectors.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Runtime.CompilerServices.Unsafe.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Encodings.Web.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Text.Json.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)System.Threading.Tasks.Extensions.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)Microsoft.Bcl.AsyncInterfaces.dll&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)DefaultSettings.json&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\&quot;&#xD;&#xA;powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)build.ps1&quot; &quot;$(ProjectName)&quot; &quot;$(PluginVersion)&quot; &quot;$(ProjectDir)\&quot; &quot;$(Cities2_Game_Location)\BepInEx\plugins\$(ProjectName)\\&quot; $(BepInExVersion)" />
 	</Target>
 </Project>

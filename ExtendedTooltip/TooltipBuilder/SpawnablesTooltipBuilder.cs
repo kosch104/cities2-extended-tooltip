@@ -5,10 +5,10 @@ using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Citizens;
 using Game.Common;
-using Game.Companies;
 using Game.Economy;
 using Game.Modding;
 using Game.Prefabs;
+using Game.Tools;
 using Game.UI.InGame;
 using Game.UI.Tooltip;
 using Game.Zones;
@@ -33,7 +33,7 @@ namespace ExtendedTooltip.TooltipBuilder
             UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
         }
 
-        public void Build(Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
+        public void Build(ToolBaseSystem activeTool, bool IsMixed, Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
         {
             m_ModSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
             if (m_ModSettings.ShowGrowablesHousehold == false && m_ModSettings.ShowGrowablesHouseholdDetails == false && m_ModSettings.ShowGrowablesLevel == false && m_ModSettings.ShowGrowablesLevelDetails == false && m_ModSettings.ShowGrowablesRent == false)
@@ -96,7 +96,7 @@ namespace ExtendedTooltip.TooltipBuilder
                     value = $"{buildingLevelLabel}: {buildingLevelValue}",
                     color = buildingLevelColor
                 };
-                tooltipGroup.children.Add(levelTooltip);
+                (m_ModSettings.UseExtendedLayout && IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(levelTooltip);
             }
 
             // Add residential info if available
@@ -109,7 +109,7 @@ namespace ExtendedTooltip.TooltipBuilder
             NativeList<Entity> householdsResult = new(Allocator.Temp);
             if ((m_ModSettings.ShowGrowablesHousehold == true || m_ModSettings.ShowGrowablesRent == true) && CreateTooltipsForResidentialProperties(ref residentCount, ref householdCount, ref maxHouseholds, ref petsCount, ref householdRents, ref householdBalances, ref householdsResult, entity, prefab))
             {
-                BuildHouseholdCitizenInfo(householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
+                BuildHouseholdCitizenInfo(activeTool, householdCount, maxHouseholds, residentCount, petsCount, out string finalInfoString);
                 if (m_ModSettings.ShowGrowablesHousehold)
                 {
                     int householdCapacityPercentage = householdCount == 0 ? 0 : (int)math.round(100 * householdCount / maxHouseholds);
@@ -120,11 +120,10 @@ namespace ExtendedTooltip.TooltipBuilder
                         value = finalInfoString,
                         color = householdTooltipColor
                     };
-                    tooltipGroup.children.Add(householdTooltip);
+                    (m_ModSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(householdTooltip);
                 }
 
-                // Needs revisting, not working
-                if (m_ModSettings.ShowGrowablesHouseholdWealth && householdsResult.Length > 0)
+                if (m_ModSettings.ShowGrowablesHouseholdWealth && activeTool is DefaultToolSystem && householdsResult.Length > 0)
                 {
                     HouseholdWealthKey wealthKey = householdsResult.Length == 1
                         ? CitizenUIUtils.GetHouseholdWealth(m_EntityManager, householdsResult[0], citizenHappinessParameters)
@@ -286,7 +285,7 @@ namespace ExtendedTooltip.TooltipBuilder
             return flag;
         }
 
-        public void BuildHouseholdCitizenInfo(int households, int maxHouseholds, int residents, int pets, out string finalInfoString)
+        public void BuildHouseholdCitizenInfo(ToolBaseSystem activeTool, int households, int maxHouseholds, int residents, int pets, out string finalInfoString)
         {
             // Households
             string householdsLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.HOUSEHOLDS", "Households");
@@ -303,7 +302,7 @@ namespace ExtendedTooltip.TooltipBuilder
             // If residential building is > low density (only 1 household) show the household label only
             if (maxHouseholds > 1)
             {
-                if (m_ModSettings.ShowGrowablesHouseholdDetails)
+                if (m_ModSettings.ShowGrowablesHouseholdDetails && activeTool is DefaultToolSystem)
                 {
                     if (pets > 0)
                     {
@@ -321,7 +320,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }
             else // low densitiy housing only has 1 household
             {
-                if (m_ModSettings.ShowGrowablesHouseholdDetails && pets > 0)
+                if (m_ModSettings.ShowGrowablesHouseholdDetails && activeTool is DefaultToolSystem && pets > 0)
                 {
                     finalInfoString = $"{residentsValue} {residentsLabel} [{petsValue} {petsLabel}]";
                 } else
@@ -329,23 +328,6 @@ namespace ExtendedTooltip.TooltipBuilder
                     finalInfoString = $"{residentsValue} {residentsLabel}";
                 }
             }
-        }
-
-        private Entity GetRenter(Entity entity)
-        {
-            if (m_EntityManager.TryGetBuffer(entity, true, out DynamicBuffer<Renter> dynamicBuffer))
-            {
-                for (int i = 0; i < dynamicBuffer.Length; i++)
-                {
-                    Entity renter = dynamicBuffer[i].m_Renter;
-                    if (m_EntityManager.HasComponent<CompanyData>(renter))
-                    {
-                        return renter;
-                    }
-                }
-            }
-
-            return entity;
-        }
+        } 
     }
 }

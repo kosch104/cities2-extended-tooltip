@@ -1,6 +1,5 @@
 ﻿using Colossal.UI.Binding;
 using ExtendedTooltip.Settings;
-using Game.SceneFlow;
 using Game.UI;
 using System;
 using System.Collections.Generic;
