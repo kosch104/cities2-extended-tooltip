@@ -10,6 +10,7 @@ Write-Host "BepInEx version: $bepInExVersion"
 Copy-Item -Path $projectPath\..\manifest.json -Destination $pluginPath -Recurse -Force
 Copy-Item -Path $projectPath\..\icon.png -Destination $pluginPath -Recurse -Force
 Copy-Item -Path $projectPath\..\README.md -Destination $pluginPath -Recurse -Force
+Copy-Item -Path $projectPath\..\CHANGELOG.md -Destination $pluginPath -Recurse -Force
 
 # Compress the contents of the folder
 try {
