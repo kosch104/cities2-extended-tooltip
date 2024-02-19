@@ -303,7 +303,7 @@ namespace ExtendedTooltip.Systems
         private bool IsMixedBuilding(Entity prefab)
         {
             BuildingPropertyData buildingPropertyData = EntityManager.GetComponentData<BuildingPropertyData>(prefab);
-            return buildingPropertyData.CountProperties(AreaType.Residential) + buildingPropertyData.CountProperties(AreaType.Commercial) > 1;
+            return buildingPropertyData.CountProperties(AreaType.Residential) > 0 && buildingPropertyData.CountProperties(AreaType.Commercial) > 0;
         }
 
         private bool HasEmployees(Entity entity, Entity prefab)

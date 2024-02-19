@@ -120,7 +120,7 @@ namespace ExtendedTooltip.TooltipBuilder
                         value = finalInfoString,
                         color = householdTooltipColor
                     };
-                    (m_ModSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(householdTooltip);
+                    (m_ModSettings.UseExtendedLayout && IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(householdTooltip);
                 }
 
                 if (m_ModSettings.ShowGrowablesHouseholdWealth && activeTool is DefaultToolSystem && householdsResult.Length > 0)

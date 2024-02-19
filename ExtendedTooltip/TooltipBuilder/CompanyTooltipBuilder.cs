@@ -28,28 +28,6 @@ namespace ExtendedTooltip.TooltipBuilder
             // Company output tooltip
             Entity companyEntityPrefab = m_EntityManager.GetComponentData<PrefabRef>(companyEntity).m_Prefab;
 
-            // Company Rent
-            if (m_EntityManager.TryGetComponent(companyEntity, out PropertyRenter propertyRenter))
-            {
-                string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
-                string rentValue;
-
-                RandomSeed randomSeed = RandomSeed.Next();
-                Unity.Mathematics.Random random = randomSeed.GetRandom(1);
-
-                int rent = MathUtils.RoundToIntRandom(ref random, propertyRenter.m_Rent * 1f);
-                int finalRentValue = rent < 0 ? Math.Abs(rent) : rent;
-                rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "-", "SIGN", rent < 0 ? "-" : "", "VALUE", finalRentValue.ToString());
-
-                StringTooltip rentTooltip = new()
-                {
-                    icon = "Media/Game/Icons/Money.svg",
-                    value = $"{rentLabel}: {rentValue}",
-                    color = TooltipColor.Info,
-                };
-                (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(rentTooltip);
-            }
-
             // Profitability
             if (m_EntityManager.TryGetComponent(companyEntity, out Profitability companyProfitability))
             {
@@ -72,7 +50,7 @@ namespace ExtendedTooltip.TooltipBuilder
                 Resource input1 = industrialProcessData.m_Input1.m_Resource;
                 Resource input2 = industrialProcessData.m_Input2.m_Resource;
                 Resource output = industrialProcessData.m_Output.m_Resource;
-                
+
                 if (input1 > 0 && input1 != Resource.NoResource && input1 != output)
                 {
                     (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, input1));
@@ -84,6 +62,28 @@ namespace ExtendedTooltip.TooltipBuilder
                 }
 
                 (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, output, true));
+            }
+
+            // Company Rent
+            if (m_EntityManager.TryGetComponent(companyEntity, out PropertyRenter propertyRenter))
+            {
+                string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
+                string rentValue;
+
+                RandomSeed randomSeed = RandomSeed.Next();
+                Unity.Mathematics.Random random = randomSeed.GetRandom(1);
+
+                int rent = MathUtils.RoundToIntRandom(ref random, propertyRenter.m_Rent * 1f);
+                int finalRentValue = rent < 0 ? Math.Abs(rent) : rent;
+                rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "-", "SIGN", rent < 0 ? "-" : "", "VALUE", finalRentValue.ToString());
+
+                StringTooltip rentTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Money.svg",
+                    value = $"{rentLabel}: {rentValue}",
+                    color = TooltipColor.Info,
+                };
+                (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(rentTooltip);
             }
         }
 
