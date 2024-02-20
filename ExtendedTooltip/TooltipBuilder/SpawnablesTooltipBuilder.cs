@@ -7,6 +7,7 @@ using Game.Citizens;
 using Game.Common;
 using Game.Economy;
 using Game.Modding;
+using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
 using Game.UI.InGame;
@@ -97,6 +98,29 @@ namespace ExtendedTooltip.TooltipBuilder
                     color = buildingLevelColor
                 };
                 (m_ModSettings.UseExtendedLayout && IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(levelTooltip);
+            }
+
+            // LAND VALUE TOOLTIP
+            if (m_ModSettings.ShowLandValue && m_EntityManager.TryGetComponent(entity, out Building building) && m_EntityManager.HasComponent<BuildingCondition>(entity))
+            {
+                if (building.m_RoadEdge != Entity.Null)
+                {
+                    LandValue landValue = m_EntityManager.GetComponentData<LandValue>(building.m_RoadEdge);
+                    double landValueAmount = landValue.m_LandValue;
+                    TooltipColor landValueTooltipColor = landValueAmount <= 150 ? TooltipColor.Success : landValueAmount <= 300 ? TooltipColor.Info : landValueAmount <= 450 ? TooltipColor.Warning : TooltipColor.Error;
+
+                    string landValueLabel = m_CustomTranslationSystem.GetLocalGameTranslation("Infoviews.INFOVIEW[LandValue]", "Land Value");
+                    string landValueString = landValueAmount.ToString("C0");
+                    string finalLandValueString = $"{landValueLabel}: {landValueString}";
+
+                    StringTooltip landValueTooltip = new()
+                    {
+                        value = finalLandValueString,
+                        icon = "Media/Game/Icons/LandValue.svg",
+                        color = landValueTooltipColor
+                    };
+                    (m_ModSettings.UseExtendedLayout && IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(landValueTooltip);
+                }
             }
 
             // Add residential info if available
@@ -240,13 +264,17 @@ namespace ExtendedTooltip.TooltipBuilder
                 {
                     for (int i = 0; i < renterBuffer.Length; i++)
                     {
-                        Unity.Mathematics.Random random = randomSeed.GetRandom(1 + i);
                         Entity renter = renterBuffer[i].m_Renter;
+
+                        // Does only count residential properties rent
+                        if (!m_EntityManager.HasComponent<Household>(renter))
+                            continue;
 
                         // Get rent
                         int rent;
                         if (m_EntityManager.TryGetComponent(renter, out PropertyRenter propertyRenter))
                         {
+                            Unity.Mathematics.Random random = randomSeed.GetRandom(1 + i);
                             rent = MathUtils.RoundToIntRandom(ref random, propertyRenter.m_Rent * 1f);
                             householdRents.Add(rent);
                         }

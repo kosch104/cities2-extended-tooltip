@@ -45,27 +45,56 @@ namespace ExtendedTooltip.TooltipBuilder
             }
 
             // Company resource section
-            if (m_EntityManager.TryGetBuffer(companyEntity, true, out DynamicBuffer<Resources> resources) && m_EntityManager.TryGetComponent(companyEntityPrefab, out IndustrialProcessData industrialProcessData))
-            {
-                Resource input1 = industrialProcessData.m_Input1.m_Resource;
-                Resource input2 = industrialProcessData.m_Input2.m_Resource;
-                Resource output = industrialProcessData.m_Output.m_Resource;
+            if (m_EntityManager.TryGetBuffer(companyEntity, true, out DynamicBuffer<Resources> resources)) {
 
-                if (input1 > 0 && input1 != Resource.NoResource && input1 != output)
+                if (m_EntityManager.TryGetComponent(companyEntityPrefab, out IndustrialProcessData industrialProcessData))
                 {
-                    (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, input1));
+                    Resource input1 = industrialProcessData.m_Input1.m_Resource;
+                    Resource input2 = industrialProcessData.m_Input2.m_Resource;
+                    Resource output = industrialProcessData.m_Output.m_Resource;
+
+                    if (input1 > 0 && input1 != Resource.NoResource && input1 != output)
+                    {
+                        (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, input1));
+                    }
+
+                    if (input2 > 0 && input2 != Resource.NoResource && input2 != output)
+                    {
+                        (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, input2));
+                    }
+
+                    (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, output, true));
                 }
 
-                if (input2 > 0 && input2 != Resource.NoResource && input2 != output)
+                // Company money balance
+                if (modSettings.ShowCompanyBalance)
                 {
-                    (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, input2));
-                }
+                    for (int i = 0; i < resources.Length; i++)
+                    {
+                        if (resources[i].m_Resource is Resource.Money)
+                        {
+                            int companyBalance = resources[i].m_Amount;
+                            string companyBalanceLabel = m_CustomTranslationSystem.GetTranslation("balance", "Balance");
+                            string companyBalanceValueString = companyBalance.ToString("C0");
 
-                (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(CreateResourceTooltip(companyEntity, companyEntityPrefab, resources, output, true));
+                            string finalCompanyBalanceString = $"{companyBalanceLabel}: {companyBalanceValueString}";
+
+                            StringTooltip companyBalanceTooltip = new()
+                            {
+                                value = finalCompanyBalanceString,
+                                icon = "Media/Game/Icons/Money.svg",
+                                color = companyBalance < 0 ? TooltipColor.Error : TooltipColor.Info,
+                            };
+                            (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(companyBalanceTooltip);
+
+                            break;
+                        }
+                    }
+                }
             }
 
             // Company Rent
-            if (m_EntityManager.TryGetComponent(companyEntity, out PropertyRenter propertyRenter))
+            if (modSettings.ShowCompanyRent && m_EntityManager.TryGetComponent(companyEntity, out PropertyRenter propertyRenter))
             {
                 string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
                 string rentValue;

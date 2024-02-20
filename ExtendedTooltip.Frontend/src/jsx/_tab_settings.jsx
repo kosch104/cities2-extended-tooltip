@@ -89,18 +89,14 @@ const TabSettings = ({ react, model, update, trigger }) => {
                 <Grid>
                     <div className="col-6">
                         <div className="my-3">
-                            <FormCheckBox className="mb-1" checked={model.ShowCompanyOutput} label={translations.generalCompanyOutput} onToggle={value => onSettingsToggle("ShowCompanyOutput", value)} disabled={!model.IsEnabled} />
-                            <p className="text-muted fs-sm">{translations.generalCompanyOutputDescription}</p>
-                        </div>
-                        <div className="my-3">
-                            <FormCheckBox className="mb-1" checked={model.ShowEmployee} label={translations.generalEmployees} onToggle={value => onSettingsToggle("ShowEmployee", value)} disabled={!model.IsEnabled} />
-                            <p className="text-muted fs-sm">{translations.generalEmployeesDescription}</p>
+                            <FormCheckBox className="mb-1" checked={model.ShowEfficiency} label={translations.generalEfficiency} onToggle={value => onSettingsToggle("ShowEfficiency", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.generalEfficiencyDescription}</p>
                         </div>
                     </div>
                     <div className="col-6">
                         <div className="my-3">
-                            <FormCheckBox className="mb-1" checked={model.ShowEfficiency} label={translations.generalEfficiency} onToggle={value => onSettingsToggle("ShowEfficiency", value)} disabled={!model.IsEnabled} />
-                            <p className="text-muted fs-sm">{translations.generalEfficiencyDescription}</p>
+                            <FormCheckBox className="mb-1" checked={model.ShowLandValue} label={translations.generalLandValue} onToggle={value => onSettingsToggle("ShowLandValue", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.generalLandValueDescription}</p>
                         </div>
                     </div>
                 </Grid>
@@ -189,6 +185,33 @@ const TabSettings = ({ react, model, update, trigger }) => {
                         <div className="my-3">
                             <FormCheckBox className="mb-2" checked={model.ShowGrowablesZoneInfo} label={translations.growablesZoneInfo} onToggle={value => onSettingsToggle("ShowGrowablesZoneInfo", value)} disabled={!model.IsEnabled} />
                             <p className="text-muted fs-sm">{translations.growablesZoneInfoDescription}</p>
+                        </div>
+                    </div>
+                </Grid>
+            </EtSettingsBox>
+        },
+        {
+            name: "company",
+            content: <EtSettingsBox title={translations.company} description={translations.companyDescription} icon="coui://GameUI/Media/Game/Icons/Company.svg">
+                <Grid>
+                    <div className="col-6">
+                        <div className="my-3">
+                            <FormCheckBox className="mb-1" checked={model.ShowCompanyOutput} label={translations.companyOutput} onToggle={value => onSettingsToggle("ShowCompanyOutput", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.companyOutputDescription}</p>
+                        </div>
+                        <div className="my-3">
+                            <FormCheckBox className="mb-1" checked={model.ShowEmployee} label={translations.companyEmployees} onToggle={value => onSettingsToggle("ShowEmployee", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.companyEmployeesDescription}</p>
+                        </div>
+                    </div>
+                    <div className="col-6">
+                        <div className="my-3">
+                            <FormCheckBox className="mb-1" checked={model.ShowCompanyRent} label={translations.companyRent} onToggle={value => onSettingsToggle("ShowCompanyRent", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.companyRentDescription}</p>
+                        </div>
+                        <div className="my-3">
+                            <FormCheckBox className="mb-1" checked={model.ShowCompanyBalance} label={translations.companyBalance} onToggle={value => onSettingsToggle("ShowCompanyBalance", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.companyBalanceDescription}</p>
                         </div>
                     </div>
                 </Grid>
@@ -376,6 +399,7 @@ const TabSettings = ({ react, model, update, trigger }) => {
                         <div className="btn-group-vertical w-100">
                             {menuButton("general", "General", "coui://GameUI/Media/Game/Icons/Information.svg")}
                             {menuButton("citizens", translations.citizen, "coui://GameUI/Media/Game/Icons/Population.svg")}
+                            {menuButton("company", translations.company, "coui://GameUI/Media/Game/Icons/Company.svg")}
                             {menuButton("education", translations.education, "coui://GameUI/Media/Game/Icons/Education.svg")}
                             {menuButton("growables", translations.growables, "coui://GameUI/Media/Game/Icons/Zones.svg")}
                             {menuButton("nettool", translations.toolSystem, "coui://GameUI/Media/Game/Icons/RoadsServices.svg")}

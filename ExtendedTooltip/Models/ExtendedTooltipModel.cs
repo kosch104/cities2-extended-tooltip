@@ -34,9 +34,15 @@ namespace ExtendedTooltip.Models
         /// </summary>
 
         // GENERAL
-        public bool ShowCompanyOutput { get; set; } = true;
         public bool ShowEfficiency { get; set; } = true;
+        public bool ShowLandValue { get; set; } = true;
+        
+        // COMPANY
         public bool ShowEmployee { get; set; } = true;
+        public bool ShowCompanyOutput { get; set; } = true;
+        public bool ShowCompanyRent { get; set; } = true;
+        public bool ShowCompanyBalance { get; set; } = true;
+
 
         // NET TOOL
         public bool ShowNetToolSystem { get; set; } = true;

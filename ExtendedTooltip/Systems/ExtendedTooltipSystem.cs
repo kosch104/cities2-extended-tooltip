@@ -9,6 +9,7 @@ using Game.Companies;
 using Game.Creatures;
 using Game.Input;
 using Game.Net;
+using Game.Notifications;
 using Game.Prefabs;
 using Game.Routes;
 using Game.Simulation;
@@ -16,6 +17,7 @@ using Game.Tools;
 using Game.UI;
 using Game.UI.InGame;
 using Game.UI.Tooltip;
+using Game.UI.Widgets;
 using Game.Vehicles;
 using Game.Zones;
 using System.Runtime.CompilerServices;
@@ -23,7 +25,6 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Scripting;
-using static Colossal.AssetPipeline.Diagnostic.Report;
 
 namespace ExtendedTooltip.Systems
 {
@@ -36,7 +37,10 @@ namespace ExtendedTooltip.Systems
         Entity? lastEntity;
         float timer = 0f;
 
+        private static readonly float2 kTooltipPointerDistance = new float2(0f, 16f);
+
         private ToolSystem m_ToolSystem;
+        private TooltipUISystem m_TooltipUISystem;
         private DefaultToolSystem m_DefaultTool;
         private NameSystem m_NameSystem;
         private ImageSystem m_ImageSystem;
@@ -74,6 +78,7 @@ namespace ExtendedTooltip.Systems
             LoadSettings();
 
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
+            m_TooltipUISystem = World.GetOrCreateSystemManaged<TooltipUISystem>();
             m_DefaultTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();
             m_NameSystem = World.GetOrCreateSystemManaged<NameSystem>();
             m_ImageSystem = World.GetOrCreateSystemManaged<ImageSystem>();
@@ -97,12 +102,14 @@ namespace ExtendedTooltip.Systems
             m_TooltipGroup = new TooltipGroup()
             {
                 path = "extendedTooltipPrimary",
+                position = default,
                 horizontalAlignment = TooltipGroup.Alignment.Start,
                 verticalAlignment = TooltipGroup.Alignment.Start
             };
             m_SecondaryTooltipGroup = new TooltipGroup()
             {
                 path = "extendedTooltipSecondary",
+                position = default,
                 horizontalAlignment = TooltipGroup.Alignment.End,
                 verticalAlignment = TooltipGroup.Alignment.Start,
             };
@@ -156,9 +163,11 @@ namespace ExtendedTooltip.Systems
                             )
                             {
                                 CreateExtendedTooltips(entity, prefab);
-                                UpdateTooltipGroupPosition();
-                                AddGroup(m_TooltipGroup);
-                                AddGroup(m_SecondaryTooltipGroup);
+                                foreach (var tooltip in m_TooltipGroup.children)
+                                {
+                                    AddMouseTooltip(tooltip);
+                                }
+                                UpdateSecondaryTooltipGroup();
                             }
                             lastEntity = entity;
                         }
@@ -219,7 +228,6 @@ namespace ExtendedTooltip.Systems
             {
                 CitizenHappinessParameterData citizenHappinessParameters = m_CitizenHappinessParameterDataQuery.GetSingleton<CitizenHappinessParameterData>();
                 m_CitizenTooltipBuilder.Build(selectedEntity, citizen, citizenHappinessParameters, m_TooltipGroup, m_SecondaryTooltipGroup);
-                m_TooltipGroup.SetChildrenChanged();
 
                 return; // don't have any other info. No need to check for other components
             }
@@ -392,26 +400,19 @@ namespace ExtendedTooltip.Systems
             return m_ToolSystem.activeInfoview.name.Equals("Electricity".Trim()) || m_ToolSystem.activeInfoview.name.Equals("WaterPipes".Trim());
         }
 
-        private void UpdateTooltipGroupPosition()
+        private void UpdateSecondaryTooltipGroup()
         {
-            Vector3 mousePosition = InputManager.instance.mousePosition;
-            float2 tooltipDistance = new(0f, 16f);
-
-            m_TooltipGroup.position = math.round(new float2(mousePosition.x, Screen.height - mousePosition.y) + tooltipDistance);
-            m_TooltipGroup.SetPropertiesChanged();
-
-            m_SecondaryTooltipGroup.position = math.round(new float2(m_TooltipGroup.position.x - 8.0f, m_TooltipGroup.position.y));
-            m_SecondaryTooltipGroup.SetPropertiesChanged();
+            if (InputManager.instance.mouseOnScreen && m_SecondaryTooltipGroup.children.Count > 0)
+            {
+                Vector3 mousePosition = InputManager.instance.mousePosition;
+                m_SecondaryTooltipGroup.position = math.round(new float2(mousePosition.x - 8.0f, Screen.height - mousePosition.y) + kTooltipPointerDistance);
+                AddGroup(m_SecondaryTooltipGroup);
+            }
         }
 
         private bool IsMoveable(Entity entity)
         {
             return EntityManager.HasComponent<Vehicle>(entity) || EntityManager.HasComponent<Citizen>(entity);
-        }
-
-        private bool IsMixedZone(Entity selectedEntity)
-        {
-            return EntityManager.HasComponent<ResidentialProperty>(selectedEntity) && EntityManager.HasComponent<CommercialProperty>(selectedEntity);
         }
 
         private bool IsHotkeyPressed(ModSettings settings)

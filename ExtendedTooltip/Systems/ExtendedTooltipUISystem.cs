@@ -101,12 +101,22 @@ namespace ExtendedTooltip.Systems
                 // GENERAL TOOLTIPS
                 { "general", m_CustomTranslationSystem.GetTranslation("setting.general", "General") },
                 { "generalDescription", m_CustomTranslationSystem.GetTranslation("setting.general.description", "Manage tooltips which show up on multiple entities of the game.") },
-                { "generalEmployees", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EMPLOYEES", "Employees")},
-                { "generalEmployeesDescription", m_CustomTranslationSystem.GetTranslation("setting.general.employees.description", "Shows the amount of employees of a building.")},
                 { "generalEfficiency", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EFFICIENCY", "Efficiency")},
                 { "generalEfficiencyDescription", m_CustomTranslationSystem.GetTranslation("setting.general.efficiency.description", "Shows the efficiency of buliding in %.")},
-                { "generalCompanyOutput", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.PRODUCTION", "Company Output") },
-                { "generalCompanyOutputDescription", m_CustomTranslationSystem.GetTranslation("setting.general.company_output.description", "Shows information about the production of companies.")},
+                { "generalLandValue", m_CustomTranslationSystem.GetLocalGameTranslation("Infoviews.INFOVIEW[LandValue]", "Land Value")},
+                { "generalLandValueDescription", m_CustomTranslationSystem.GetTranslation("setting.general.land_value.description", "Shows the land value of a building.")},
+
+                // COMPANY
+                { "company", m_CustomTranslationSystem.GetTranslation("setting.company", "Company") },
+                { "companyDescription", m_CustomTranslationSystem.GetTranslation("setting.company.description", "Manage tooltips which show up on multiple entities of the game.") },
+                { "companyEmployees", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.EMPLOYEES", "Employees")},
+                { "companyEmployeesDescription", m_CustomTranslationSystem.GetTranslation("setting.company.employees.description", "Shows the amount of employees of a building.")},
+                { "companyOutput", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.PRODUCTION", "Company Output") },
+                { "companyOutputDescription", m_CustomTranslationSystem.GetTranslation("setting.company.output.description", "Shows information about the production of companies.")},
+                { "companyRent", m_CustomTranslationSystem.GetTranslation("rent", "Rent")},
+                { "companyRentDescription", m_CustomTranslationSystem.GetTranslation("setting.company.rent.description", "Shows the current rent of the selected building.")},
+                { "companyBalance", m_CustomTranslationSystem.GetTranslation("balance", "Balance")},
+                { "companyBalanceDescription", m_CustomTranslationSystem.GetTranslation("setting.company.balance.description", "Shows the current balance of the selected building.")},
 
                 // TOOL SYSTEMS
                 { "toolSystem", m_CustomTranslationSystem.GetTranslation("setting.toolSystem", "Tool Systems") },
