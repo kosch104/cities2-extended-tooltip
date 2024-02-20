@@ -294,7 +294,7 @@ namespace ExtendedTooltip.Systems
             }
 
             // COMPANY (Office, Industrial, Commercial) TOOLTIP
-            if (modSettings.ShowCompanyOutput && CompanyUIUtils.HasCompany(EntityManager, selectedEntity, prefab, out Entity company))
+            if (CompanyUIUtils.HasCompany(EntityManager, selectedEntity, prefab, out Entity company))
             {
                 m_CompanyTooltipBuilder.Build(company, m_TooltipGroup, m_SecondaryTooltipGroup, IsMixed);
             }

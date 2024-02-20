@@ -47,7 +47,7 @@ namespace ExtendedTooltip.TooltipBuilder
             // Company resource section
             if (m_EntityManager.TryGetBuffer(companyEntity, true, out DynamicBuffer<Resources> resources)) {
 
-                if (m_EntityManager.TryGetComponent(companyEntityPrefab, out IndustrialProcessData industrialProcessData))
+                if (modSettings.ShowCompanyOutput && m_EntityManager.TryGetComponent(companyEntityPrefab, out IndustrialProcessData industrialProcessData))
                 {
                     Resource input1 = industrialProcessData.m_Input1.m_Resource;
                     Resource input2 = industrialProcessData.m_Input2.m_Resource;

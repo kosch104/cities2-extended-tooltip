@@ -26,6 +26,7 @@ namespace ExtendedTooltip.Settings
         public bool ShowLandValue { get; set; } = true;
 
         // COMPANY
+        public bool ShowCompany { get; set; } = true;
         public bool ShowCompanyOutput { get; set; } = true;
         public bool ShowEmployee { get; set; } = true;
         public bool ShowCompanyRent { get; set; } = true;
