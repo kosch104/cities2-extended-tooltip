@@ -1,3 +1,9 @@
+- v1.7.0
+	- Added land value tooltip
+	- Added new category: Company
+	- Added company rent
+	- Added company balance
+	- Fix: Exclude the company rent from a mixed buildings household rents
 - v1.6.0
 	- Add bulldozer tooltips
 	- Added company rent

@@ -6,7 +6,6 @@ using Game.Buildings;
 using Game.Citizens;
 using Game.Common;
 using Game.Economy;
-using Game.Modding;
 using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
