@@ -9,7 +9,6 @@ using Game.Companies;
 using Game.Creatures;
 using Game.Input;
 using Game.Net;
-using Game.Notifications;
 using Game.Prefabs;
 using Game.Routes;
 using Game.Simulation;
@@ -17,7 +16,6 @@ using Game.Tools;
 using Game.UI;
 using Game.UI.InGame;
 using Game.UI.Tooltip;
-using Game.UI.Widgets;
 using Game.Vehicles;
 using Game.Zones;
 using System.Runtime.CompilerServices;
@@ -40,7 +38,6 @@ namespace ExtendedTooltip.Systems
         private static readonly float2 kTooltipPointerDistance = new float2(0f, 16f);
 
         private ToolSystem m_ToolSystem;
-        private TooltipUISystem m_TooltipUISystem;
         private DefaultToolSystem m_DefaultTool;
         private NameSystem m_NameSystem;
         private ImageSystem m_ImageSystem;
@@ -78,7 +75,6 @@ namespace ExtendedTooltip.Systems
             LoadSettings();
 
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
-            m_TooltipUISystem = World.GetOrCreateSystemManaged<TooltipUISystem>();
             m_DefaultTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();
             m_NameSystem = World.GetOrCreateSystemManaged<NameSystem>();
             m_ImageSystem = World.GetOrCreateSystemManaged<ImageSystem>();

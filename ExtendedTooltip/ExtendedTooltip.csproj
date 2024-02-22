@@ -111,6 +111,10 @@
 			<HintPath>$(Cities2_Game_Location)\BepInEx\plugins\Gooee\Gooee.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="WaterFeatures">
+			<HintPath>$(Cities2_Game_Location)\BepInEx\plugins\WaterFeatures\Water_Features.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 		<Reference Include="Game">
 			<HintPath>$(Cities2_Game_Location)\Cities2_Data\Managed\Game.dll</HintPath>
 			<Private>False</Private>

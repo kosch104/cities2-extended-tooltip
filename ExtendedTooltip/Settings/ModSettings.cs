@@ -32,10 +32,12 @@ namespace ExtendedTooltip.Settings
         public bool ShowCompanyRent { get; set; } = true;
         public bool ShowCompanyBalance { get; set; } = true;
 
-        // NET TOOL
+        // TOOLS
         public bool ShowNetToolSystem { get; set; } = true;
         public bool ShowNetToolMode { get; set; } = true;
         public bool ShowNetToolElevation { get; set; } = true;
+        public bool ShowTerrainToolHeight { get; set; } = true;
+        public bool ShowWaterToolHeight { get; set; } = true;
 
         // CITIZEN
         public bool ShowCitizen { get; set; } = true;

@@ -1,3 +1,8 @@
+- v1.8.1
+	- WaterFeature support must be disabled for now until it's issue is solved
+- v1.8.0
+	- Added terrain tool height tooltip (also in map editor)
+	- Added water tool height tooltip (also in map editor + support for WaterFeatures mod)
 - v1.7.0
 	- Added land value tooltip
 	- Added new category: Company

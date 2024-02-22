@@ -226,11 +226,19 @@ const TabSettings = ({ react, model, update, trigger }) => {
                             <FormCheckBox className="mb-2" label={translations.toolSystemNetToolMode} checked={model.ShowNetToolMode} onToggle={(value) => onSettingsToggle("ShowNetToolMode", value)} disabled={!model.IsEnabled} />
                             <p className="text-muted fs-sm">{translations.toolSystemNetToolModeDescription}</p>
                         </div>
+                        <div className="my-3">
+                            <FormCheckBox className="mb-2" label={translations.toolSystemTerrainToolHeight} checked={model.ShowTerrainToolHeight} onToggle={(value) => onSettingsToggle("ShowTerrainToolHeight", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.toolSystemTerrainToolHeightDescription}</p>
+                        </div>
                     </div>
                     <div className="col-6">
                         <div className="my-3">
                             <FormCheckBox className="mb-2" label={translations.toolSystemNetToolElevation} checked={model.ShowNetToolElevation} onToggle={(value) => onSettingsToggle("ShowNetToolElevation", value)} disabled={!model.IsEnabled} />
                             <p className="text-muted fs-sm">{translations.toolSystemNetToolElevationDescription}</p>
+                        </div>
+                        <div className="my-3">
+                            <FormCheckBox className="mb-2" label={translations.toolSystemWaterToolHeight} checked={model.ShowWaterToolHeight} onToggle={(value) => onSettingsToggle("ShowWaterToolHeight", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.toolSystemWaterToolHeightDescription}</p>
                         </div>
                     </div>
                 </Grid>

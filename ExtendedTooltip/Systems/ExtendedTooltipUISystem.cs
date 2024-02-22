@@ -129,6 +129,10 @@ namespace ExtendedTooltip.Systems
                 { "toolSystemNetToolModeDescription", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.netTool.mode.description", "Shows which mode (straight, curve, ect.) is in use.") },
                 { "toolSystemNetToolElevation", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.netTool.elevation", "Elevation") },
                 { "toolSystemNetToolElevationDescription", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.netTool.elevation.description", "Adds elevation to net tool mode tooltip.") },
+                { "toolSystemTerrainToolHeight", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.terrainTool.height", "Terrain Tool Height") },
+                { "toolSystemTerrainToolHeightDescription", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.terrainTool.height.description", "Shows the current height of the terrain tool.") },
+                { "toolSystemWaterToolHeight", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.waterTool.height", "Water Tool Height.") },
+                { "toolSystemWaterToolHeightDescription", m_CustomTranslationSystem.GetTranslation("setting.toolSystem.waterTool.height.description", "Shows the current height of the water tool.") },
 
                 // CITIZEN
                 { "citizen", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_TYPE[Citizen]", "Citizens") },

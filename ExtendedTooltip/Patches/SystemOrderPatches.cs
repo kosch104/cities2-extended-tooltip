@@ -15,7 +15,7 @@ namespace ExtendedTooltip.Patches
         {
             updateSystem?.UpdateAt<CustomTranslationSystem>(SystemUpdatePhase.UIUpdate);
             updateSystem?.UpdateAt<ExtendedTooltipUISystem>(SystemUpdatePhase.UIUpdate);
-            updateSystem?.UpdateAt<TempElevationTooltipSystem>(SystemUpdatePhase.UITooltip);
+            updateSystem?.UpdateAt<ExtendedTempTooltipSystem>(SystemUpdatePhase.UITooltip);
             updateSystem?.UpdateAt<ExtendedTooltipSystem>(SystemUpdatePhase.UITooltip);
             updateSystem?.UpdateAt<ExtendedBulldozerTooltipSystem>(SystemUpdatePhase.UITooltip);
         }
