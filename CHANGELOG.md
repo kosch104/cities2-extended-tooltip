@@ -1,3 +1,6 @@
+- v1.9.0
+	- Added WaterFeatures mod support to show height of water tool
+	- Added level terrain tool height tooltip
 - v1.8.1
 	- WaterFeature support must be disabled for now until it's issue is solved
 - v1.8.0
