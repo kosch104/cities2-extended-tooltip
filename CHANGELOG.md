@@ -1,3 +1,5 @@
+- v1.10.0
+	- Added height and slope to slope mode of the terrain tool
 - v1.9.0
 	- Added WaterFeatures mod support to show height of water tool
 	- Added level terrain tool height tooltip
