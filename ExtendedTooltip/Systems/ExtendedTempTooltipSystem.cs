@@ -1,4 +1,5 @@
-﻿using ExtendedTooltip.Settings;
+﻿using Colossal.Mathematics;
+using ExtendedTooltip.Settings;
 using Game.Common;
 using Game.Prefabs;
 using Game.Simulation;
@@ -81,28 +82,46 @@ namespace ExtendedTooltip.Systems
 
                 if (m_ToolRaycastSystem.GetRaycastResult(out RaycastResult raycastResult))
                 {
-                    int applyHeight = (int) TerrainUtils.SampleHeight(ref heightData, raycastResult.m_Hit.m_HitPosition);
+                    float3 applyPosition = raycastResult.m_Hit.m_HitPosition;
+                    int applyHeight = (int) TerrainUtils.SampleHeight(ref heightData, applyPosition);
                     StringTooltip terrainToolMode = new()
                     {
-                        icon = "Media/Glyphs/Slope.svg",
+                        icon = "Media/Glyphs/TrendUp.svg",
                         path = "terrainToolApplyHeight",
                         value = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_METER", "-", "SIGN", "", "VALUE", applyHeight.ToString()),
                     };
                     AddMouseTooltip(terrainToolMode);
 
                     // Add level height tooltip if the tool is set to level
-                    if (m_ToolSystem.activeTool is TerrainToolSystem && m_TerrainToolSystem.prefab.m_Type == TerraformingType.Level)
+                    if (m_ToolSystem.activeTool is TerrainToolSystem)
                     {
-                        float3 targetPosition = Traverse.Create(m_TerrainToolSystem).Field<float3>("m_TargetPosition").Value;
-                        int targetHeight = (int)TerrainUtils.SampleHeight(ref heightData, targetPosition);
-                        StringTooltip terrainTargetPosition = new()
+                        if (m_TerrainToolSystem.prefab.m_Type == TerraformingType.Level || m_TerrainToolSystem.prefab.m_Type == TerraformingType.Slope)
                         {
-                            icon = "Media/Tools/Terrain Tool/Level.svg",
-                            path = "terrainToolTargetHeight",
-                            color = targetHeight > applyHeight ? TooltipColor.Success : targetHeight == applyHeight ? TooltipColor.Info : TooltipColor.Error,
-                            value = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_METER", "-", "SIGN", "", "VALUE", targetHeight.ToString()),
-                        };
-                        AddMouseTooltip(terrainTargetPosition);
+                            float3 targetPosition = Traverse.Create(m_TerrainToolSystem).Field<float3>("m_TargetPosition").Value;
+                            int targetHeight = (int)TerrainUtils.SampleHeight(ref heightData, targetPosition);
+                            StringTooltip terrainTargetPosition = new()
+                            {
+                                icon = $"Media/Tools/Terrain Tool/{Enum.GetName(typeof(TerraformingType), m_TerrainToolSystem.prefab.m_Type)}.svg",
+                                path = "terrainToolTargetHeight",
+                                color = targetHeight > applyHeight ? TooltipColor.Success : targetHeight == applyHeight ? TooltipColor.Info : TooltipColor.Error,
+                                value = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_METER", "-", "SIGN", "", "VALUE", targetHeight.ToString()),
+                            };
+                            AddMouseTooltip(terrainTargetPosition);
+
+                            if (m_TerrainToolSystem.prefab.m_Type == TerraformingType.Slope)
+                            {
+                                float length = math.distance(targetPosition, applyPosition);
+                                FloatTooltip terrainSlope = new()
+                                {
+                                    icon = "Media/Glyphs/Slope.svg",
+                                    path = "terrainToolSlope",
+                                    unit = "percentageSingleFraction",
+                                    signed = true,
+                                    value = 100f * (applyPosition.y - targetPosition.y) / Math.Max(1, length),
+                                };
+                                AddMouseTooltip(terrainSlope);
+                            }
+                        }
                     }
                 }
             }
