@@ -48,7 +48,7 @@ namespace ExtendedTooltip.TooltipBuilder
                     value = $"{profitabilityLabel}: {profitabilityValue} ({(int)companyProfitability.m_Profitability})",
                     color = tooltipColor
                 };
-                tooltipGroup.children.Add(profitabilityTooltip);
+                (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(profitabilityTooltip);
             }
 
             // Company resource section
