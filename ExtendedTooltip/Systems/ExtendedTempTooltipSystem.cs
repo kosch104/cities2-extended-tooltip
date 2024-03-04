@@ -29,7 +29,6 @@ namespace ExtendedTooltip.Systems
         private StringTooltip m_NetToolMode;
 
         private Type _waterFeaturesType;
-        private Assembly[] loadedAssemblies;
 
         [Preserve]
         protected override void OnCreate()
@@ -44,7 +43,6 @@ namespace ExtendedTooltip.Systems
             m_TerrainSystem = World.GetOrCreateSystemManaged<TerrainSystem>();
             m_ToolRaycastSystem = World.GetOrCreateSystemManaged<ToolRaycastSystem>();
 
-            loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             m_Settings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
             DetectWaterFeaturesMod();
 
@@ -83,12 +81,13 @@ namespace ExtendedTooltip.Systems
                 if (m_ToolRaycastSystem.GetRaycastResult(out RaycastResult raycastResult))
                 {
                     float3 applyPosition = raycastResult.m_Hit.m_HitPosition;
-                    int applyHeight = (int) TerrainUtils.SampleHeight(ref heightData, applyPosition);
-                    StringTooltip terrainToolMode = new()
+                    float applyHeight = TerrainUtils.SampleHeight(ref heightData, applyPosition);
+                    FloatTooltip terrainToolMode = new()
                     {
                         icon = "Media/Glyphs/TrendUp.svg",
                         path = "terrainToolApplyHeight",
-                        value = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_METER", "-", "SIGN", "", "VALUE", applyHeight.ToString()),
+                        unit = "length",
+                        value = applyHeight,
                     };
                     AddMouseTooltip(terrainToolMode);
 
@@ -98,13 +97,14 @@ namespace ExtendedTooltip.Systems
                         if (m_TerrainToolSystem.prefab.m_Type == TerraformingType.Level || m_TerrainToolSystem.prefab.m_Type == TerraformingType.Slope)
                         {
                             float3 targetPosition = Traverse.Create(m_TerrainToolSystem).Field<float3>("m_TargetPosition").Value;
-                            int targetHeight = (int)TerrainUtils.SampleHeight(ref heightData, targetPosition);
-                            StringTooltip terrainTargetPosition = new()
+                            float targetHeight = TerrainUtils.SampleHeight(ref heightData, targetPosition);
+                            FloatTooltip terrainTargetPosition = new()
                             {
                                 icon = $"Media/Tools/Terrain Tool/{Enum.GetName(typeof(TerraformingType), m_TerrainToolSystem.prefab.m_Type)}.svg",
                                 path = "terrainToolTargetHeight",
+                                unit = "length",
                                 color = targetHeight > applyHeight ? TooltipColor.Success : targetHeight == applyHeight ? TooltipColor.Info : TooltipColor.Error,
-                                value = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_METER", "-", "SIGN", "", "VALUE", targetHeight.ToString()),
+                                value = targetHeight
                             };
                             AddMouseTooltip(terrainTargetPosition);
 
@@ -129,7 +129,7 @@ namespace ExtendedTooltip.Systems
 
         private void DetectWaterFeaturesMod()
         {
-            _waterFeaturesType = loadedAssemblies.FirstOrDefault(a => a.GetName().Name == "Water_Features")?
+            _waterFeaturesType = m_ExtendedTooltipSystem?.loadedAssemblies.FirstOrDefault(a => a.GetName().Name == "Water_Features")?
                 .GetTypes()
                 .FirstOrDefault(t => t.FullName == "Water_Features.Tools.CustomWaterToolSystem");
         }

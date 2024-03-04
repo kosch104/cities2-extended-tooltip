@@ -168,6 +168,10 @@ const TabSettings = ({ react, model, update, trigger }) => {
                             <FormCheckBox className="mb-2" checked={model.ShowGrowablesLevelDetails} label={translations.growablesLevelDetails} onToggle={value => onSettingsToggle("ShowGrowablesLevelDetails", value)} disabled={!model.IsEnabled} />
                             <p className="text-muted fs-sm">{translations.growablesLevelDetailsDescription}</p>
                         </div>
+                        <div className="my-3">
+                            <FormCheckBox className="mb-2" checked={model.ShowGrowablesPloppableRICOInfo} label={translations.growablesPloppableRICOInfo} onToggle={value => onSettingsToggle("ShowGrowablesPloppableRICOInfo", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.growablesPloppableRICOInfoDescription}</p>
+                        </div>
                     </div>
                     <div className="col-6">
                         <div className="my-3">
@@ -202,6 +206,10 @@ const TabSettings = ({ react, model, update, trigger }) => {
                         <div className="my-3">
                             <FormCheckBox className="mb-1" checked={model.ShowEmployee} label={translations.companyEmployees} onToggle={value => onSettingsToggle("ShowEmployee", value)} disabled={!model.IsEnabled} />
                             <p className="text-muted fs-sm">{translations.companyEmployeesDescription}</p>
+                        </div>
+                        <div className="my-3">
+                            <FormCheckBox className="mb-1" checked={model.ShowCompanyProfitability} label={translations.companyProfitability} onToggle={value => onSettingsToggle("ShowCompanyProfitability", value)} disabled={!model.IsEnabled} />
+                            <p className="text-muted fs-sm">{translations.companyProfitabilityDescription}</p>
                         </div>
                     </div>
                     <div className="col-6">

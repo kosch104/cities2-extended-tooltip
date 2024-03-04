@@ -117,6 +117,8 @@ namespace ExtendedTooltip.Systems
                 { "companyRentDescription", m_CustomTranslationSystem.GetTranslation("setting.company.rent.description", "Shows the current rent of the selected building.")},
                 { "companyBalance", m_CustomTranslationSystem.GetTranslation("balance", "Balance")},
                 { "companyBalanceDescription", m_CustomTranslationSystem.GetTranslation("setting.company.balance.description", "Shows the current balance of the selected building.")},
+                { "companyProfitability", m_CustomTranslationSystem.GetLocalGameTranslation("Infoviews.INFOMODE[Profitability]", "Profitability")},
+                { "companyProfitabilityDescription", m_CustomTranslationSystem.GetTranslation("setting.company.profitability.description", "Shows the current profitability of the selected building.")},
 
                 // TOOL SYSTEMS
                 { "toolSystem", m_CustomTranslationSystem.GetTranslation("setting.toolSystem", "Tool Systems") },
@@ -205,6 +207,9 @@ namespace ExtendedTooltip.Systems
                 { "growablesRentDescription", m_CustomTranslationSystem.GetTranslation("setting.growables.rent.description", "Shows the current rent of the selected building.")},
                 { "growablesBalance", m_CustomTranslationSystem.GetTranslation("balance", "Balance")},
                 { "growablesBalanceDescription", m_CustomTranslationSystem.GetTranslation("setting.growables.balance.description", "Shows the current balance of the selected building.")},
+                { "growablesPloppableRICOInfo", m_CustomTranslationSystem.GetTranslation("setting.growables.ploppable_rico_info", "Ploppable RICO")},
+                { "growablesPloppableRICOInfoDescription", m_CustomTranslationSystem.GetTranslation("setting.growables.ploppable_rico_info.description", "Shows ploppable RICO related info.")},
+
 
                 // VEHICLE
                 { "vehicle", m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.VEHICLES[HouseholdVehicle]", "Vehicles")},

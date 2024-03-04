@@ -18,6 +18,8 @@ using Game.UI.InGame;
 using Game.UI.Tooltip;
 using Game.Vehicles;
 using Game.Zones;
+using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -31,11 +33,12 @@ namespace ExtendedTooltip.Systems
     {
         public LocalSettings m_LocalSettings;
         public bool m_LocalSettingsLoaded = false;
+        public Assembly[] loadedAssemblies;
 
         Entity? lastEntity;
         float timer = 0f;
 
-        private static readonly float2 kTooltipPointerDistance = new float2(0f, 16f);
+        private static readonly float2 kTooltipPointerDistance = new(0f, 16f);
 
         private ToolSystem m_ToolSystem;
         private DefaultToolSystem m_DefaultTool;
@@ -73,6 +76,8 @@ namespace ExtendedTooltip.Systems
         {
             base.OnCreate();
             LoadSettings();
+
+            loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_DefaultTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();

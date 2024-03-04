@@ -43,6 +43,7 @@ namespace ExtendedTooltip.Models
         public bool ShowCompanyOutput { get; set; } = true;
         public bool ShowCompanyRent { get; set; } = true;
         public bool ShowCompanyBalance { get; set; } = true;
+        public bool ShowCompanyProfitability { get; set; } = true;
 
 
         // TOOLS
@@ -94,6 +95,7 @@ namespace ExtendedTooltip.Models
         public bool ShowGrowablesHouseholdWealth { get; set; } = true;
         public bool ShowGrowablesBalance { get; set; } = true;
         public bool ShowGrowablesZoneInfo { get; set; } = true;
+        public bool ShowGrowablesPloppableRICOInfo { get; set; } = true;
 
         // VEHICLES
         public bool ShowVehicle { get; set; } = true;

@@ -2,6 +2,7 @@
 using Colossal.Mathematics;
 using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
+using ExtendedTooltip.Utils;
 using Game.Buildings;
 using Game.Citizens;
 using Game.Common;
@@ -15,6 +16,7 @@ using Game.Zones;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -25,11 +27,14 @@ namespace ExtendedTooltip.TooltipBuilder
     {
         private readonly PrefabSystem m_PrefabSystem;
         private ModSettings m_ModSettings;
+        private readonly Type m_PloppableBuildingDataType;
         
         public SpawnablesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem, PrefabSystem prefabSystem)
         : base(entityManager, customTranslationSystem)
         {
             m_PrefabSystem = prefabSystem;
+            Assembly findStuffAssembly = m_ExtendedTooltipSystem.loadedAssemblies.FirstOrDefault(a => a.GetName().Name == "FindStuff");
+            m_PloppableBuildingDataType = findStuffAssembly?.GetTypes().FirstOrDefault(a => a.Name == "PloppableBuildingData");
             UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
         }
 
@@ -42,8 +47,6 @@ namespace ExtendedTooltip.TooltipBuilder
             if (m_ModSettings.ShowGrowablesZoneInfo)
             {
                 ZoneData zoneData = m_EntityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);
-                ZonePrefab zonePrefab = m_PrefabSystem.GetPrefab<ZonePrefab>(spawnableBuildingData.m_ZonePrefab);
-                PrefabBase zonePrefabBase = m_PrefabSystem.GetPrefab<PrefabBase>(spawnableBuildingData.m_ZonePrefab);
                 string rawZoneName = m_PrefabSystem.GetPrefab<PrefabBase>(spawnableBuildingData.m_ZonePrefab).name;
                 string finalZoneName;
 
@@ -67,6 +70,26 @@ namespace ExtendedTooltip.TooltipBuilder
                     value = finalZoneName,
                 };
                 (m_ModSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(zoneTooltip);
+            }
+
+            if (m_ModSettings.ShowGrowablesPloppableRICOInfo && m_PloppableBuildingDataType != null && TryGetPloppableRICOBuilding(entity, out object ploppableRicoBuilding))
+            {
+                string ricoString = "Plopped RICO";
+                StringTooltip ploppableRicoTooltip = new()
+                {
+                    icon = "Media/Game/Icons/Zones.svg",
+                    color = TooltipColor.Info
+                };
+
+                if (IsHistorical(ploppableRicoBuilding))
+                {
+                    ricoString += $" [{m_CustomTranslationSystem.GetTranslation("", "Historical")}]";
+                    ploppableRicoTooltip.color = TooltipColor.Warning;
+                }
+
+                ploppableRicoTooltip.value = ricoString;
+
+                (m_ModSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(ploppableRicoTooltip);
             }
 
             if (m_ModSettings.ShowGrowablesLevel)
@@ -355,6 +378,42 @@ namespace ExtendedTooltip.TooltipBuilder
                     finalInfoString = $"{residentsValue} {residentsLabel}";
                 }
             }
-        } 
+        }
+
+        private bool TryGetPloppableRICOBuilding(Entity entity, out object ploppableRicoBuilding)
+        {
+            ploppableRicoBuilding = default;
+            if (m_PloppableBuildingDataType != null && m_EntityManager.HasComponent(entity, m_PloppableBuildingDataType))
+            {
+                try
+                {
+                    ploppableRicoBuilding = EntityManagerUtils.GetComponentDynamic(m_EntityManager, entity, m_PloppableBuildingDataType);
+                    return true;
+                } catch (Exception e)
+                {
+                    UnityEngine.Debug.Log($"ExtendedTooltip: {e}");
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsHistorical(object ploppableBuildingData)
+        {
+            try
+            {
+                FieldInfo allowLeveling = ploppableBuildingData?.GetType().GetField("allowLeveling");
+                if (allowLeveling != null && allowLeveling.FieldType == typeof(bool))
+                {
+                    return !(bool)allowLeveling.GetValue(ploppableBuildingData);
+                }
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.Log($"ExtendedTooltip: {e}");
+            }
+
+            return false;
+        }
     }
 }

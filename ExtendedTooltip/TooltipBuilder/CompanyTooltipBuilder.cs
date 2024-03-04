@@ -16,6 +16,7 @@ namespace ExtendedTooltip.TooltipBuilder
 {
     public class CompanyTooltipBuilder : TooltipBuilderBase
     {
+
         public CompanyTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
@@ -29,19 +30,25 @@ namespace ExtendedTooltip.TooltipBuilder
             Entity companyEntityPrefab = m_EntityManager.GetComponentData<PrefabRef>(companyEntity).m_Prefab;
 
             // Profitability
-            if (m_EntityManager.TryGetComponent(companyEntity, out Profitability companyProfitability))
+            if (modSettings.ShowCompanyProfitability && m_EntityManager.TryGetComponent(companyEntity, out Profitability companyProfitability))
             {
                 CompanyProfitabilityKey companyProfitabilityKey = CompanyUIUtils.GetProfitabilityKey(companyProfitability.m_Profitability);
                 string profitabilityLabel = m_CustomTranslationSystem.GetLocalGameTranslation("Infoviews.INFOMODE[Profitability]", "Profitability");
                 string profitabilityValue = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.COMPANY_PROFITABILITY_TITLE[{companyProfitabilityKey}]", companyProfitabilityKey.ToString());
-
+                var tooltipColor = companyProfitabilityKey switch
+                {
+                    CompanyProfitabilityKey.Bankrupt => TooltipColor.Error,
+                    CompanyProfitabilityKey.LosingMoney => TooltipColor.Warning,
+                    CompanyProfitabilityKey.Profitable => TooltipColor.Success,
+                    _ => TooltipColor.Info,
+                };
                 StringTooltip profitabilityTooltip = new()
                 {
                     icon = "Media/Game/Icons/CompanyProfit.svg",
-                    value = $"{profitabilityLabel}: {profitabilityValue}",
-                    color = TooltipColor.Info,
+                    value = $"{profitabilityLabel}: {profitabilityValue} ({(int)companyProfitability.m_Profitability})",
+                    color = tooltipColor
                 };
-                (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(profitabilityTooltip);
+                tooltipGroup.children.Add(profitabilityTooltip);
             }
 
             // Company resource section
