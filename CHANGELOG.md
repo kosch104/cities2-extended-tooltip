@@ -1,6 +1,7 @@
 - v1.11.0
 	- Added support for FindStuff ploppable rico buildings
 	- Added missing profitability option in mod settings window
+	- Show resources of companies while in bulldoze mode
 - v1.10.0
 	- Added height and slope to slope mode of the terrain tool
 - v1.9.0
