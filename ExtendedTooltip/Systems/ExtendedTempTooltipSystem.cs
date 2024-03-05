@@ -1,5 +1,4 @@
-﻿using Colossal.Mathematics;
-using ExtendedTooltip.Settings;
+﻿using ExtendedTooltip.Settings;
 using Game.Common;
 using Game.Prefabs;
 using Game.Simulation;
@@ -8,7 +7,6 @@ using Game.UI.Tooltip;
 using HarmonyLib;
 using System;
 using System.Linq;
-using System.Reflection;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;

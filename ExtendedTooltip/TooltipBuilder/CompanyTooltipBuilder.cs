@@ -23,14 +23,14 @@ namespace ExtendedTooltip.TooltipBuilder
             UnityEngine.Debug.Log($"Created CompanyTooltipBuilder.");
         }
 
-        public void Build(Entity companyEntity, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup, bool IsMixed)
+        public void Build(Entity companyEntity, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup, bool IsMixed = false, bool IsBulldozing = false)
         {
             ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
             // Company output tooltip
             Entity companyEntityPrefab = m_EntityManager.GetComponentData<PrefabRef>(companyEntity).m_Prefab;
 
             // Profitability
-            if (modSettings.ShowCompanyProfitability && m_EntityManager.TryGetComponent(companyEntity, out Profitability companyProfitability))
+            if (modSettings.ShowCompanyProfitability && !IsBulldozing && m_EntityManager.TryGetComponent(companyEntity, out Profitability companyProfitability))
             {
                 CompanyProfitabilityKey companyProfitabilityKey = CompanyUIUtils.GetProfitabilityKey(companyProfitability.m_Profitability);
                 string profitabilityLabel = m_CustomTranslationSystem.GetLocalGameTranslation("Infoviews.INFOMODE[Profitability]", "Profitability");
@@ -74,34 +74,34 @@ namespace ExtendedTooltip.TooltipBuilder
                 }
 
                 // Company money balance
-                if (modSettings.ShowCompanyBalance)
+                if (modSettings.ShowCompanyBalance && !IsBulldozing)
                 {
+                    int companyBalance = 0;
                     for (int i = 0; i < resources.Length; i++)
                     {
                         if (resources[i].m_Resource is Resource.Money)
                         {
-                            int companyBalance = resources[i].m_Amount;
-                            string companyBalanceLabel = m_CustomTranslationSystem.GetTranslation("balance", "Balance");
-                            string companyBalanceValueString = companyBalance.ToString("C0");
-
-                            string finalCompanyBalanceString = $"{companyBalanceLabel}: {companyBalanceValueString}";
-
-                            StringTooltip companyBalanceTooltip = new()
-                            {
-                                value = finalCompanyBalanceString,
-                                icon = "Media/Game/Icons/Money.svg",
-                                color = companyBalance < 0 ? TooltipColor.Error : TooltipColor.Info,
-                            };
-                            (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(companyBalanceTooltip);
-
+                            companyBalance = resources[i].m_Amount;
                             break;
                         }
                     }
+
+                     string companyBalanceLabel = m_CustomTranslationSystem.GetTranslation("balance", "Balance");
+                     string companyBalanceValueString = companyBalance.ToString("C0");
+                     string finalCompanyBalanceString = $"{companyBalanceLabel}: {companyBalanceValueString}";
+
+                     StringTooltip companyBalanceTooltip = new()
+                     {
+                         value = finalCompanyBalanceString,
+                         icon = "Media/Game/Icons/Money.svg",
+                         color = companyBalance < 0 ? TooltipColor.Error : TooltipColor.Info,
+                     };
+                     (modSettings.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(companyBalanceTooltip);
                 }
             }
 
             // Company Rent
-            if (modSettings.ShowCompanyRent && m_EntityManager.TryGetComponent(companyEntity, out PropertyRenter propertyRenter))
+            if (modSettings.ShowCompanyRent && !IsBulldozing && m_EntityManager.TryGetComponent(companyEntity, out PropertyRenter propertyRenter))
             {
                 string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
                 string rentValue;
@@ -123,7 +123,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }
         }
 
-        private StringTooltip CreateResourceTooltip(Entity companyEntity, Entity companyEntityPrefab, DynamicBuffer<Resources> companyResources, Resource resource, bool isOutput = false)
+        private StringTooltip CreateResourceTooltip(Entity companyEntity, Entity companyEntityPrefab, DynamicBuffer<Resources> companyResources, Resource resource, bool isOutput = false, bool isBulldozing = false)
         {
             // OUTPUT Storage
             StringTooltip companyResourceTooltip = new();
@@ -161,7 +161,7 @@ namespace ExtendedTooltip.TooltipBuilder
             string resourceValue = m_CustomTranslationSystem.GetLocalGameTranslation($"Resources.TITLE[{resource}]", resource.ToString());
             GetCompanyOutputResource(companyResources, resource, out int resourceAmount);
             companyResourceTooltip.icon = "Media/Game/Resources/" + resource.ToString() + ".svg";
-            if (resourceAmount > 0)
+            if (resourceAmount > 0 && !isBulldozing)
             {
                 if (showResourceUnit)
                 {

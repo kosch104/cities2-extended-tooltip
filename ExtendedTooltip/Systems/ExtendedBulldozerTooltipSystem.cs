@@ -10,8 +10,10 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
+using Game.UI.InGame;
 using Game.UI.Localization;
 using HarmonyLib;
+using System.Runtime.CompilerServices;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -24,6 +26,7 @@ namespace Game.UI.Tooltip
         TooltipGroup m_TooltipGroup;
         PrefabSystem m_PrefabSystem;
         SpawnablesTooltipBuilder m_SpawnablesTooltipBuilder;
+        CompanyTooltipBuilder m_CompanyTooltipBuilder;
         CustomTranslationSystem m_CustomTranslationSystem;
         EntityQuery m_CitizenHappinessParameterDataQuery;
         public LocalSettings m_LocalSettings;
@@ -41,6 +44,7 @@ namespace Game.UI.Tooltip
             m_CustomTranslationSystem = World.GetOrCreateSystemManaged<CustomTranslationSystem>();
             m_CitizenHappinessParameterDataQuery = GetEntityQuery(new ComponentType[] { ComponentType.ReadOnly<CitizenHappinessParameterData>() });
             m_SpawnablesTooltipBuilder = new(EntityManager, m_CustomTranslationSystem, m_PrefabSystem);
+            m_CompanyTooltipBuilder = new CompanyTooltipBuilder(EntityManager, m_CustomTranslationSystem);
             m_TempQuery = GetEntityQuery(new ComponentType[]
             {
                 ComponentType.ReadOnly<Temp>(),
@@ -84,6 +88,12 @@ namespace Game.UI.Tooltip
                     {
                         CitizenHappinessParameterData citizenHappinessParameters = m_CitizenHappinessParameterDataQuery.GetSingleton<CitizenHappinessParameterData>();
                         m_SpawnablesTooltipBuilder.Build(m_BulldozeTool, false, selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, citizenHappinessParameters, m_TooltipGroup, m_TooltipGroup);
+                    }
+
+                    // COMPANY (Office, Industrial, Commercial) TOOLTIP
+                    if (CompanyUIUtils.HasCompany(EntityManager, selectedEntity, prefab, out Entity company))
+                    {
+                        m_CompanyTooltipBuilder.Build(company, m_TooltipGroup, m_TooltipGroup, false, true);
                     }
                 }
 

@@ -44,6 +44,8 @@ namespace ExtendedTooltip.TooltipBuilder
             if (m_ModSettings.ShowGrowablesHousehold == false && m_ModSettings.ShowGrowablesHouseholdDetails == false && m_ModSettings.ShowGrowablesLevel == false && m_ModSettings.ShowGrowablesLevelDetails == false && m_ModSettings.ShowGrowablesRent == false)
                 return;
 
+            bool isBulldozing = activeTool is BulldozeToolSystem;
+
             if (m_ModSettings.ShowGrowablesZoneInfo)
             {
                 ZoneData zoneData = m_EntityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);
@@ -123,7 +125,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }
 
             // LAND VALUE TOOLTIP
-            if (m_ModSettings.ShowLandValue && m_EntityManager.TryGetComponent(entity, out Building building) && m_EntityManager.HasComponent<BuildingCondition>(entity))
+            if (m_ModSettings.ShowLandValue && !isBulldozing && m_EntityManager.TryGetComponent(entity, out Building building) && m_EntityManager.HasComponent<BuildingCondition>(entity))
             {
                 if (building.m_RoadEdge != Entity.Null)
                 {
@@ -194,7 +196,7 @@ namespace ExtendedTooltip.TooltipBuilder
                     (m_ModSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(wealthTooltip);
                 }
 
-                if (m_ModSettings.ShowGrowablesBalance && householdBalances.Count > 0)
+                if (m_ModSettings.ShowGrowablesBalance && !isBulldozing && householdBalances.Count > 0)
                 {
                     string balanceLabel = m_CustomTranslationSystem.GetTranslation("balance", "Balance");
                     string balanceValue;
@@ -226,7 +228,7 @@ namespace ExtendedTooltip.TooltipBuilder
                     (m_ModSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(balanceTooltip);
                 }
 
-                if (m_ModSettings.ShowGrowablesRent == true && householdRents.Count > 0)
+                if (m_ModSettings.ShowGrowablesRent == true && !isBulldozing && householdRents.Count > 0)
                 {
                     string rentLabel = m_CustomTranslationSystem.GetTranslation("rent", "Rent");
                     string rentValue;
