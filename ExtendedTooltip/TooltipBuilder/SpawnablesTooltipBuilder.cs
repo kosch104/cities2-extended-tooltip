@@ -99,21 +99,22 @@ namespace ExtendedTooltip.TooltipBuilder
 
             if (m_ModSettings.ShowGrowablesLevel)
             {
+                bool isHistorical = IsHistorical(entity);
                 TooltipColor buildingLevelColor = TooltipColor.Info;
                 string buildingLevelLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LEVEL", "Level");
-                string buildingLevelValue = $"{buildingLevel}/5";
+                string buildingLevelValue = !isHistorical ? $"{buildingLevel}/5" : $"{buildingLevel}";
                 
                 if (buildingLevel == 5)
                 {
                     buildingLevelColor = TooltipColor.Success;
                 }
 
-                if (currentCondition < 0)
+                if (currentCondition < 0 && !isHistorical)
                 {
                     buildingLevelColor = TooltipColor.Error;
                 }
 
-                if (m_ModSettings.ShowGrowablesLevelDetails == true && levelingCost > 0)
+                if (m_ModSettings.ShowGrowablesLevelDetails == true && !isHistorical && levelingCost > 0)
                 {
                     buildingLevelValue += $" [¢{currentCondition} / ¢{levelingCost}]";
                 }
