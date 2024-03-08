@@ -28,13 +28,16 @@ namespace ExtendedTooltip.TooltipBuilder
         private readonly PrefabSystem m_PrefabSystem;
         private ModSettings m_ModSettings;
         private readonly Type m_PloppableBuildingDataType;
-        
+        private readonly Type m_HistoricalType;
+
+
         public SpawnablesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem, PrefabSystem prefabSystem)
         : base(entityManager, customTranslationSystem)
         {
             m_PrefabSystem = prefabSystem;
             Assembly findStuffAssembly = m_ExtendedTooltipSystem.loadedAssemblies.FirstOrDefault(a => a.GetName().Name == "FindStuff");
             m_PloppableBuildingDataType = findStuffAssembly?.GetTypes().FirstOrDefault(a => a.Name == "PloppableBuildingData");
+            m_HistoricalType = findStuffAssembly?.GetTypes().FirstOrDefault(a => a.Name == "Historical");
             UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
         }
 
@@ -74,7 +77,7 @@ namespace ExtendedTooltip.TooltipBuilder
                 (m_ModSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(zoneTooltip);
             }
 
-            if (m_ModSettings.ShowGrowablesPloppableRICOInfo && m_PloppableBuildingDataType != null && TryGetPloppableRICOBuilding(entity, out object ploppableRicoBuilding))
+            if (m_ModSettings.ShowGrowablesPloppableRICOInfo && m_PloppableBuildingDataType != null && TryGetPloppableRICOBuilding(entity, out object _))
             {
                 string ricoString = "Plopped RICO";
                 StringTooltip ploppableRicoTooltip = new()
@@ -83,7 +86,7 @@ namespace ExtendedTooltip.TooltipBuilder
                     color = TooltipColor.Info
                 };
 
-                if (IsHistorical(ploppableRicoBuilding))
+                if (IsHistorical(entity))
                 {
                     ricoString += $" [{m_CustomTranslationSystem.GetTranslation("", "Historical")}]";
                     ploppableRicoTooltip.color = TooltipColor.Warning;
@@ -400,22 +403,9 @@ namespace ExtendedTooltip.TooltipBuilder
             return false;
         }
 
-        private bool IsHistorical(object ploppableBuildingData)
+        private bool IsHistorical(Entity entity)
         {
-            try
-            {
-                FieldInfo allowLeveling = ploppableBuildingData?.GetType().GetField("allowLeveling");
-                if (allowLeveling != null && allowLeveling.FieldType == typeof(bool))
-                {
-                    return !(bool)allowLeveling.GetValue(ploppableBuildingData);
-                }
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.Log($"ExtendedTooltip: {e}");
-            }
-
-            return false;
+            return m_EntityManager.HasComponent(entity, m_HistoricalType);
         }
     }
 }
