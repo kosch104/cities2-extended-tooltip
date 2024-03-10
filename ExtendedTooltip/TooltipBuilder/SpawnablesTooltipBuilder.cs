@@ -78,6 +78,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
             if (m_ModSettings.ShowGrowablesPloppableRICOInfo && m_PloppableBuildingDataType != null && TryGetPloppableRICOBuilding(entity, out object _))
             {
+                UnityEngine.Debug.Log(m_PloppableBuildingDataType);
                 string ricoString = "Plopped RICO";
                 StringTooltip ploppableRicoTooltip = new()
                 {
@@ -98,7 +99,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
             if (m_ModSettings.ShowGrowablesLevel)
             {
-                bool isHistorical = IsHistorical(entity);
+                bool isHistorical = m_PloppableBuildingDataType != null ? IsHistorical(entity) : false;
                 TooltipColor buildingLevelColor = TooltipColor.Info;
                 string buildingLevelLabel = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.LEVEL", "Level");
                 string buildingLevelValue = !isHistorical ? $"{buildingLevel}/5" : $"{buildingLevel}";
@@ -405,6 +406,9 @@ namespace ExtendedTooltip.TooltipBuilder
 
         private bool IsHistorical(Entity entity)
         {
+            if (m_PloppableBuildingDataType == null)
+                return false;
+
             return m_EntityManager.HasComponent(entity, m_HistoricalType);
         }
     }
