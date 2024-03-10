@@ -1,3 +1,5 @@
+- v1.11.1
+	- Fix error related to missing check for a type from FindStuff mod
 - v1.11.0
 	- Added support for FindStuff ploppable rico buildings
 	- Added missing profitability option in mod settings window
