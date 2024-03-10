@@ -37,7 +37,7 @@ namespace ExtendedTooltip.TooltipBuilder
             Assembly findStuffAssembly = m_ExtendedTooltipSystem.loadedAssemblies.FirstOrDefault(a => a.GetName().Name == "FindStuff");
             m_PloppableBuildingDataType = findStuffAssembly?.GetTypes().FirstOrDefault(a => a.Name == "PloppableBuildingData");
             m_HistoricalType = findStuffAssembly?.GetTypes().FirstOrDefault(a => a.Name == "Historical");
-            UnityEngine.Debug.Log($"Created SchoolTooltipBuilder.");
+            UnityEngine.Debug.Log($"Created SpawnablesTooltipBuilder.");
         }
 
         public void Build(ToolBaseSystem activeTool, bool IsMixed, Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
@@ -78,7 +78,6 @@ namespace ExtendedTooltip.TooltipBuilder
 
             if (m_ModSettings.ShowGrowablesPloppableRICOInfo && m_PloppableBuildingDataType != null && TryGetPloppableRICOBuilding(entity, out object _))
             {
-                UnityEngine.Debug.Log(m_PloppableBuildingDataType);
                 string ricoString = "Plopped RICO";
                 StringTooltip ploppableRicoTooltip = new()
                 {

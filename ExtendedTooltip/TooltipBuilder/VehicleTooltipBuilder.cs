@@ -21,7 +21,7 @@ namespace ExtendedTooltip.TooltipBuilder
         public VehicleTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem, NameSystem nameSystem)
         : base(entityManager, customTranslationSystem)
         {
-            UnityEngine.Debug.Log($"Created CitizenTooltipBuilder.");
+            UnityEngine.Debug.Log($"Created VehicleTooltipBuilder.");
         }
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
