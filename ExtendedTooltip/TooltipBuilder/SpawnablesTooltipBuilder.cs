@@ -30,7 +30,6 @@ namespace ExtendedTooltip.TooltipBuilder
         private readonly Type m_PloppableBuildingDataType;
         private readonly Type m_HistoricalType;
 
-
         public SpawnablesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem, PrefabSystem prefabSystem)
         : base(entityManager, customTranslationSystem)
         {
