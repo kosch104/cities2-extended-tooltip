@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace ExtendedTooltip.Systems
 {
-    class ExtendedTooltipUISystem : UISystemBase
+    public partial class ExtendedTooltipUISystem : UISystemBase
     {
         private readonly string kGroup = "89pleasure_extendedtooltip";
         private CustomTranslationSystem m_CustomTranslationSystem;

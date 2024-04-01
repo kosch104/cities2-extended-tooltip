@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
-using System.Reflection;
 using System.Text;
 
 namespace ExtendedTooltip.Settings
@@ -24,7 +23,7 @@ namespace ExtendedTooltip.Settings
         /// <param name="settings"></param>
         public void Save()
         {
-            string assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string assemblyDirectory = Mod.AssemblyPath;
             string filename = "UserSettings.json";
             string fullFilePath = Path.Combine(assemblyDirectory, filename);
 
@@ -44,7 +43,7 @@ namespace ExtendedTooltip.Settings
         /// </summary>
         private void Load()
         {
-            string assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string assemblyDirectory = Mod.AssemblyPath;
             string filename = "UserSettings.json";
             string fullFilePath = Path.Combine(assemblyDirectory, filename);
 

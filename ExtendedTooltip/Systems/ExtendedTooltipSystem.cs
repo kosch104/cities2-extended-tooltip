@@ -20,7 +20,6 @@ using Game.Vehicles;
 using Game.Zones;
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -28,8 +27,7 @@ using UnityEngine.Scripting;
 
 namespace ExtendedTooltip.Systems
 {
-    [CompilerGenerated]
-    public class ExtendedTooltipSystem : TooltipSystemBase
+    public partial class ExtendedTooltipSystem : TooltipSystemBase
     {
         public LocalSettings m_LocalSettings;
         public bool m_LocalSettingsLoaded = false;
@@ -116,7 +114,7 @@ namespace ExtendedTooltip.Systems
             };
             m_NameTooltip = new NameTooltip
             {
-                path = "raycastName",
+                path = "etRaycastName",
                 nameBinder = m_NameSystem
             };
 
@@ -151,7 +149,7 @@ namespace ExtendedTooltip.Systems
                 {
                     try
                     {
-                        m_TooltipGroup.children.Add(m_NameTooltip);
+                        // m_TooltipGroup.children.Add(m_NameTooltip);
 
                         // ExtendedTooltips entry point
                         ModSettings modSettings = m_LocalSettings.ModSettings;
@@ -173,7 +171,7 @@ namespace ExtendedTooltip.Systems
                             lastEntity = entity;
                         }
                     }
-                    catch (System.Exception e)
+                    catch (Exception e)
                     {
                         UnityEngine.Debug.Log("Creating ExtendedTooltips failed at: " + e);
                     }
@@ -214,7 +212,7 @@ namespace ExtendedTooltip.Systems
                 m_LocalSettings.Init();
                 m_LocalSettingsLoaded = true;
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 UnityEngine.Debug.Log($"Error loading settings: {e.Message}");
             }

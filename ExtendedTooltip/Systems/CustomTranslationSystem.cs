@@ -1,19 +1,20 @@
 ﻿using Game;
 using Game.SceneFlow;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
-using System.Text.Json;
 
 namespace ExtendedTooltip.Systems
 {
-    public class CustomTranslationSystem: GameSystemBase
+    public partial class CustomTranslationSystem: GameSystemBase
     {
-        public string Prefix { get; set; } = MyPluginInfo.PLUGIN_NAME.Trim().ToLower();
+        public string Prefix { get; set; } = Mod.Name.Trim().ToLower();
         private string LanguageCode { get; set; }
         public string CurrentLanguageCode => LanguageCode;
-        private JsonDocument Translations { get; set; }
+        private Dictionary<string, string> Translations { get; set; }
         public static string FrameworkDescription { get; }
 
         protected override void OnCreate()
@@ -37,9 +38,7 @@ namespace ExtendedTooltip.Systems
 
         private void LoadCustomTranslations()
         {
-            string assemblyPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string directory = Path.GetDirectoryName(assemblyPath);
-            string langPackZip = Path.Combine(directory, "language_pack.data");
+            string langPackZip = Path.Combine(Mod.AssemblyPath, "language_pack.data");
 
             // Load JSON file based on language code
             try
@@ -60,7 +59,7 @@ namespace ExtendedTooltip.Systems
                         using StreamReader languageStream = new(entry.Open(), Encoding.UTF8);
                         string languageContent = languageStream.ReadToEnd();
 
-                        Translations = JsonDocument.Parse(languageContent);
+                        Translations = JsonConvert.DeserializeObject<Dictionary<string, string>>(languageContent);
                         UnityEngine.Debug.Log($"Successfully loaded custom translations for {LanguageCode}.");
 
                         return;
@@ -76,12 +75,13 @@ namespace ExtendedTooltip.Systems
 
         public string GetTranslation(string key, string fallback = "Translation missing.", params string[] vars)
         {
-            if (Translations == null || !Translations.RootElement.TryGetProperty($"{Prefix}.{key}", out var rawTranslationString))
+            var dictionaryKey = $"{Prefix}.{key}";
+            if (Translations == null || !Translations.ContainsKey(dictionaryKey))
             {
                 return fallback;
             }
 
-            return HandleTranslationString(rawTranslationString.GetString(), fallback, vars);
+            return HandleTranslationString(Translations[dictionaryKey], fallback, vars);
         }
 
         public string GetLocalGameTranslation(string id, string fallback = "Translation failed.", params string[] vars)

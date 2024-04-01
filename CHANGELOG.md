@@ -1,3 +1,7 @@
+- v1.12.0
+	- Bump to game version 1.1.0f1
+- v1.11.2
+	- Removes log left over which spams the console if hover over a ploppable rico building
 - v1.11.1
 	- Fix error related to missing check for a type from FindStuff mod
 - v1.11.0

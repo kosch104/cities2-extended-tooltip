@@ -13,7 +13,6 @@ using Game.Tools;
 using Game.UI.InGame;
 using Game.UI.Localization;
 using HarmonyLib;
-using System.Runtime.CompilerServices;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -21,7 +20,7 @@ using UnityEngine.Scripting;
 
 namespace Game.UI.Tooltip
 {
-    public class ExtendedBulldozerTooltipSystem : TooltipSystemBase
+    public partial class ExtendedBulldozerTooltipSystem : TooltipSystemBase
     {
         TooltipGroup m_TooltipGroup;
         PrefabSystem m_PrefabSystem;
@@ -62,7 +61,7 @@ namespace Game.UI.Tooltip
 
             m_Tooltip = new StringTooltip
             {
-                path = "bulldozeTool"
+                path = "etBulldozeTool"
             };
             m_StringBuilder = CachedLocalizedStringBuilder<BulldozeToolSystem.Tooltip>.Id((BulldozeToolSystem.Tooltip t) => string.Format("Tools.INFO[{0:G}]", t));
         }

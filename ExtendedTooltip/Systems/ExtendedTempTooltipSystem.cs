@@ -13,7 +13,7 @@ using UnityEngine.Scripting;
 
 namespace ExtendedTooltip.Systems
 {
-    public class ExtendedTempTooltipSystem : TooltipSystemBase
+    public partial class ExtendedTempTooltipSystem : TooltipSystemBase
     {
         private NetToolSystem m_NetToolSystem;
         private ToolSystem m_ToolSystem;

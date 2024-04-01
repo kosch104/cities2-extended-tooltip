@@ -5,7 +5,7 @@ using Gooee.Plugins.Attributes;
 
 namespace ExtendedTooltip.Controllers
 {
-    public class ExtendedTooltipController : Controller<ExtendedTooltipModel>
+    public partial class ExtendedTooltipController : Controller<ExtendedTooltipModel>
     {
         ExtendedTooltipUISystem m_ExtendedTooltipUISystem;
         public override ExtendedTooltipModel Configure()
@@ -13,7 +13,7 @@ namespace ExtendedTooltip.Controllers
             m_ExtendedTooltipUISystem = World.GetOrCreateSystemManaged<ExtendedTooltipUISystem>();
             ExtendedTooltipModel model = m_ExtendedTooltipUISystem.m_ModSettings;
             model.Translations = m_ExtendedTooltipUISystem.m_SettingLocalization;
-            model.Version = MyPluginInfo.PLUGIN_VERSION;
+            model.Version = Mod.Version;
 
             return model;
         }
