@@ -58,12 +58,6 @@ namespace Game.UI.Tooltip
                 horizontalAlignment = TooltipGroup.Alignment.Start,
                 verticalAlignment = TooltipGroup.Alignment.Start
             };
-
-            m_Tooltip = new StringTooltip
-            {
-                path = "etBulldozeTool"
-            };
-            m_StringBuilder = CachedLocalizedStringBuilder<BulldozeToolSystem.Tooltip>.Id((BulldozeToolSystem.Tooltip t) => string.Format("Tools.INFO[{0:G}]", t));
         }
 
         [Preserve]
@@ -72,10 +66,6 @@ namespace Game.UI.Tooltip
             if (m_ToolSystem.activeTool == m_BulldozeTool && m_BulldozeTool.tooltip != BulldozeToolSystem.Tooltip.None)
             {
                 m_TooltipGroup.children.Clear();
-
-                // Default bulldoze tooltip
-                m_Tooltip.value = m_StringBuilder[m_BulldozeTool.tooltip];
-                m_TooltipGroup.children.Add(m_Tooltip);
 
                 // Custom bulldoze tooltips
                 ControlPoint lastRaycastPoint = Traverse.Create(m_BulldozeTool).Field("m_LastRaycastPoint").GetValue<ControlPoint>();
@@ -181,9 +171,5 @@ namespace Game.UI.Tooltip
         private BulldozeToolSystem m_BulldozeTool;
 
         private EntityQuery m_TempQuery;
-
-        private StringTooltip m_Tooltip;
-
-        private CachedLocalizedStringBuilder<BulldozeToolSystem.Tooltip> m_StringBuilder;
     }
 }
