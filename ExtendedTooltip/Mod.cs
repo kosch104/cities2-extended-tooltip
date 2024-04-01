@@ -86,7 +86,7 @@ namespace ExtendedTooltip
         public partial class ExtendedTooltip : IGooeePluginWithControllers, IGooeeChangeLog, IGooeeStyleSheet
         {
             public string Name => "ExtendedTooltip";
-            public string Version => "1.0.0";
+            public string Version => Mod.Version;
             public string ScriptResource => "ExtendedTooltip.Resources.ui.js";
             public string StyleResource => null;
             public IController[] Controllers { get; set; }
