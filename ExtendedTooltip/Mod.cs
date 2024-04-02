@@ -17,7 +17,7 @@ namespace ExtendedTooltip
     public class Mod : IMod
     {
         public const string Name = "ExtendedTooltip";
-        public const string Version = "1.0.0";
+        public const string Version = "1.0.2";
         public static Mod Instance { get; set; }
         private readonly static ILog _log = LogManager.GetLogger("ExtendedTooltip").SetShowsErrorsInUI(false);
         private World _world;

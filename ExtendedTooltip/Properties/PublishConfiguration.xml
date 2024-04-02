@@ -1,5 +1,5 @@
 ﻿<Publish>
-	<ModId Value="" />
+	<ModId Value="77312" />
 	<DisplayName Value="ExtendedTooltip" />
 	<ShortDescription Value="The mod everyone needs! Shows bunch of information on your fingertips to improve your gameplay." />
 	<LongDescription>
@@ -29,11 +29,13 @@ Join our discord community: [https://discord.gg/Fc6KuuBkRr](https://discord.gg/F
 	<Screenshot Value="" />
 	<Tag Value="Code Mod" />
 	<ForumLink Value="" />
-	<ModVersion Value="1.0.1" />
+	<ModVersion Value="1.0.2" />
 	<GameVersion Value="1.1.*" />
 	<Dependency Id="77209" />
 	<Dependency Id="77225" Version="1.1.*" />
-	<ChangeLog Value="" />
+	<ChangeLog>
+- Adds support for patch v1.1.1f
+	</ChangeLog>
 	<ExternalLink Type="discord" Url="https://discord.gg/Fc6KuuBkRr" />
 	<ExternalLink Type="github" Url="https://github.com/89pleasure/cities2-extended-tooltip" />
 </Publish>
