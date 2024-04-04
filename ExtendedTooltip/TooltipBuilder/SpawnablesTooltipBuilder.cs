@@ -37,7 +37,7 @@ namespace ExtendedTooltip.TooltipBuilder
             Assembly findStuffAssembly = m_ExtendedTooltipSystem.loadedAssemblies.FirstOrDefault(a => a.GetName().Name == "FindStuff");
             m_PloppableBuildingDataType = findStuffAssembly?.GetTypes().FirstOrDefault(a => a.Name == "PloppableBuildingData");
             m_HistoricalType = findStuffAssembly?.GetTypes().FirstOrDefault(a => a.Name == "Historical");
-            UnityEngine.Debug.Log($"Created SpawnablesTooltipBuilder.");
+            Mod.DebugLog($"Created SpawnablesTooltipBuilder.");
         }
 
         public void Build(ToolBaseSystem activeTool, bool IsMixed, Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
@@ -396,7 +396,7 @@ namespace ExtendedTooltip.TooltipBuilder
                     return true;
                 } catch (Exception e)
                 {
-                    UnityEngine.Debug.Log($"ExtendedTooltip: {e}");
+                    Mod.DebugLog(e.Message);
                 }
             }
 

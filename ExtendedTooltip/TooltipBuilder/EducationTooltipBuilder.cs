@@ -13,7 +13,7 @@ namespace ExtendedTooltip.TooltipBuilder
         public EducationTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
-            UnityEngine.Debug.Log($"Created EducationTooltipBuilder.");
+            Mod.DebugLog($"Created EducationTooltipBuilder.");
         }
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)

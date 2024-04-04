@@ -20,7 +20,7 @@ namespace ExtendedTooltip.TooltipBuilder
         public CompanyTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
-            UnityEngine.Debug.Log($"Created CompanyTooltipBuilder.");
+            Mod.DebugLog($"Created CompanyTooltipBuilder.");
         }
 
         public void Build(Entity companyEntity, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup, bool IsMixed = false, bool IsBulldozing = false)

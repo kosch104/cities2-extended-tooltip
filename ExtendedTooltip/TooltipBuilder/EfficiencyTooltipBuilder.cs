@@ -11,7 +11,7 @@ namespace ExtendedTooltip.TooltipBuilder
         public EfficiencyTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
-            UnityEngine.Debug.Log($"Created EfficiencyTooltipBuilder.");
+            Mod.DebugLog($"Created EfficiencyTooltipBuilder.");
         }
 
         public void Build(DynamicBuffer<Efficiency> efficiencyBuffer, TooltipGroup tooltipGroup)

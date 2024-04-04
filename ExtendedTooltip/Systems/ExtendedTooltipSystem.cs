@@ -114,11 +114,11 @@ namespace ExtendedTooltip.Systems
             };
             m_NameTooltip = new NameTooltip
             {
-                path = "etRaycastName",
+                path = "raycastName",
                 nameBinder = m_NameSystem
             };
 
-            UnityEngine.Debug.Log("ExtendedTooltipSystem created.");
+            Mod.DebugLog("ExtendedTooltipSystem created.");
         }
 
         [Preserve]
@@ -149,7 +149,7 @@ namespace ExtendedTooltip.Systems
                 {
                     try
                     {
-                        // m_TooltipGroup.children.Add(m_NameTooltip);
+                        m_TooltipGroup.children.Add(m_NameTooltip);
 
                         // ExtendedTooltips entry point
                         ModSettings modSettings = m_LocalSettings.ModSettings;
@@ -173,7 +173,7 @@ namespace ExtendedTooltip.Systems
                     }
                     catch (Exception e)
                     {
-                        UnityEngine.Debug.Log("Creating ExtendedTooltips failed at: " + e);
+                        Mod.DebugLog("Creating ExtendedTooltips failed at: " + e);
                     }
                 }                
             } else
@@ -214,7 +214,7 @@ namespace ExtendedTooltip.Systems
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.Log($"Error loading settings: {e.Message}");
+                Mod.DebugLog($"Error loading settings: {e.Message}");
             }
         }
 

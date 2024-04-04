@@ -25,7 +25,7 @@ namespace ExtendedTooltip.Systems
             CreateLanguages();
             AddBinding(new TriggerBinding<string>(kGroup, "launchUrl", OpenURL));
 
-            UnityEngine.Debug.Log("ExtendedTooltipUISystem created.");
+            Mod.DebugLog("ExtendedTooltipUISystem created.");
         }
 
         protected override void OnUpdate()
@@ -36,7 +36,7 @@ namespace ExtendedTooltip.Systems
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            UnityEngine.Debug.Log("ExtendedTooltipUISystem destroyed.");
+            Mod.DebugLog("ExtendedTooltipUISystem destroyed.");
         }
 
         /// <summary>

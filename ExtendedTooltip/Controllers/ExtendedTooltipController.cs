@@ -28,7 +28,7 @@ namespace ExtendedTooltip.Controllers
                 settings.ModSettings.DisplayModeDelay = delay;
             } else
             {
-                UnityEngine.Debug.Log("Could not parse display mode delay to short. Skip.");
+                Mod.DebugLog("Could not parse display mode delay to short. Skip.");
             }
             
             settings.Save();

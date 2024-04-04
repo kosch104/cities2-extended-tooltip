@@ -15,7 +15,7 @@ namespace ExtendedTooltip.TooltipBuilder
         public RoadTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
-            UnityEngine.Debug.Log($"Created RoadTooltipBuilder.");
+            Mod.DebugLog($"Created RoadTooltipBuilder.");
         }
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)

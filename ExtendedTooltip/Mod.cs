@@ -11,17 +11,19 @@ using Gooee.Plugins;
 using HarmonyLib;
 using Game.SceneFlow;
 using System.IO;
+using System.Reflection;
 
 namespace ExtendedTooltip
 {
     public class Mod : IMod
     {
-        public const string Name = "ExtendedTooltip";
-        public const string Version = "1.0.2";
         public static Mod Instance { get; set; }
         private readonly static ILog _log = LogManager.GetLogger("ExtendedTooltip").SetShowsErrorsInUI(false);
+        public static string Name = "ExtendedTooltip";
+        public static string Version { get; private set; }
         private World _world;
         public static Harmony _harmony;
+        public static string harmonyId = $"cities2modding_{Name.ToLower()}";
 
         public static string AssemblyPath
         {
@@ -31,11 +33,17 @@ namespace ExtendedTooltip
 
         public void OnLoad(UpdateSystem updateSystem)
         {
-            if(GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            AssemblyInformationalVersionAttribute attribute = (AssemblyInformationalVersionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyInformationalVersionAttribute));
+            Version = attribute.InformationalVersion;
+
+            if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
             {
                 AssemblyPath = Path.GetDirectoryName(asset.path.Replace('/', Path.DirectorySeparatorChar));
             }
-            _harmony = new Harmony("cities2modding_extendedtooltip");
+            _harmony = new Harmony(harmonyId);
+            _harmony.PatchAll();
+
             _log.Info(Environment.NewLine + @":::::::::: :::    ::: ::::::::::: :::::::::: ::::    ::: :::::::::  :::::::::: :::::::::  
 :+:        :+:    :+:     :+:     :+:        :+:+:   :+: :+:    :+: :+:        :+:    :+: 
 +:+         +:+  +:+      +:+     +:+        :+:+:+  +:+ +:+    +:+ +:+        +:+    +:+ 
@@ -74,7 +82,7 @@ namespace ExtendedTooltip
             SafelyRemove<ExtendedTempTooltipSystem>();
             SafelyRemove<ExtendedTooltipSystem>();
             SafelyRemove<ExtendedBulldozerTooltipSystem>();
-            _harmony?.UnpatchAll("cities2modding_extendedtooltip");
+            _harmony?.UnpatchAll(harmonyId);
         }
 
         public static void DebugLog(string message)
@@ -85,9 +93,9 @@ namespace ExtendedTooltip
         [ControllerTypes(typeof(ExtendedTooltipController))]
         public partial class ExtendedTooltip : IGooeePluginWithControllers, IGooeeChangeLog, IGooeeStyleSheet
         {
-            public string Name => "ExtendedTooltip";
+            public string Name => Mod.Name;
             public string Version => Mod.Version;
-            public string ScriptResource => "ExtendedTooltip.Resources.ui.js";
+            public string ScriptResource => $"{Mod.Name}.Resources.ui.js";
             public string StyleResource => null;
             public IController[] Controllers { get; set; }
             public string ChangeLogResource => null;

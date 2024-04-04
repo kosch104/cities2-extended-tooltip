@@ -28,13 +28,15 @@ Join our discord community: [https://discord.gg/Fc6KuuBkRr](https://discord.gg/F
 	<Thumbnail Value="Properties/Thumbnail.png" />
 	<Screenshot Value="" />
 	<Tag Value="Code Mod" />
-	<ForumLink Value="" />
-	<ModVersion Value="1.0.2" />
+	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/extendedtooltip.1657861/" />
+	<ModVersion Value="1.0.3" />
 	<GameVersion Value="1.1.*" />
 	<Dependency Id="77209" />
 	<Dependency Id="77225" Version="1.1.*" />
 	<ChangeLog>
-- Adds support for patch v1.1.1f
+- Fixes errors related to missing tooltip system patch
+- Updates logging into it's own log file in app data folder
+- Adds forum link for discussion on mod page in pdxmods
 	</ChangeLog>
 	<ExternalLink Type="discord" Url="https://discord.gg/Fc6KuuBkRr" />
 	<ExternalLink Type="github" Url="https://github.com/89pleasure/cities2-extended-tooltip" />

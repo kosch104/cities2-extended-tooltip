@@ -14,7 +14,7 @@ namespace ExtendedTooltip.TooltipBuilder
     {
         public CitizenTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem) {
-            UnityEngine.Debug.Log($"Created CitizenTooltipBuilder.");
+            Mod.DebugLog($"Created CitizenTooltipBuilder.");
         }
 
         public void Build(Entity entity, Citizen citizen, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)

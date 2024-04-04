@@ -21,7 +21,7 @@ namespace ExtendedTooltip.Systems
         {
             base.OnCreate();
             LanguageCode = GameManager.instance.localizationManager.activeLocaleId;
-            UnityEngine.Debug.Log("CustomTranslationSystem created.");
+            Mod.DebugLog("CustomTranslationSystem created.");
             LoadCustomTranslations();
         }
 
@@ -32,7 +32,7 @@ namespace ExtendedTooltip.Systems
         public void ReloadTranslations(string locale)
         {
             LanguageCode = locale;
-            UnityEngine.Debug.Log("Reloading translations.");
+            Mod.DebugLog("Reloading translations.");
             LoadCustomTranslations();
         }
 
@@ -45,11 +45,11 @@ namespace ExtendedTooltip.Systems
             {
                 if (!File.Exists(langPackZip))
                 {
-                    UnityEngine.Debug.Log($"Language pack not found at {langPackZip}.");
+                    Mod.DebugLog($"Language pack not found at {langPackZip}.");
                     return;
                 }
 
-                UnityEngine.Debug.Log($"Language pack found at {langPackZip}.");
+                Mod.DebugLog($"Language pack found at {langPackZip}.");
 
                 using ZipArchive zipArchive = ZipFile.OpenRead(langPackZip);
                 foreach (ZipArchiveEntry entry in zipArchive.Entries)
@@ -60,7 +60,7 @@ namespace ExtendedTooltip.Systems
                         string languageContent = languageStream.ReadToEnd();
 
                         Translations = JsonConvert.DeserializeObject<Dictionary<string, string>>(languageContent);
-                        UnityEngine.Debug.Log($"Successfully loaded custom translations for {LanguageCode}.");
+                        Mod.DebugLog($"Successfully loaded custom translations for {LanguageCode}.");
 
                         return;
                     }
@@ -68,8 +68,8 @@ namespace ExtendedTooltip.Systems
 
             } catch (Exception e)
             {
-                UnityEngine.Debug.Log($"Failed to load custom translations.");
-                UnityEngine.Debug.Log(e.Message);
+                Mod.DebugLog($"Failed to load custom translations.");
+                Mod.DebugLog(e.Message);
             }
         }
 
@@ -100,7 +100,7 @@ namespace ExtendedTooltip.Systems
             {
                 if (vars.Length % 2 != 0)
                 {
-                    UnityEngine.Debug.Log("Invalid amount of arguments. It must be a even number.");
+                    Mod.DebugLog("Invalid amount of arguments. It must be a even number.");
                     return fallback;
                 }
 

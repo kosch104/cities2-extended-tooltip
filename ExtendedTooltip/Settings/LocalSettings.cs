@@ -34,7 +34,7 @@ namespace ExtendedTooltip.Settings
             }
             catch (System.Exception e)
             {
-                UnityEngine.Debug.Log($"Error saving settings: {e.Message}");
+                Mod.DebugLog($"Error saving settings: {e.Message}");
             }
         }
 
@@ -49,17 +49,17 @@ namespace ExtendedTooltip.Settings
 
             if (!File.Exists(fullFilePath))
             {
-                UnityEngine.Debug.Log("No user settings found. Use default settings.");
+                Mod.DebugLog("No user settings found. Use default settings.");
                 fullFilePath = Path.Combine(assemblyDirectory, "DefaultSettings.json");
                 if (!File.Exists(fullFilePath))
                 {
-                    UnityEngine.Debug.Log($"Error loading settings: {fullFilePath} does not exist.");
+                    Mod.DebugLog($"Error loading settings: {fullFilePath} does not exist.");
                     return;
                 }
             }
             else
             {
-                UnityEngine.Debug.Log("User settings successfully loaded.");
+                Mod.DebugLog("User settings successfully loaded.");
             }
 
             try
@@ -75,7 +75,7 @@ namespace ExtendedTooltip.Settings
             }
             catch (System.Exception e)
             {
-                UnityEngine.Debug.Log($"Error loading settings: {e.Message}");
+                Mod.DebugLog($"Error loading settings: {e.Message}");
             }
         }
     }

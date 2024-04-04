@@ -15,7 +15,7 @@ namespace ExtendedTooltip.TooltipBuilder
         public EmployeesTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
-            UnityEngine.Debug.Log($"Created EmployeesTooltipBuilder.");
+            Mod.DebugLog($"Created EmployeesTooltipBuilder.");
         }
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)

@@ -16,7 +16,7 @@ namespace ExtendedTooltip.TooltipBuilder
         public ParkingFacilityTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
-            UnityEngine.Debug.Log($"Created ParkingFacilityTooltipBuilder.");
+            Mod.DebugLog($"Created ParkingFacilityTooltipBuilder.");
         }
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)

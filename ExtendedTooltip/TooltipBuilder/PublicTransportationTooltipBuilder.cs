@@ -15,7 +15,7 @@ namespace ExtendedTooltip.TooltipBuilder
         public PublicTransportationTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
-            UnityEngine.Debug.Log($"Created PublicTransportationTooltipBuilder.");
+            Mod.DebugLog($"Created PublicTransportationTooltipBuilder.");
         }
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)

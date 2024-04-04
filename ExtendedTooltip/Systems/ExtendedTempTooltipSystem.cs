@@ -46,7 +46,7 @@ namespace ExtendedTooltip.Systems
 
             m_NetToolMode = new StringTooltip
             {
-                path = "netTool",
+                path = "etNetTool",
             };
         }
 
@@ -83,7 +83,7 @@ namespace ExtendedTooltip.Systems
                     FloatTooltip terrainToolMode = new()
                     {
                         icon = "Media/Glyphs/TrendUp.svg",
-                        path = "terrainToolApplyHeight",
+                        path = "etTerrainToolApplyHeight",
                         unit = "length",
                         value = applyHeight,
                     };
@@ -99,7 +99,7 @@ namespace ExtendedTooltip.Systems
                             FloatTooltip terrainTargetPosition = new()
                             {
                                 icon = $"Media/Tools/Terrain Tool/{Enum.GetName(typeof(TerraformingType), m_TerrainToolSystem.prefab.m_Type)}.svg",
-                                path = "terrainToolTargetHeight",
+                                path = "etTerrainToolTargetHeight",
                                 unit = "length",
                                 color = targetHeight > applyHeight ? TooltipColor.Success : targetHeight == applyHeight ? TooltipColor.Info : TooltipColor.Error,
                                 value = targetHeight
@@ -112,7 +112,7 @@ namespace ExtendedTooltip.Systems
                                 FloatTooltip terrainSlope = new()
                                 {
                                     icon = "Media/Glyphs/Slope.svg",
-                                    path = "terrainToolSlope",
+                                    path = "etTerrainToolSlope",
                                     unit = "percentageSingleFraction",
                                     signed = true,
                                     value = 100f * (applyPosition.y - targetPosition.y) / Math.Max(1, length),
