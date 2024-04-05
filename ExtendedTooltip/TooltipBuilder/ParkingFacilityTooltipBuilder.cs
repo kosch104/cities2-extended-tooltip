@@ -1,5 +1,4 @@
 ﻿using Colossal.Entities;
-using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
 using Game.Net;
 using Game.Prefabs;
@@ -21,8 +20,9 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, TooltipGroup tooltipGroup)
         {
-            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
-            if (modSettings.ShowParkingFees == false && modSettings.ShowParkingCapacity == false)
+            var model = m_ExtendedTooltipSystem.Model;
+
+            if (model.ShowParkingFees == false && model.ShowParkingCapacity == false)
                 return;
 
             int laneCount = 0;
@@ -44,7 +44,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }
 
             // Only if activated
-            if (modSettings.ShowParkingFees == true)
+            if (model.ShowParkingFees == true)
             {
                 if (laneCount != 0)
                 {
@@ -59,7 +59,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }
             
             // Only if activated
-            if (modSettings.ShowParkingCapacity == true)
+            if (model.ShowParkingCapacity == true)
             {
                 if (parkingCapacity < 0)
                 {

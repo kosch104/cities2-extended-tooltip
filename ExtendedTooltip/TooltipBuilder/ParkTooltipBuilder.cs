@@ -1,4 +1,4 @@
-﻿using ExtendedTooltip.Settings;
+﻿using ExtendedTooltip.Models;
 using ExtendedTooltip.Systems;
 using Game.Prefabs;
 using Game.UI.Tooltip;
@@ -13,13 +13,14 @@ namespace ExtendedTooltip.TooltipBuilder
         public ParkTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
-            Debug.Log($"Created ParkTooltipBuilder.");
+            Mod.DebugLog($"Created ParkTooltipBuilder.");
         }
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
-            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
-            if (modSettings.ShowParkMaintenance == false)
+            var model = m_ExtendedTooltipSystem.Model;
+
+            if (model.ShowParkMaintenance == false)
                 return;
 
             int maintenance = 0;

@@ -1,19 +1,51 @@
 ﻿using ExtendedTooltip.Models;
+using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
 using Gooee.Plugins;
 using Gooee.Plugins.Attributes;
+using System;
 
 namespace ExtendedTooltip.Controllers
 {
     public partial class ExtendedTooltipController : Controller<ExtendedTooltipModel>
     {
         ExtendedTooltipUISystem m_ExtendedTooltipUISystem;
+        LocalSettings m_Settings;
+
+        public ExtendedTooltipModel m_Model
+        {
+            get
+            {
+                return Model;
+            }
+        }
+
         public override ExtendedTooltipModel Configure()
         {
             m_ExtendedTooltipUISystem = World.GetOrCreateSystemManaged<ExtendedTooltipUISystem>();
-            ExtendedTooltipModel model = m_ExtendedTooltipUISystem.m_ModSettings;
+
+            // Get saved local settings
+
+            m_Settings = new();
+            try
+            {
+                m_Settings.Init();
+
+            } catch (Exception ex)
+            {
+                Mod.DebugLog($"Error loading settings: {ex.Message}");
+                Mod.DebugLog("Disable ExtendedTooltipSystem.");
+
+                return null;
+            }
+
+            // Create Model
+            ExtendedTooltipModel model = m_Settings.ModSettings;
+
             model.Translations = m_ExtendedTooltipUISystem.m_SettingLocalization;
             model.Version = Mod.Version;
+
+            Mod.DebugLog("Controller successfully created.");
 
             return model;
         }
@@ -21,17 +53,16 @@ namespace ExtendedTooltip.Controllers
         [OnTrigger]
         public void DoSave()
         {
-            var settings = m_ExtendedTooltipUISystem.m_ExtendedTooltipSystem.m_LocalSettings;
-            settings.ModSettings = Model;
+            m_Settings.ModSettings = Model;
             if (short.TryParse(Model.DisplayModeDelay, out short delay))
             {
-                settings.ModSettings.DisplayModeDelay = delay;
+                m_Settings.ModSettings.DisplayModeDelay = delay;
             } else
             {
                 Mod.DebugLog("Could not parse display mode delay to short. Skip.");
             }
-            
-            settings.Save();
+
+            m_Settings.Save();
         }
     }
 }

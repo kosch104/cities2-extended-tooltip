@@ -1,4 +1,6 @@
 ﻿using Colossal.Entities;
+using ExtendedTooltip.Controllers;
+using ExtendedTooltip.Models;
 using ExtendedTooltip.Settings;
 using ExtendedTooltip.TooltipBuilder;
 using Game.Buildings;
@@ -13,7 +15,6 @@ using Game.Prefabs;
 using Game.Routes;
 using Game.Simulation;
 using Game.Tools;
-using Game.UI;
 using Game.UI.InGame;
 using Game.UI.Tooltip;
 using Game.Vehicles;
@@ -34,23 +35,29 @@ namespace ExtendedTooltip.Systems
         public Assembly[] loadedAssemblies;
 
         Entity? lastEntity;
+
         float timer = 0f;
+        private float2 tooltipPointerDistance;
 
-        private static readonly float2 kTooltipPointerDistance = new(0f, 16f);
-
+        private ExtendedTooltipController m_Controller;
+        public ExtendedTooltipModel Model
+        {
+            get
+            {
+                return m_Controller.m_Model;
+            }
+        }
+        
         private ToolSystem m_ToolSystem;
         private DefaultToolSystem m_DefaultTool;
-        private NameSystem m_NameSystem;
-        private ImageSystem m_ImageSystem;
         private ToolRaycastSystem m_ToolRaycastSystem;
-        private NameTooltip m_NameTooltip;
         private PrefabSystem m_PrefabSystem;
         private CustomTranslationSystem m_CustomTranslationSystem;
 
         private EntityQuery m_CitizenHappinessParameterDataQuery;
 
-        private TooltipGroup m_TooltipGroup;
-        private TooltipGroup m_SecondaryTooltipGroup;
+        private TooltipGroup m_PrimaryETGroup;
+        private TooltipGroup m_SecondaryETGroup;
 
         private CitizenTooltipBuilder m_CitizenTooltipBuilder;
         private VehicleTooltipBuilder m_VehicleTooltipBuilder;
@@ -73,21 +80,19 @@ namespace ExtendedTooltip.Systems
         protected override void OnCreate()
         {
             base.OnCreate();
-            LoadSettings();
 
             loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
+            m_Controller = World.GetOrCreateSystemManaged<ExtendedTooltipController>();
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_DefaultTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();
-            m_NameSystem = World.GetOrCreateSystemManaged<NameSystem>();
-            m_ImageSystem = World.GetOrCreateSystemManaged<ImageSystem>();
             m_ToolRaycastSystem = World.GetOrCreateSystemManaged<ToolRaycastSystem>();
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_CustomTranslationSystem = World.GetOrCreateSystemManaged<CustomTranslationSystem>();
             m_CitizenHappinessParameterDataQuery = GetEntityQuery(new ComponentType[] { ComponentType.ReadOnly<CitizenHappinessParameterData>() });
 
             m_CitizenTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
-            m_VehicleTooltipBuilder = new(EntityManager, m_CustomTranslationSystem, m_NameSystem);
+            m_VehicleTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_RoadTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_SpawnablesTooltipBuilder = new(EntityManager, m_CustomTranslationSystem, m_PrefabSystem);
             m_EfficiencyTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
@@ -98,25 +103,23 @@ namespace ExtendedTooltip.Systems
             m_EducationTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
             m_CompanyTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
 
-            m_TooltipGroup = new TooltipGroup()
+            m_PrimaryETGroup = new TooltipGroup()
             {
                 path = "extendedTooltipPrimary",
                 position = default,
                 horizontalAlignment = TooltipGroup.Alignment.Start,
                 verticalAlignment = TooltipGroup.Alignment.Start
             };
-            m_SecondaryTooltipGroup = new TooltipGroup()
+            m_SecondaryETGroup = new TooltipGroup()
             {
                 path = "extendedTooltipSecondary",
                 position = default,
                 horizontalAlignment = TooltipGroup.Alignment.End,
                 verticalAlignment = TooltipGroup.Alignment.Start,
             };
-            m_NameTooltip = new NameTooltip
-            {
-                path = "raycastName",
-                nameBinder = m_NameSystem
-            };
+
+            tooltipPointerDistance = new(0f, 16f);
+            timer = 0;
 
             Mod.DebugLog("ExtendedTooltipSystem created.");
         }
@@ -125,12 +128,10 @@ namespace ExtendedTooltip.Systems
         protected override void OnUpdate()
         {
             if (IsValidDefaultToolRaycast(out RaycastResult raycastResult, out PrefabRef prefabRef)) {
+
                 Entity entity = raycastResult.m_Owner;
                 Entity prefab = prefabRef.m_Prefab;
                 AdjustTargets(ref entity, ref prefab);
-
-                m_NameTooltip.icon = m_ImageSystem.GetInstanceIcon(entity, prefab);
-                m_NameTooltip.entity = entity;
 
                 // Reset timer if entity changed
                 if (lastEntity != null && !lastEntity.Equals(entity))
@@ -139,35 +140,27 @@ namespace ExtendedTooltip.Systems
                     lastEntity = null;
                 }
 
-                m_TooltipGroup.children.Clear();
-                m_SecondaryTooltipGroup.children.Clear();
+                m_PrimaryETGroup.children.Clear();
+                m_SecondaryETGroup.children.Clear();
 
-                if (IsInfomodeActivated())
-                {
-                    AddMouseTooltip(m_NameTooltip);
-                } else
+                if (!IsInfomodeActivated())
                 {
                     try
                     {
-                        m_TooltipGroup.children.Add(m_NameTooltip);
-
-                        // ExtendedTooltips entry point
-                        ModSettings modSettings = m_LocalSettings.ModSettings;
-                        if (modSettings.IsEnabled)
+                        if (Model.IsEnabled && ShouldDisplayExtendedTooltip(entity))
                         {
                             timer += World.Time.DeltaTime;
-                            if (modSettings.DisplayMode == "instant"
-                                || (modSettings.DisplayMode == "hotkey" && IsHotkeyPressed(modSettings))
-                                || (modSettings.DisplayMode == "delayed" && (timer > (float)(modSettings.DisplayModeDelay / 1000f) || (IsMoveable(entity) && !modSettings.DisplayModeDelayOnMoveables)))
-                            )
+
+                            CreateExtendedTooltips(entity, prefab);
+                            int i = 1;
+                            foreach (var tooltip in m_PrimaryETGroup.children)
                             {
-                                CreateExtendedTooltips(entity, prefab);
-                                foreach (var tooltip in m_TooltipGroup.children)
-                                {
-                                    AddMouseTooltip(tooltip);
-                                }
-                                UpdateSecondaryTooltipGroup();
+                                tooltip.path = "etPrimaryTooltip" + i;
+                                AddMouseTooltip(tooltip);
+                                i++;
                             }
+                            UpdateSecondaryTooltipGroup();
+
                             lastEntity = entity;
                         }
                     }
@@ -180,6 +173,15 @@ namespace ExtendedTooltip.Systems
             {
                 timer = 0;
             }
+        }
+
+        bool ShouldDisplayExtendedTooltip(Entity entity)
+        {
+            bool shouldDisplayInstantly = Model.DisplayMode == "instant";
+            bool shouldDisplayWithHotkey = Model.DisplayMode == "hotkey" && IsHotkeyPressed();
+            bool shouldDisplayDelayed = Model.DisplayMode == "delayed" && (timer > (float)(short.Parse(Model.DisplayModeDelay) / 1000f) || (IsMoveable(entity) && !Model.DisplayModeDelayOnMoveables));
+
+            return shouldDisplayInstantly || shouldDisplayWithHotkey || shouldDisplayDelayed;
         }
 
         private bool IsValidDefaultToolRaycast(out RaycastResult raycastResult, out PrefabRef prefabRef)
@@ -204,98 +206,82 @@ namespace ExtendedTooltip.Systems
             return false;
         }
 
-        private void LoadSettings()
-        {
-            try
-            {
-                m_LocalSettings = new();
-                m_LocalSettings.Init();
-                m_LocalSettingsLoaded = true;
-            }
-            catch (Exception e)
-            {
-                Mod.DebugLog($"Error loading settings: {e.Message}");
-            }
-        }
-
         private void CreateExtendedTooltips(Entity selectedEntity, Entity prefab)
         {
-            ModSettings modSettings = m_LocalSettings.ModSettings;
-
             // CITIZEN TOOLTIP
-            if (modSettings.ShowCitizen && EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
+            if (Model.ShowCitizen && EntityManager.TryGetComponent<Citizen>(selectedEntity, out var citizen))
             {
                 CitizenHappinessParameterData citizenHappinessParameters = m_CitizenHappinessParameterDataQuery.GetSingleton<CitizenHappinessParameterData>();
-                m_CitizenTooltipBuilder.Build(selectedEntity, citizen, citizenHappinessParameters, m_TooltipGroup, m_SecondaryTooltipGroup);
+                m_CitizenTooltipBuilder.Build(selectedEntity, citizen, citizenHappinessParameters, m_PrimaryETGroup, m_SecondaryETGroup);
 
                 return; // don't have any other info. No need to check for other components
             }
 
             // VEHICLE TOOLTIP
-            if (modSettings.ShowVehicle && EntityManager.HasComponent<Vehicle>(selectedEntity))
+            if (Model.ShowVehicle && EntityManager.HasComponent<Vehicle>(selectedEntity))
             {
-                m_VehicleTooltipBuilder.Build(selectedEntity, prefab, m_TooltipGroup);
+                m_VehicleTooltipBuilder.Build(selectedEntity, prefab, m_PrimaryETGroup);
                 return; // don't have any other info. No need to check for other components
             }
 
             // ROAD TOOLTIP
-            if (modSettings.ShowRoad && EntityManager.HasComponent<AggregateElement>(selectedEntity))
+            if (Model.ShowRoad && EntityManager.HasComponent<AggregateElement>(selectedEntity))
             {
-                m_RoadTooltipBuilder.Build(selectedEntity, m_TooltipGroup);
+                m_RoadTooltipBuilder.Build(selectedEntity, m_PrimaryETGroup);
                 return; // don't have any other info. No need to check for other components
             }
 
             // SPAWNABLES TOOLTIP
             bool IsMixed = IsMixedBuilding(prefab);
-            if (modSettings.ShowGrowables && HasSpawnableBuildingData(selectedEntity, prefab, out int buildingLevel, out int currentCondition, out int levelingCost, out SpawnableBuildingData spawnableData))
+            if (Model.ShowGrowables && HasSpawnableBuildingData(selectedEntity, prefab, out int buildingLevel, out int currentCondition, out int levelingCost, out SpawnableBuildingData spawnableData))
             {
                 CitizenHappinessParameterData citizenHappinessParameters = m_CitizenHappinessParameterDataQuery.GetSingleton<CitizenHappinessParameterData>();
-                m_SpawnablesTooltipBuilder.Build(m_DefaultTool, IsMixed, selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, citizenHappinessParameters, m_TooltipGroup, m_SecondaryTooltipGroup);
+                m_SpawnablesTooltipBuilder.Build(m_DefaultTool, IsMixed, selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, citizenHappinessParameters, m_PrimaryETGroup, m_SecondaryETGroup);
             }
 
             // EFFICIENCY TOOLTIP
-            if (modSettings.ShowEfficiency && HasEfficiency(selectedEntity, prefab) && EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Efficiency> buffer))
+            if (m_Controller.m_Model.ShowEfficiency && HasEfficiency(selectedEntity, prefab) && EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Efficiency> buffer))
             {
-                m_EfficiencyTooltipBuilder.Build(buffer, m_TooltipGroup);
+                m_EfficiencyTooltipBuilder.Build(buffer, m_PrimaryETGroup);
             }
 
             // PARK BUILDINGS TOOLTIP
-            if ((modSettings.ShowPark) && EntityManager.HasComponent<Game.Buildings.Park>(selectedEntity))
+            if (Model.ShowPark && EntityManager.HasComponent<Game.Buildings.Park>(selectedEntity))
             {
-                m_ParkTooltipBuilder.Build(selectedEntity, prefab, m_TooltipGroup);
+                m_ParkTooltipBuilder.Build(selectedEntity, prefab, m_PrimaryETGroup);
                 return; // don't have any other info. No need to check for other components
             }
 
             // PARKING FACILITY TOOLTIP
-            if (modSettings.ShowParkingFacility && EntityManager.HasComponent<Game.Buildings.ParkingFacility>(selectedEntity))
+            if (Model.ShowParkingFacility && EntityManager.HasComponent<Game.Buildings.ParkingFacility>(selectedEntity))
             {
-                m_ParkingFacilityTooltipBuilder.Build(selectedEntity, m_TooltipGroup);
+                m_ParkingFacilityTooltipBuilder.Build(selectedEntity, m_PrimaryETGroup);
                 return; // don't have any other info. No need to check for other components
             }
 
             // PUBLIC TRANSPORTATION TOOLTIP
-            if (modSettings.ShowPublicTransport && (EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity) || EntityManager.HasComponent<Game.Buildings.TransportStation>(selectedEntity)))
+            if (Model.ShowPublicTransport && (EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity) || EntityManager.HasComponent<Game.Buildings.TransportStation>(selectedEntity)))
             {
-                m_PublicTransportationTooltipBuilder.Build(selectedEntity, m_TooltipGroup);
+                m_PublicTransportationTooltipBuilder.Build(selectedEntity, m_PrimaryETGroup);
                 return; // don't have any other info. No need to check for other components
             }
 
             // EMPLOYEES TOOLTIP
-            if (modSettings.ShowEmployee && HasEmployees(selectedEntity, prefab))
+            if (Model.ShowEmployee && HasEmployees(selectedEntity, prefab))
             {
-                m_EmployeesTooltipBuilder.Build(selectedEntity, prefab, m_TooltipGroup);
+                m_EmployeesTooltipBuilder.Build(selectedEntity, prefab, m_PrimaryETGroup);
             }
             
             // EDUCATION TOOLTIP
-            if (modSettings.ShowEducation && EntityManager.HasComponent<Game.Buildings.School>(selectedEntity))
+            if (Model.ShowEducation && EntityManager.HasComponent<Game.Buildings.School>(selectedEntity))
             {
-                m_EducationTooltipBuilder.Build(selectedEntity, prefab, m_TooltipGroup);
+                m_EducationTooltipBuilder.Build(selectedEntity, prefab, m_PrimaryETGroup);
             }
 
             // COMPANY (Office, Industrial, Commercial) TOOLTIP
             if (CompanyUIUtils.HasCompany(EntityManager, selectedEntity, prefab, out Entity company))
             {
-                m_CompanyTooltipBuilder.Build(company, m_TooltipGroup, m_SecondaryTooltipGroup, IsMixed);
+                m_CompanyTooltipBuilder.Build(company, m_PrimaryETGroup, m_SecondaryETGroup, IsMixed);
             }
         }
 
@@ -401,11 +387,11 @@ namespace ExtendedTooltip.Systems
 
         private void UpdateSecondaryTooltipGroup()
         {
-            if (InputManager.instance.mouseOnScreen && m_SecondaryTooltipGroup.children.Count > 0)
+            if (InputManager.instance.mouseOnScreen && m_SecondaryETGroup.children.Count > 0)
             {
                 Vector3 mousePosition = InputManager.instance.mousePosition;
-                m_SecondaryTooltipGroup.position = math.round(new float2(mousePosition.x - 8.0f, Screen.height - mousePosition.y) + kTooltipPointerDistance);
-                AddGroup(m_SecondaryTooltipGroup);
+                m_SecondaryETGroup.position = math.round(new float2(mousePosition.x - 8.0f, Screen.height - mousePosition.y) + tooltipPointerDistance);
+                AddGroup(m_SecondaryETGroup);
             }
         }
 
@@ -414,9 +400,9 @@ namespace ExtendedTooltip.Systems
             return EntityManager.HasComponent<Vehicle>(entity) || EntityManager.HasComponent<Citizen>(entity);
         }
 
-        private bool IsHotkeyPressed(ModSettings settings)
+        private bool IsHotkeyPressed()
         {
-            return settings.DisplayModeHotkey switch
+            return Model.DisplayModeHotkey switch
             {
                 "CTRL" => Input.GetKey(KeyCode.LeftControl),
                 "SHIFT" => Input.GetKey(KeyCode.LeftShift),

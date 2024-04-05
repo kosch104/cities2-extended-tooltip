@@ -9,7 +9,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<LangVersion>latest</LangVersion>
-		<Version>1.0.3</Version>
+		<Version>1.0.3.0</Version>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<SignAssembly>False</SignAssembly>
 		<NoWarn>MSB3277</NoWarn>

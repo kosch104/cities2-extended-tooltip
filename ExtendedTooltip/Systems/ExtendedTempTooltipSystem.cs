@@ -1,4 +1,4 @@
-﻿using ExtendedTooltip.Settings;
+﻿using ExtendedTooltip.Controllers;
 using Game.Common;
 using Game.Prefabs;
 using Game.Simulation;
@@ -15,6 +15,7 @@ namespace ExtendedTooltip.Systems
 {
     public partial class ExtendedTempTooltipSystem : TooltipSystemBase
     {
+        private ExtendedTooltipController m_Controller;
         private NetToolSystem m_NetToolSystem;
         private ToolSystem m_ToolSystem;
         private CustomTranslationSystem m_CustomTranslationSystem;
@@ -23,7 +24,6 @@ namespace ExtendedTooltip.Systems
         private TerrainSystem m_TerrainSystem;
         private TerrainToolSystem m_TerrainToolSystem;
 
-        private ModSettings m_Settings;
         private StringTooltip m_NetToolMode;
 
         private Type _waterFeaturesType;
@@ -33,6 +33,7 @@ namespace ExtendedTooltip.Systems
         {
             base.OnCreate();
 
+            m_Controller = World.GetOrCreateSystemManaged<ExtendedTooltipController>();
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_NetToolSystem = World.GetOrCreateSystemManaged<NetToolSystem>();
             m_CustomTranslationSystem = World.GetOrCreateSystemManaged<CustomTranslationSystem>();
@@ -41,12 +42,11 @@ namespace ExtendedTooltip.Systems
             m_TerrainSystem = World.GetOrCreateSystemManaged<TerrainSystem>();
             m_ToolRaycastSystem = World.GetOrCreateSystemManaged<ToolRaycastSystem>();
 
-            m_Settings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
             DetectWaterFeaturesMod();
 
-            m_NetToolMode = new StringTooltip
+            m_NetToolMode = new StringTooltip()
             {
-                path = "etNetTool",
+                path = "etNetToolMode",
             };
         }
 
@@ -56,13 +56,13 @@ namespace ExtendedTooltip.Systems
             if (m_ToolSystem == null || m_ToolSystem.activeTool is DefaultToolSystem)
                 return;
 
-            if (m_ToolSystem.activeTool is NetToolSystem && m_Settings.ShowNetToolSystem && m_Settings.ShowNetToolMode)
+            if (m_ToolSystem.activeTool is NetToolSystem && m_Controller.m_Model.ShowNetToolSystem && m_Controller.m_Model.ShowNetToolMode)
             {
                 m_NetToolMode.icon = $"Media/Tools/Net Tool/{m_NetToolSystem.mode}.svg";
                 m_NetToolMode.value = m_CustomTranslationSystem.GetLocalGameTranslation($"ToolOptions.TOOLTIP_TITLE[{m_NetToolSystem.mode}]");
 
                 // Add elevation to tooltip if it's not 0.0f
-                if (m_Settings.ShowNetToolElevation && m_NetToolSystem.elevation != 0.0f)
+                if (m_Controller.m_Model.ShowNetToolElevation && m_NetToolSystem.elevation != 0.0f)
                 {
                     // Add + sign for positive elevation (- is added by default)
                     string sign = (m_NetToolSystem.elevation > 0.0f) ? "+" : "";
@@ -72,7 +72,7 @@ namespace ExtendedTooltip.Systems
                 AddMouseTooltip(m_NetToolMode);
             }
 
-            if ((m_Settings.ShowTerrainToolHeight && m_ToolSystem.activeTool is TerrainToolSystem) || (m_Settings.ShowWaterToolHeight && (m_ToolSystem.activeTool is WaterToolSystem || AnyOtherSupportedCustomToolSystem())))
+            if ((m_Controller.m_Model.ShowTerrainToolHeight && m_ToolSystem.activeTool is TerrainToolSystem) || (m_Controller.m_Model.ShowWaterToolHeight && (m_ToolSystem.activeTool is WaterToolSystem || AnyOtherSupportedCustomToolSystem())))
             {
                 TerrainHeightData heightData = m_TerrainSystem.GetHeightData();
 

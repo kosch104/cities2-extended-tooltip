@@ -11,7 +11,6 @@ using Gooee.Plugins;
 using HarmonyLib;
 using Game.SceneFlow;
 using System.IO;
-using System.Reflection;
 
 namespace ExtendedTooltip
 {
@@ -20,7 +19,7 @@ namespace ExtendedTooltip
         public static Mod Instance { get; set; }
         private readonly static ILog _log = LogManager.GetLogger("ExtendedTooltip").SetShowsErrorsInUI(false);
         public static string Name = "ExtendedTooltip";
-        public static string Version { get; private set; }
+        public static string Version = "1.0.4";
         private World _world;
         public static Harmony _harmony;
         public static string harmonyId = $"cities2modding_{Name.ToLower()}";
@@ -33,10 +32,6 @@ namespace ExtendedTooltip
 
         public void OnLoad(UpdateSystem updateSystem)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            AssemblyInformationalVersionAttribute attribute = (AssemblyInformationalVersionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyInformationalVersionAttribute));
-            Version = attribute.InformationalVersion;
-
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
             {
                 AssemblyPath = Path.GetDirectoryName(asset.path.Replace('/', Path.DirectorySeparatorChar));

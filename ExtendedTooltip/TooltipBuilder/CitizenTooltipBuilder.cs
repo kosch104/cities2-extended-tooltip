@@ -1,5 +1,4 @@
 ﻿using Colossal.Entities;
-using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
 using Game.Citizens;
 using Game.Prefabs;
@@ -19,10 +18,10 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity entity, Citizen citizen, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
         {
-            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
+            var model = m_ExtendedTooltipSystem.Model;
 
             // State
-            if (modSettings.ShowCitizenState)
+            if (model.ShowCitizenState)
             {
                 CitizenStateKey stateKey = CitizenUIUtils.GetStateKey(m_EntityManager, entity);
                 StringTooltip stateTooltip = new()
@@ -35,11 +34,11 @@ namespace ExtendedTooltip.TooltipBuilder
             }
 
             // Needs revisting, not working
-            if ((modSettings.ShowCitizenWealth || modSettings.ShowCitizenType) && m_EntityManager.TryGetComponent(entity, out HouseholdMember householdMember))
+            if ((model.ShowCitizenWealth || model.ShowCitizenType) && m_EntityManager.TryGetComponent(entity, out HouseholdMember householdMember))
             {
                 Entity household = householdMember.m_Household;
 
-                if (modSettings.ShowCitizenType)
+                if (model.ShowCitizenType)
                 {
                     CitizenKey citizenKey = CitizenKey.Citizen;
                     if (m_EntityManager.HasComponent<CommuterHousehold>(householdMember.m_Household))
@@ -58,10 +57,10 @@ namespace ExtendedTooltip.TooltipBuilder
                         value = $"{citizenTypeValue}",
                         color = TooltipColor.Info,
                     };
-                    (modSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(citizenTypeTooltip);
+                    (model.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(citizenTypeTooltip);
                 }
 
-                if (modSettings.ShowCitizenWealth)
+                if (model.ShowCitizenWealth)
                 {
                     HouseholdWealthKey wealthKey = CitizenUIUtils.GetHouseholdWealth(m_EntityManager, household, citizenHappinessParameters);
                     TooltipColor tooltipColor = wealthKey switch
@@ -79,7 +78,7 @@ namespace ExtendedTooltip.TooltipBuilder
                         value = $"{wealthLabel}: {wealthValue}",
                         color = tooltipColor,
                     };
-                    (modSettings.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(wealthTooltip);
+                    (model.UseExtendedLayout ? secondaryTooltipGroup : tooltipGroup).children.Add(wealthTooltip);
                 }
                 
             }
@@ -97,7 +96,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }*/
 
             // Happiness
-            if (modSettings.ShowCitizenHappiness)
+            if (model.ShowCitizenHappiness)
             {
                 int happinessValue = citizen.Happiness;
                 CitizenHappinessKey happinessKey = (CitizenHappinessKey)CitizenUtils.GetHappinessKey(happinessValue);
@@ -113,7 +112,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }
 
             // Education
-            if (modSettings.ShowCitizenEducation)
+            if (model.ShowCitizenEducation)
             {
                 CitizenEducationKey educationKey = CitizenUIUtils.GetEducation(citizen);
                 string educationLabelString = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CITIZEN_EDUCATION_TITLE", "Education");

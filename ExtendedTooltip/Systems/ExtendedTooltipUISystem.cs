@@ -1,5 +1,4 @@
 ﻿using Colossal.UI.Binding;
-using ExtendedTooltip.Settings;
 using Game.UI;
 using System;
 using System.Collections.Generic;
@@ -11,16 +10,12 @@ namespace ExtendedTooltip.Systems
     {
         private readonly string kGroup = "89pleasure_extendedtooltip";
         private CustomTranslationSystem m_CustomTranslationSystem;
-        public ExtendedTooltipSystem m_ExtendedTooltipSystem;
-        public ModSettings m_ModSettings;
         public Dictionary<string, string> m_SettingLocalization;
 
         protected override void OnCreate()
         {
             base.OnCreate();
-            m_ExtendedTooltipSystem = World.GetOrCreateSystemManaged<ExtendedTooltipSystem>();
             m_CustomTranslationSystem = World.GetOrCreateSystemManaged<CustomTranslationSystem>();
-            m_ModSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
 
             CreateLanguages();
             AddBinding(new TriggerBinding<string>(kGroup, "launchUrl", OpenURL));

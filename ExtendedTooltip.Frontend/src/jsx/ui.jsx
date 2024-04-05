@@ -16,7 +16,7 @@ const ExtendedTooltipButton = ({ react, setupController }) => {
         setTooltipVisible(false);
     };
 
-    const { ToolTip, ToolTipContent, Icon } = window.$_gooee.framework;
+    const { ToolTip, ToolTipContent } = window.$_gooee.framework;
 
     const { model, update } = setupController();
 

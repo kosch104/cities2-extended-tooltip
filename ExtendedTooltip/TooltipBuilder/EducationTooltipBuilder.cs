@@ -1,5 +1,4 @@
 ﻿using Colossal.Entities;
-using ExtendedTooltip.Settings;
 using ExtendedTooltip.Systems;
 using Game.Buildings;
 using Game.Prefabs;
@@ -18,8 +17,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
-            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
-            if (modSettings.ShowEducationStudentCapacity == false)
+            if (m_ExtendedTooltipSystem.Model.ShowEducationStudentCapacity == false)
                 return;
 
             // Add student info if available

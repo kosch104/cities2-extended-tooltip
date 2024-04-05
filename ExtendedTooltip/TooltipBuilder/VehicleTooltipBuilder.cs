@@ -6,19 +6,17 @@ using Game.UI.InGame;
 using Game.UI.Tooltip;
 using Game.Vehicles;
 using Colossal.Entities;
-using Game.UI;
 using Game.Citizens;
 using Game.Objects;
 using UnityEngine;
 using Unity.Mathematics;
 using System.Globalization;
-using ExtendedTooltip.Settings;
 
 namespace ExtendedTooltip.TooltipBuilder
 {
     internal class VehicleTooltipBuilder : TooltipBuilderBase
     {
-        public VehicleTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem, NameSystem nameSystem)
+        public VehicleTooltipBuilder(EntityManager entityManager, CustomTranslationSystem customTranslationSystem)
         : base(entityManager, customTranslationSystem)
         {
             Mod.DebugLog("Created VehicleTooltipBuilder.");
@@ -26,8 +24,6 @@ namespace ExtendedTooltip.TooltipBuilder
 
         public void Build(Entity selectedEntity, Entity prefab, TooltipGroup tooltipGroup)
         {
-            ModSettings modSettings = m_ExtendedTooltipSystem.m_LocalSettings.ModSettings;
-
             bool isPersonalCar = m_EntityManager.HasComponent<Game.Vehicles.PersonalCar>(selectedEntity);
             bool isPoliceCar = m_EntityManager.HasComponent<Game.Vehicles.PoliceCar>(selectedEntity);
             bool isGarbageTruck = m_EntityManager.HasComponent<Game.Vehicles.GarbageTruck>(selectedEntity);
@@ -36,7 +32,9 @@ namespace ExtendedTooltip.TooltipBuilder
             bool isTaxi = m_EntityManager.HasComponent<Game.Vehicles.Taxi>(selectedEntity);
             bool isParked = m_EntityManager.HasComponent<ParkedCar>(selectedEntity);
 
-            if (modSettings.ShowVehicleState && !isParked)
+            var model = m_ExtendedTooltipSystem.Model;
+
+            if (model.ShowVehicleState && !isParked)
             {
                 VehicleStateLocaleKey vehicleStateLocaleKey;
                 vehicleStateLocaleKey = VehicleUIUtils.GetStateKey(selectedEntity, m_EntityManager);
@@ -50,7 +48,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }
 
             // GARBAGE TRUCKS
-            if (modSettings.ShowVehicleGarbageTruck && isGarbageTruck && !isParked) {
+            if (model.ShowVehicleGarbageTruck && isGarbageTruck && !isParked) {
                 Game.Vehicles.GarbageTruck garbageTruck = m_EntityManager.GetComponentData<Game.Vehicles.GarbageTruck>(selectedEntity);
                 GarbageTruckData garbageTruckData = m_EntityManager.GetComponentData<GarbageTruckData>(prefab);
 
@@ -67,7 +65,7 @@ namespace ExtendedTooltip.TooltipBuilder
             }
 
             // POST VANS
-            if (modSettings.ShowVehiclePostvan && isPostVan && !isParked)
+            if (model.ShowVehiclePostvan && isPostVan && !isParked)
             {
                 Game.Vehicles.PostVan postVan = m_EntityManager.GetComponentData<Game.Vehicles.PostVan>(selectedEntity);
                 PostVanData postVanData = m_EntityManager.GetComponentData<PostVanData>(prefab);
@@ -105,9 +103,9 @@ namespace ExtendedTooltip.TooltipBuilder
             }
 
             //  PASSENGERS INFO OF POLICE CARS, PERSONAL CARS, PUBLIC TRANSPORT AND TAXIS
-            if (modSettings.ShowVehiclePassengerDetails && !isParked && (isPoliceCar || isPersonalCar || isPublicTransport || isTaxi))
+            if (model.ShowVehiclePassengerDetails && !isParked && (isPoliceCar || isPersonalCar || isPublicTransport || isTaxi))
             {
-                if (modSettings.ShowVehicleDriver
+                if (model.ShowVehicleDriver
                     && m_EntityManager.TryGetComponent(selectedEntity, out Game.Vehicles.PersonalCar personalCar)
                     && !m_EntityManager.HasComponent<ParkedCar>(selectedEntity)
                     && personalCar.m_Keeper != InfoList.Item.kNullEntity)
