@@ -39,7 +39,8 @@
 
 	<ItemGroup>
 		<Reference Include="Gooee">
-			<HintPath>$(PDXMods_Location)\77225_5\Gooee.dll</HintPath>
+			<!--<HintPath>$(PDXMods_Location)\77225_5\Gooee.dll</HintPath>-->
+			<HintPath>$(LocalMods_Location)\Gooee\Gooee.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Game">
