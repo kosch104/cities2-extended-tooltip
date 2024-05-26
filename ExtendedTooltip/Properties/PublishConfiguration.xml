@@ -1,9 +1,9 @@
 ﻿<Publish>
 	<ModId Value="77312" />
-	<DisplayName Value="Extended Tooltips" />
+	<DisplayName Value="Extended Tooltip" />
 	<ShortDescription Value="Add new information to the mouse hover tooltip of several entities to the game." />
 	<LongDescription>
-# Extended Tooltips
+# Extended Tooltip
 
 This mod adds new information to the mouse hover tooltip of several entities to the game.
 If you want anything added to the tooltip, please let me know and open an issue.
