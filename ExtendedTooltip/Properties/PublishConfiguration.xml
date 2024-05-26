@@ -1,9 +1,9 @@
 ﻿<Publish>
 	<ModId Value="77312" />
-	<DisplayName Value="ExtendedTooltip" />
-	<ShortDescription Value="The mod everyone needs! Shows bunch of information on your fingertips to improve your gameplay." />
+	<DisplayName Value="Extended Tooltip" />
+	<ShortDescription Value="Add new information to the mouse hover tooltip of several entities to the game." />
 	<LongDescription>
-# ExtendedTooltip Mod for Cities Skylines II
+# Extended Tooltip
 
 This mod adds new information to the mouse hover tooltip of several entities to the game.
 If you want anything added to the tooltip, please let me know and open an issue.
@@ -27,24 +27,26 @@ Shows the following information on tooltips:
 
 ## Known incompatible mods
 - ExtendedTransportManager (ETM) by klyth45
-
-## Community
-If you need any help or are you interested in modding yourself?
-Join our discord community: [https://discord.gg/Fc6KuuBkRr](https://discord.gg/Fc6KuuBkRr)
 	</LongDescription>
 	<Thumbnail Value="Properties/Thumbnail.png" />
-	<Screenshot Value="" />
+	<Screenshot Value="Properties/Screenshot_01.png" />
+	<Screenshot Value="Properties/Screenshot_02.png" />
+	<Screenshot Value="Properties/Screenshot_03.png" />
+	<Screenshot Value="Properties/Screenshot_04.png" />
+	<Screenshot Value="Properties/Screenshot_05.png" />
+	<Screenshot Value="Properties/Screenshot_06.png" />
+	<Screenshot Value="Properties/Screenshot_07.png" />
+	<Screenshot Value="Properties/Screenshot_08.png" />
 	<Tag Value="Code Mod" />
 	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/extendedtooltip.1657861/" />
-	<ModVersion Value="1.0.3" />
+	<ModVersion Value="1.1.0" />
 	<GameVersion Value="1.1.*" />
-	<Dependency Id="77209" />
-	<Dependency Id="77225" Version="1.1.*" />
 	<ChangeLog>
-- Fixes errors related to missing tooltip system patch
-- Updates logging into it's own log file in app data folder
-- Adds forum link for discussion on mod page in pdxmods
+* Removed Gooee and Dependency Pack requirement.
+* Tooltip settings have been moved to the mod options screen.
+* Added Unit tooltip option to the road tool.
+* Fixed error when hovering some vehicles.
 	</ChangeLog>
-	<ExternalLink Type="discord" Url="https://discord.gg/Fc6KuuBkRr" />
-	<ExternalLink Type="github" Url="https://github.com/89pleasure/cities2-extended-tooltip" />
+	<ExternalLink Type="discord" Url="https://discord.com/invite/HTav7ARPs2" />
+	<ExternalLink Type="github" Url="https://github.com/kosch104/cities2-extended-tooltip" />
 </Publish>
