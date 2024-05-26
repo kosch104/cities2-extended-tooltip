@@ -169,6 +169,7 @@ namespace ExtendedTooltip.TooltipBuilder
 			companyResourceTooltip.icon = "Media/Game/Resources/" + resource.ToString() + ".svg";
 			if (resourceAmount > 0 && !isBulldozing)
 			{
+				// TODO: Fix actual translations issue #1
 				if (showResourceUnit)
 				{
 					var unit = "t";
@@ -180,24 +181,24 @@ namespace ExtendedTooltip.TooltipBuilder
 						var litersCrudeOil = resourceAmount * densityCrudeOil;
 						var barrelsCrudeOil = litersCrudeOil / litersPerBarrel;
 
-						resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", "Unknown", "RESOURCE", resourceValue, "AMOUNT", barrelsCrudeOil.ToString("F2"), "UNIT", unit);
+						resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", resourceValue, "RESOURCE", resourceValue, "AMOUNT", barrelsCrudeOil.ToString("F2"), "UNIT", unit);
 					}
 					else if (resource == Resource.Petrochemicals)
 					{
 						var densityGasoline = 0.75;
 						var gasolineValue = resourceAmount > 1000 ? resourceAmount * densityGasoline / 1000 : resourceAmount * densityGasoline;
 						unit = resourceAmount > 1000 ? "kl" : "l";
-						resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", "Unknown", "RESOURCE", resourceValue, "AMOUNT", gasolineValue.ToString("F2"), "UNIT", unit);
+						resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", resourceValue, "RESOURCE", resourceValue, "AMOUNT", gasolineValue.ToString("F2"), "UNIT", unit);
 					}
 					else
 					{
 						var resourceValueInDouble = (double)resourceAmount / 1000;
-						resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", "Unknown", "RESOURCE", resourceValue, "AMOUNT", resourceValueInDouble.ToString("F2"), "UNIT", unit);
+						resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", resourceValue, "RESOURCE", resourceValue, "AMOUNT", resourceValueInDouble.ToString("F2"), "UNIT", unit);
 					}
 				}
 				else
 				{
-					resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", "Unknown", "RESOURCE", resourceValue, "AMOUNT", resourceAmount.ToString(), "UNIT", "");
+					resourceValue = m_CustomTranslationSystem.GetTranslation(!isStorage ? "setting.company.production_rate_prefixed" : "setting.company.production_rate", resourceValue, "RESOURCE", resourceValue, "AMOUNT", resourceAmount.ToString(), "UNIT", "");
 				}
 			}
 

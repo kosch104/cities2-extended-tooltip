@@ -1,5 +1,5 @@
 ﻿<Publish>
-	<ModId Value="77312" />
+	<ModId Value="78188" />
 	<DisplayName Value="Extended Tooltip" />
 	<ShortDescription Value="Add new information to the mouse hover tooltip of several entities to the game." />
 	<LongDescription>
@@ -25,8 +25,8 @@ Shows the following information on tooltips:
 - Vehicles: Driver, Passengers, Garbage Trucks info, Postvan info
 - many more
 
-## Known incompatible mods
-- ExtendedTransportManager (ETM) by klyth45
+## Credit
+Thanks to TDW for their efforts to migrate this mod and apply various improvements.
 	</LongDescription>
 	<Thumbnail Value="Properties/Thumbnail.png" />
 	<Screenshot Value="Properties/Screenshot_01.png" />
