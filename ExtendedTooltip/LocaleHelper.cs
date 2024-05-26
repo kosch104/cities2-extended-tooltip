@@ -1,8 +1,6 @@
 ﻿using Colossal;
 using Colossal.Json;
 
-using ExtendedTooltip;
-
 using Game.SceneFlow;
 
 using System.Collections.Generic;

@@ -37,7 +37,7 @@ namespace ExtendedTooltip
 		public DisplayMode DisplayMode { get; set; } = DisplayMode.Instant;
 		[SettingsUISection(TAB_GENERAL, "")]
 		[SettingsUISlider(min = 50, max = 2000, step = 1, scalarMultiplier = 1, unit = Unit.kInteger)]
-		public int DisplayModeDelay { get; set; } = 220;
+		public int DisplayModeDelay { get; set; } = 250;
 		[SettingsUISection(TAB_GENERAL, "")]
 		public string DisplayModeHotkey { get; set; } = "ALT";
 		[SettingsUISection(TAB_GENERAL, "")]
@@ -152,8 +152,6 @@ namespace ExtendedTooltip
 		public bool ShowVehicle { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_VEHICLES)]
 		public bool ShowVehicleState { get; set; } = true;
-		//[SettingsUISection(TAB_TOOLTIPS, GRP_VEHICLES)]
-		public bool ShowVehicleDriver { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_VEHICLES)]
 		public bool ShowVehiclePostvan { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_VEHICLES)]

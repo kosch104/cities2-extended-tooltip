@@ -117,7 +117,6 @@ namespace ExtendedTooltip.Systems
 		{
 			if (IsValidDefaultToolRaycast(out var raycastResult, out var prefabRef))
 			{
-
 				var entity = raycastResult.m_Owner;
 				var prefab = prefabRef.m_Prefab;
 				AdjustTargets(ref entity, ref prefab);
@@ -136,10 +135,10 @@ namespace ExtendedTooltip.Systems
 				{
 					try
 					{
+						timer += World.Time.DeltaTime;
+
 						if (ShouldDisplayExtendedTooltip(entity))
 						{
-							timer += World.Time.DeltaTime;
-
 							CreateExtendedTooltips(entity, prefab);
 							var i = 1;
 							foreach (var tooltip in m_PrimaryETGroup.children)

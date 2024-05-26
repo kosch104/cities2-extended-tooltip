@@ -15,6 +15,9 @@ namespace ExtendedTooltip
 	public class Mod : IMod
 	{
 		public const string Id = nameof(ExtendedTooltip);
+		private const string HarmonyId = "com.Konsi." + Id;
+		private Harmony harmony;
+
 		public static ILog Log { get; } = LogManager.GetLogger(nameof(ExtendedTooltip)).SetShowsErrorsInUI(false);
 		public static ModSettings Settings { get; private set; }
 
@@ -37,15 +40,16 @@ namespace ExtendedTooltip
 			updateSystem.UpdateAt<ExtendedTempTooltipSystem>(SystemUpdatePhase.UITooltip);
 			updateSystem.UpdateAt<ExtendedTooltipSystem>(SystemUpdatePhase.UITooltip);
 			updateSystem.UpdateAt<ExtendedBulldozerTooltipSystem>(SystemUpdatePhase.UITooltip);
-			//updateSystem.UpdateAt<CustomGuideLineTooltipSystem>(SystemUpdatePhase.UITooltip);
 
-			new Harmony("DWAGWAGWAGWA").PatchAll(typeof(Mod).Assembly);
-
+			harmony = new Harmony(HarmonyId);
+			harmony.PatchAll(typeof(Mod).Assembly);
 		}
 
 		public void OnDispose()
 		{
 			Log.Info(nameof(OnDispose));
+
+			harmony.UnpatchAll(HarmonyId);
 
 			if (Settings != null)
 			{
