@@ -36,7 +36,7 @@ namespace ExtendedTooltip
 		[SettingsUISection(TAB_GENERAL, "")]
 		public DisplayMode DisplayMode { get; set; } = DisplayMode.Instant;
 		[SettingsUISection(TAB_GENERAL, "")]
-		[SettingsUISlider(min = 50, max = 2000, step = 1, scalarMultiplier = 1, unit = Unit.kInteger)]
+		[SettingsUISlider(min = 50, max = 2000, step = 50, scalarMultiplier = 1, unit = Unit.kInteger)]
 		public int DisplayModeDelay { get; set; } = 250;
 		[SettingsUISection(TAB_GENERAL, "")]
 		public string DisplayModeHotkey { get; set; } = "ALT";
