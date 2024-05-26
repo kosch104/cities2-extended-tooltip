@@ -2,12 +2,15 @@
 using Game.SceneFlow;
 
 using System.Collections.Generic;
+using System.IO;
+using Game.UI.Localization;
+using Newtonsoft.Json;
 
 namespace ExtendedTooltip.Systems
 {
 	public partial class CustomTranslationSystem : GameSystemBase
 	{
-		public string Prefix { get; set; } = "";
+		public string Prefix { get; set; } = "extendedtooltip";
 		private string LanguageCode { get; set; }
 		public string CurrentLanguageCode => LanguageCode;
 		private Dictionary<string, string> Translations { get; set; }
@@ -42,7 +45,7 @@ namespace ExtendedTooltip.Systems
 			var dictionaryKey = $"{Prefix}.{key}";
 			if (Translations == null || !Translations.ContainsKey(dictionaryKey))
 			{
-				return fallback;
+				return GetLocalGameTranslation(dictionaryKey, fallback, vars);
 			}
 
 			return HandleTranslationString(Translations[dictionaryKey], fallback, vars);
