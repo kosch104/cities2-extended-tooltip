@@ -63,12 +63,9 @@ namespace ExtendedTooltip
 
 		[SettingsUISection(TAB_TOOLTIPS, GRP_COMPANY)]
 		[SettingsUIDisableByCondition(typeof(ModSettings), nameof(DisableShowCompanyProfitabilityAbsolute))]
-		public bool ShowCompanyProfitabilityAbsolute { get; set; } = true;
+		public bool ShowCompanyProfitabilityAbsolute { get; set; } = false;
 
-		private bool DisableShowCompanyProfitabilityAbsolute()
-		{
-			return !ShowCompanyProfitability;
-		}
+		private bool DisableShowCompanyProfitabilityAbsolute() => !ShowCompanyProfitability;
 
 		// TOOLS
 		[SettingsUISection(TAB_TOOLTIPS, GRP_TOOLS)]
