@@ -123,7 +123,7 @@ namespace ExtendedTooltip.TooltipBuilder
 					var landValueTooltipColor = landValueAmount <= 150 ? TooltipColor.Success : landValueAmount <= 300 ? TooltipColor.Info : landValueAmount <= 450 ? TooltipColor.Warning : TooltipColor.Error;
 
 					var landValueLabel = m_CustomTranslationSystem.GetLocalGameTranslation("Infoviews.INFOVIEW[LandValue]", "Land Value");
-					var landValueString = landValueAmount.ToString("C0");
+					var landValueString = "\u00a2" + landValueAmount.ToString();
 					var finalLandValueString = $"{landValueLabel}: {landValueString}";
 
 					StringTooltip landValueTooltip = new()

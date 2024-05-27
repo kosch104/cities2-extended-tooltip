@@ -90,9 +90,8 @@ namespace ExtendedTooltip.TooltipBuilder
 							break;
 						}
 					}
-
 					var companyBalanceLabel = m_CustomTranslationSystem.GetTranslation("balance", "Balance");
-					var companyBalanceValueString = companyBalance.ToString("C0");
+					var companyBalanceValueString = "\u00a2" + companyBalance.ToString();
 					var finalCompanyBalanceString = $"{companyBalanceLabel}: {companyBalanceValueString}";
 
 					StringTooltip companyBalanceTooltip = new()
