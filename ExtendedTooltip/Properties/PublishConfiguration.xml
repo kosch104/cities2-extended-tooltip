@@ -39,13 +39,14 @@ Thanks to TDW for their efforts to migrate this mod and apply various improvemen
 	<Screenshot Value="Properties/Screenshot_08.png" />
 	<Tag Value="Code Mod" />
 	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/extendedtooltip.1657861/" />
-	<ModVersion Value="1.1.0" />
+	<ModVersion Value="1.1.1" />
 	<GameVersion Value="1.1.*" />
 	<ChangeLog>
-* Removed Gooee and Dependency Pack requirement.
-* Tooltip settings have been moved to the mod options screen.
-* Added Unit tooltip option to the road tool.
-* Fixed error when hovering some vehicles.
+- Fixed Unknown Good bug
+- Fixed pet localization bug
+- Unified currency displays
+- Added percentage profitability
+- Added Hotkey "U" to toggle Unit Display
 	</ChangeLog>
 	<ExternalLink Type="discord" Url="https://discord.com/invite/HTav7ARPs2" />
 	<ExternalLink Type="github" Url="https://github.com/kosch104/cities2-extended-tooltip" />
