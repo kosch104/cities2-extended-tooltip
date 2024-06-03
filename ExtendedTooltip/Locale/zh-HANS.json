@@ -28,7 +28,7 @@
   "extendedtooltip.setting.toolSystem": "工具系统",
   "extendedtooltip.setting.toolSystem.description": "启用不同工具系统的工具提示",
   "extendedtooltip.setting.toolSystem.anarchyMode": "Anarchy 状态",
-  "extendedtooltip.setting.toolSystem.anarchyMode.description": "在启用　Anarchy 后显示一个指示",
+  "extendedtooltip.setting.toolSystem.anarchyMode.description": "在启用 Anarchy 后显示一个指示",
 
   "Options.SECTION[ExtendedTooltip.ExtendedTooltip.Mod]": "拓展提示",
   "Options.TAB[ExtendedTooltip.ExtendedTooltip.Mod.TAB_GENERAL]": "通用设置",
@@ -88,6 +88,8 @@
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyBalance]": "显示所选建筑物中企业的余额",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyProfitability]": "企业效益",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyProfitability]": "显示所选建筑物中企业的效益",
+  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyProfitabilityAbsolute]": "企业盈利绝对值",
+  "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyProfitabilityAbsolute]": "显示从 -255 到 255 的绝对值以代替百分比",
 
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPark]": "启用公园提示",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPark]": "管理公园与休闲的提示",

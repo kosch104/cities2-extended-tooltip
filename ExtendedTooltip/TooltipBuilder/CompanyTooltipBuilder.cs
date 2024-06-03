@@ -52,6 +52,12 @@ namespace ExtendedTooltip.TooltipBuilder
 					value = $"{profitabilityLabel}: {profitabilityValue} ({(int)companyProfitability.m_Profitability})",
 					color = tooltipColor
 				};
+				if (!model.ShowCompanyProfitabilityAbsolute)
+				{
+					// Use percentage value
+					var percentage = ((double)companyProfitability.m_Profitability / 255.0) * 100;
+					profitabilityTooltip.value = $"{profitabilityLabel}: {profitabilityValue} ({(int)percentage}%)";
+				}
 				(model.UseExtendedLayout && !IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(profitabilityTooltip);
 			}
 
@@ -91,7 +97,7 @@ namespace ExtendedTooltip.TooltipBuilder
 						}
 					}
 					var companyBalanceLabel = m_CustomTranslationSystem.GetTranslation("balance", "Balance");
-					var companyBalanceValueString = "\u00a2" + companyBalance.ToString();
+					var companyBalanceValueString = "\u00a2" + companyBalance.ToString("N0");
 					var finalCompanyBalanceString = $"{companyBalanceLabel}: {companyBalanceValueString}";
 
 					StringTooltip companyBalanceTooltip = new()
@@ -115,7 +121,7 @@ namespace ExtendedTooltip.TooltipBuilder
 
 				var rent = MathUtils.RoundToIntRandom(ref random, propertyRenter.m_Rent * 1f);
 				var finalRentValue = rent < 0 ? Math.Abs(rent) : rent;
-				rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "-", "SIGN", rent < 0 ? "-" : "", "VALUE", finalRentValue.ToString());
+				rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "-", "SIGN", rent < 0 ? "-" : "", "VALUE", finalRentValue.ToString("N0"));
 
 				StringTooltip rentTooltip = new()
 				{

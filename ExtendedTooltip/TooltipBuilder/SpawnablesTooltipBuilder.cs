@@ -123,7 +123,7 @@ namespace ExtendedTooltip.TooltipBuilder
 					var landValueTooltipColor = landValueAmount <= 150 ? TooltipColor.Success : landValueAmount <= 300 ? TooltipColor.Info : landValueAmount <= 450 ? TooltipColor.Warning : TooltipColor.Error;
 
 					var landValueLabel = m_CustomTranslationSystem.GetLocalGameTranslation("Infoviews.INFOVIEW[LandValue]", "Land Value");
-					var landValueString = "\u00a2" + landValueAmount.ToString();
+					var landValueString = "\u00a2" + landValueAmount.ToString("N0");
 					var finalLandValueString = $"{landValueLabel}: {landValueString}";
 
 					StringTooltip landValueTooltip = new()
@@ -199,13 +199,13 @@ namespace ExtendedTooltip.TooltipBuilder
 						var minBalanceValue = minBalance < 0 ? Math.Abs(minBalance) : minBalance;
 						maxBalance = householdBalances.Max();
 						var maxBalanceValue = maxBalance < 0 ? Math.Abs(maxBalance) : maxBalance;
-						balanceValue = m_CustomTranslationSystem.GetTranslation("common.range_minmax_value_money", "", "SIGN0", minBalance < 0 ? "-" : "", "VALUE0", minBalanceValue.ToString(), "SIGN1", maxBalance < 0 ? "-" : "", "VALUE1", maxBalanceValue.ToString());
+						balanceValue = m_CustomTranslationSystem.GetTranslation("common.range_minmax_value_money", "", "SIGN0", minBalance < 0 ? "-" : "", "VALUE0", minBalanceValue.ToString(), "SIGN1", maxBalance < 0 ? "-" : "", "VALUE1", maxBalanceValue.ToString("N0"));
 					}
 					else
 					{
 						finalBalance = householdBalances.First();
 						var finalRentValue = finalBalance < 0 ? Math.Abs(finalBalance) : finalBalance;
-						balanceValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY", "", "SIGN", finalBalance < 0 ? "-" : "", "VALUE", finalRentValue.ToString());
+						balanceValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY", "", "SIGN", finalBalance < 0 ? "-" : "", "VALUE", finalRentValue.ToString("N0"));
 					}
 
 					StringTooltip balanceTooltip = new()
@@ -230,13 +230,13 @@ namespace ExtendedTooltip.TooltipBuilder
 						var minRentValue = minRent < 0 ? Math.Abs(minRent) : minRent;
 						var maxRent = householdRents.Max();
 						var maxRentValue = maxRent < 0 ? Math.Abs(maxRent) : maxRent;
-						rentValue = m_CustomTranslationSystem.GetTranslation("common.range_value_money", "", "SIGN0", minRent < 0 ? "-" : "", "VALUE0", minRentValue.ToString(), "SIGN1", maxRent < 0 ? "-" : "", "VALUE1", maxRentValue.ToString());
+						rentValue = m_CustomTranslationSystem.GetTranslation("common.range_value_money", "", "SIGN0", minRent < 0 ? "-" : "", "VALUE0", minRentValue.ToString("N0"), "SIGN1", maxRent < 0 ? "-" : "", "VALUE1", maxRentValue.ToString("N0"));
 					}
 					else
 					{
 						var finalRent = householdRents.First();
 						var finalRentValue = finalRent < 0 ? Math.Abs(finalRent) : finalRent;
-						rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "-", "SIGN", finalRent < 0 ? "-" : "", "VALUE", finalRentValue.ToString());
+						rentValue = m_CustomTranslationSystem.GetLocalGameTranslation("Common.VALUE_MONEY_PER_MONTH", "-", "SIGN", finalRent < 0 ? "-" : "", "VALUE", finalRentValue.ToString("N0"));
 					}
 
 					StringTooltip rentTooltip = new()

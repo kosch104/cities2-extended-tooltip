@@ -88,6 +88,8 @@
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyBalance]": "Shows the current balance of the selected building.",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyProfitability]": "Company Profitability",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyProfitability]": "Shows the profitability of the selected building.",
+  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyProfitabilityAbsolute]": "Company Profitability Absolute",
+  "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCompanyProfitabilityAbsolute]": "Shows absolute values ranging from -255 to 255 instead of percentages.",
 
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPark]": "Enable Parks",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPark]": "Manage tooltips that show information about parks & recreation sites.",

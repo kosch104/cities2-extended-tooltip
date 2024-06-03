@@ -20,14 +20,15 @@ namespace ExtendedTooltip
 	{
 		private static bool Prefix(GuideLineTooltipSystem __instance)
 		{
-			if (!Mod.Settings.ShowNetToolSystem || !Mod.Settings.ShowNetToolUnits)
+			if (Input.GetKeyDown(KeyCode.U))
 			{
-				return true;
+				Mod.Settings.ShowNetToolUnits = !Mod.Settings.ShowNetToolUnits;
 			}
 
 			var m_TooltipUISystem = Traverse.Create(__instance).Field("m_TooltipUISystem").GetValue<TooltipUISystem>();
 			var m_Groups = Traverse.Create(__instance).Field("m_Groups").GetValue<List<TooltipGroup>>();
 			var m_GuideLinesSystem = Traverse.Create(__instance).Field("m_GuideLinesSystem").GetValue<GuideLinesSystem>();
+			var useUnits = Mod.Settings.ShowNetToolSystem && Mod.Settings.ShowNetToolUnits;
 
 			var tooltips = m_GuideLinesSystem.GetTooltips(out var dependencies);
 			dependencies.Complete();
@@ -59,7 +60,6 @@ namespace ExtendedTooltip
 
 				var child = group.children[0] as FloatTooltip;
 				var type = tooltipInfo.m_Type;
-
 				switch (type)
 				{
 					case GuideLinesSystem.TooltipType.Angle:
@@ -70,9 +70,9 @@ namespace ExtendedTooltip
 
 					case GuideLinesSystem.TooltipType.Length:
 						child.icon = "Media/Glyphs/Length.svg";
-						child.value = tooltipInfo.m_IntValue / 8f;
-						child.unit = "floatTwoFractions";
-						child.label = LocalizedString.Value("U");
+						child.value = useUnits ? tooltipInfo.m_IntValue / 8f : tooltipInfo.m_IntValue;
+						child.unit = useUnits ? "floatTwoFractions" : "length";
+						child.label = useUnits ? LocalizedString.Value("U") : default;
 						break;
 				}
 
