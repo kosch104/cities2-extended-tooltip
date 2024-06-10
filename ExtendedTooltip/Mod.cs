@@ -34,6 +34,7 @@ namespace ExtendedTooltip
 			}
 
 			AssetDatabase.global.LoadSettings(nameof(ExtendedTooltip), Settings, new ModSettings(this));
+			Settings.HiddenSetting = false;
 
 			updateSystem.UpdateAt<CustomTranslationSystem>(SystemUpdatePhase.UIUpdate);
 			updateSystem.UpdateAt<ExtendedTooltipUISystem>(SystemUpdatePhase.UIUpdate);

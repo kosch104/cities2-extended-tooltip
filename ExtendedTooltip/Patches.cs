@@ -118,7 +118,10 @@ namespace ExtendedTooltip
 			{
 				m_Length.value /= 8f;
 				m_Length.unit = "floatTwoFractions";
-				m_Length.label = LocalizedString.Value("U");
+				if (Mod.Settings.ShowNetToolUnits)
+					m_Length.label = LocalizedString.Value("U");
+				else
+					m_Length.label = default;
 			}
 		}
 	}

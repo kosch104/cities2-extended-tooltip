@@ -31,6 +31,9 @@ namespace ExtendedTooltip
 
 		}
 
+		[SettingsUIHidden]
+		public bool HiddenSetting { get; set; } = true;
+
 		[SettingsUISection(TAB_GENERAL, "")]
 		public bool UseExtendedLayout { get; set; }
 		[SettingsUISection(TAB_GENERAL, "")]
@@ -71,7 +74,7 @@ namespace ExtendedTooltip
 		[SettingsUISection(TAB_TOOLTIPS, GRP_TOOLS)]
 		public bool ShowNetToolSystem { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_TOOLS)]
-		public bool ShowNetToolUnits { get; set; } = true;
+		public bool ShowNetToolUnits { get; set; } = false;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_TOOLS)]
 		public bool ShowNetToolMode { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_TOOLS)]
@@ -167,6 +170,7 @@ namespace ExtendedTooltip
 
 		public override void SetDefaults()
 		{
+			HiddenSetting = true;
 		}
 	}
 }
