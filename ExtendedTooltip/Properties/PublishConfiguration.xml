@@ -42,8 +42,10 @@ Thanks to TDW for their efforts to migrate this mod and apply various improvemen
 	<ModVersion Value="1.1.2" />
 	<GameVersion Value="1.1.*" />
 	<ChangeLog>
-- Units are not used as default now
-- Fix issue with settings not saving correctly
+- Display Mode Hotkey is now changeable
+- Toggle Unit Display keybind can now be changed (Default: CTRL + U)
+- Cleaned up settings page to disable inactive settings
+- Remove unused setting
 	</ChangeLog>
 	<ExternalLink Type="discord" Url="https://discord.com/invite/HTav7ARPs2" />
 	<ExternalLink Type="github" Url="https://github.com/kosch104/cities2-extended-tooltip" />
