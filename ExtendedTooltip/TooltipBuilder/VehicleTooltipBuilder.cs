@@ -37,9 +37,9 @@ namespace ExtendedTooltip.TooltipBuilder
 			var isTaxi = m_EntityManager.HasComponent<Game.Vehicles.Taxi>(selectedEntity);
 			var isParked = m_EntityManager.HasComponent<ParkedCar>(selectedEntity);
 
-			var model = Mod.Settings;
+			var settings = Mod.Settings;
 
-			if (model.ShowVehicleState && !isParked)
+			if (settings.ShowVehicleState && !isParked)
 			{
 				VehicleStateLocaleKey vehicleStateLocaleKey;
 				vehicleStateLocaleKey = VehicleUIUtils.GetStateKey(selectedEntity, m_EntityManager);
@@ -53,7 +53,7 @@ namespace ExtendedTooltip.TooltipBuilder
 			}
 
 			// GARBAGE TRUCKS
-			if (model.ShowVehicleGarbageTruck && isGarbageTruck && !isParked)
+			if (settings.ShowVehicleGarbageTruck && isGarbageTruck && !isParked)
 			{
 				var garbageTruck = m_EntityManager.GetComponentData<Game.Vehicles.GarbageTruck>(selectedEntity);
 				var garbageTruckData = m_EntityManager.GetComponentData<GarbageTruckData>(prefab);
@@ -71,7 +71,7 @@ namespace ExtendedTooltip.TooltipBuilder
 			}
 
 			// POST VANS
-			if (model.ShowVehiclePostvan && isPostVan && !isParked)
+			if (settings.ShowVehiclePostvan && isPostVan && !isParked)
 			{
 				var postVan = m_EntityManager.GetComponentData<Game.Vehicles.PostVan>(selectedEntity);
 				var postVanData = m_EntityManager.GetComponentData<PostVanData>(prefab);
@@ -109,21 +109,21 @@ namespace ExtendedTooltip.TooltipBuilder
 			}
 
 			//  PASSENGERS INFO OF POLICE CARS, PERSONAL CARS, PUBLIC TRANSPORT AND TAXIS
-			if (model.ShowVehiclePassengerDetails && !isParked && (isPoliceCar || isPersonalCar || isPublicTransport || isTaxi))
+			if (settings.ShowVehiclePassengerDetails && !isParked && (isPoliceCar || isPersonalCar || isPublicTransport || isTaxi))
 			{
-				//if (model.ShowVehicleDriver
-				//	&& m_EntityManager.TryGetComponent(selectedEntity, out Game.Vehicles.PersonalCar personalCar)
-				//	&& !m_EntityManager.HasComponent<ParkedCar>(selectedEntity)
-				//	&& personalCar.m_Keeper != InfoList.Item.kNullEntity)
-				//{
-				//	NameTooltip vehicleDriverTooltip = new()
-				//	{
-				//		nameBinder = m_NameSystem,
-				//		entity = personalCar.m_Keeper,
-				//		icon = "Media/Game/Icons/Citizen.svg",
-				//	};
-				//	tooltipGroup.children.Add(vehicleDriverTooltip);
-				//}
+				// if (settings.ShowVehicleDriver
+				//     && m_EntityManager.TryGetComponent(selectedEntity, out Game.Vehicles.PersonalCar personalCar)
+				//     && !m_EntityManager.HasComponent<ParkedCar>(selectedEntity)
+				//     && personalCar.m_Keeper != InfoList.Item.kNullEntity)
+				// {
+				// 	NameTooltip vehicleDriverTooltip = new()
+				// 	{
+				// 		nameBinder = m_NameSystem,
+				// 		entity = personalCar.m_Keeper,
+				// 		icon = "Media/Game/Icons/Citizen.svg",
+				// 	};
+				// 	tooltipGroup.children.Add(vehicleDriverTooltip);
+				// }
 
 				var passengers = 0;
 				var maxPassengers = 0;
