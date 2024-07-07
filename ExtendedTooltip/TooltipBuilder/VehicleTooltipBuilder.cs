@@ -41,15 +41,34 @@ namespace ExtendedTooltip.TooltipBuilder
 
 			if (settings.ShowVehicleState && !isParked)
 			{
-				VehicleStateLocaleKey vehicleStateLocaleKey;
-				vehicleStateLocaleKey = VehicleUIUtils.GetStateKey(selectedEntity, m_EntityManager);
-				var finalStateValueString = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.VEHICLE_STATES[{vehicleStateLocaleKey}]", "Unknown");
-				StringTooltip vehicleStateTooltip = new()
+				if (isPersonalCar)
 				{
-					icon = "Media/Game/Icons/AdvisorInfoView.svg",
-					value = finalStateValueString,
-				};
-				tooltipGroup.children.Add(vehicleStateTooltip);
+					// Personal Car
+					if (m_EntityManager.TryGetComponent(selectedEntity, out Game.Vehicles.PersonalCar personalCar) && !m_EntityManager.HasComponent<ParkedCar>(selectedEntity)
+					    && personalCar.m_Keeper != InfoList.Item.kNullEntity)
+					{
+						var stateKey = CitizenUIUtils.GetStateKey(m_EntityManager, personalCar.m_Keeper);
+						StringTooltip stateTooltip = new()
+						{
+							icon = "Media/Game/Icons/Citizen.svg",
+							value = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_STATE[{stateKey}]", "Unknown")}",
+							color = TooltipColor.Info,
+						};
+						tooltipGroup.children.Add(stateTooltip);
+					}
+				}
+				else
+				{
+					VehicleStateLocaleKey vehicleStateLocaleKey;
+					vehicleStateLocaleKey = VehicleUIUtils.GetStateKey(selectedEntity, m_EntityManager);
+					var finalStateValueString = m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.VEHICLE_STATES[{vehicleStateLocaleKey}]", "Unknown");
+					StringTooltip vehicleStateTooltip = new()
+					{
+						icon = "Media/Game/Icons/AdvisorInfoView.svg",
+						value = finalStateValueString,
+					};
+					tooltipGroup.children.Add(vehicleStateTooltip);
+				}
 			}
 
 			// GARBAGE TRUCKS
