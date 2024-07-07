@@ -50,7 +50,7 @@ namespace ExtendedTooltip.TooltipBuilder
 						var stateKey = CitizenUIUtils.GetStateKey(m_EntityManager, personalCar.m_Keeper);
 						StringTooltip stateTooltip = new()
 						{
-							icon = "Media/Game/Icons/Citizen.svg",
+							icon = "Media/Game/Icons/AdvisorInfoView.svg",
 							value = $"{m_CustomTranslationSystem.GetLocalGameTranslation($"SelectedInfoPanel.CITIZEN_STATE[{stateKey}]", "Unknown")}",
 							color = TooltipColor.Info,
 						};
@@ -199,6 +199,13 @@ namespace ExtendedTooltip.TooltipBuilder
 				if (vehiclePassengerLocaleKey == VehiclePassengerLocaleKey.Prisoner)
 				{
 					tooltipTitle = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.POLICE_PRISONERS", "Prisoners");
+				}
+
+				if (isPersonalCar)
+				{
+					tooltipTitle = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CAR_OCCUPANTS", "Occupants");
+					passengers++;
+					maxPassengers++;
 				}
 
 				StringTooltip vehicleCapacityTooltip = new()

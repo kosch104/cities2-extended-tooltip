@@ -5,7 +5,7 @@
   "extendedtooltip.historical": "Historical",
   "extendedtooltip.pet": "Pet",
   "extendedtooltip.pets": "Pets",
-  "extendedtooltip.parkinglots.utilization": "Utilisation",
+  "extendedtooltip.parkinglots.utilization": "Utilization",
   "extendedtooltip.average_waiting_time": "Avg. waiting time",
   "extendedtooltip.rent": "Rent",
   "extendedtooltip.balance": "Balance",
@@ -29,6 +29,7 @@
   "extendedtooltip.setting.toolSystem.description": "Enable tooltips for different tool systems.",
   "extendedtooltip.setting.toolSystem.anarchyMode": "Anarchy Status",
   "extendedtooltip.setting.toolSystem.anarchyMode.description": "Shows an indicator if you build with anarchy mode enabled.",
+  "SelectedInfoPanel.CAR_OCCUPANTS": "Occupants",
 
   "Options.SECTION[ExtendedTooltip.ExtendedTooltip.Mod]": "Extended Tooltip",
   "Options.TAB[ExtendedTooltip.ExtendedTooltip.Mod.TAB_GENERAL]": "General Settings",
@@ -105,7 +106,7 @@
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowParkingCapacity]": "Parking Capacity",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowParkingCapacity]": "Shows the occupied and free parking spaces.",
 
-  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPublicTransport]": "Enable Public Transporation",
+  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPublicTransport]": "Enable Public Transportation",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPublicTransport]": "Manage tooltips that show information about public transportation.",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPublicTransportWaitingTime]": "Station Waiting time",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPublicTransportWaitingTime]": "Shows the average waiting time for buildings with stations.",
