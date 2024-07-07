@@ -50,6 +50,8 @@
   "Options.ExtendedTooltip.ExtendedTooltip.Mod.DISPLAYMODE[Hotkey]": "Hotkey",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayMode]": "Display mode",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayMode]": "Decide between different display modes for the tooltips.",
+  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayModeHotkey]": "Display mode hotkey",
+  "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayModeHotkey]": "Tooltip will only be shown while this key is pressed.",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayModeDelay]": "Delay",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayModeDelay]": "Set the delay the tooltips will show up.",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayModeDelayOnMoveables]": "Delay moveables too",
@@ -62,7 +64,7 @@
 
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowEfficiency]": "Building Efficiency",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowEfficiency]": "Shows the efficiency of building in %.",
-  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowLandValue]": "Building Land Value.",
+  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowLandValue]": "Building Land Value",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowLandValue]": "Shows land value of buildings.",
 
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowCitizen]": "Enable Citizens",
@@ -93,7 +95,7 @@
 
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPark]": "Enable Parks",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowPark]": "Manage tooltips that show information about parks & recreation sites.",
-  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowParkMaintenance]": "Park Maintenance.",
+  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowParkMaintenance]": "Park Maintenance",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowParkMaintenance]": "Shows the current maintenance level.",
 
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowParkingFacility]": "Enable Parking",
@@ -147,6 +149,8 @@
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowNetToolSystem]": "Enable tooltips for the Net Tool.",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowNetToolUnits]": "Show Unit Measurements",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowNetToolUnits]": "Shows the length of a road segment in Units.",
+  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ToggleShowNetToolUnits]": "Toggle Show Unit Measurements",
+  "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ToggleShowNetToolUnits]": "A keybind to toggle the value above.",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowNetToolMode]": "Net Tool Mode",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowNetToolMode]": "Shows which mode (straight, curve, ect.) is in use.",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowNetToolElevation]": "Net Tool Elevation",

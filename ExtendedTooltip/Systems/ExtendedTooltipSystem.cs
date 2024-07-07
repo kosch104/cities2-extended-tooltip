@@ -31,7 +31,6 @@ namespace ExtendedTooltip.Systems
 {
 	public partial class ExtendedTooltipSystem : TooltipSystemBase
 	{
-		public bool m_LocalSettingsLoaded = false;
 		public Assembly[] loadedAssemblies;
 		private Entity? lastEntity;
 		private float timer = 0f;
@@ -394,9 +393,9 @@ namespace ExtendedTooltip.Systems
 		{
 			return Mod.Settings.DisplayModeHotkey switch
 			{
-				"CTRL" => Input.GetKey(KeyCode.LeftControl),
-				"SHIFT" => Input.GetKey(KeyCode.LeftShift),
-				"ALT" => Input.GetKey(KeyCode.LeftAlt),
+				1 => Input.GetKey(KeyCode.LeftControl),
+				2 => Input.GetKey(KeyCode.LeftShift),
+				3 => Input.GetKey(KeyCode.LeftAlt),
 				_ => false,
 			};
 		}

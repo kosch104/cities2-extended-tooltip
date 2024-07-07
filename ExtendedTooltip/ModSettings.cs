@@ -1,8 +1,11 @@
-﻿using Colossal.IO.AssetDatabase;
-
+﻿using System.Collections.Generic;
+using Colossal.IO.AssetDatabase;
+using Game.Input;
 using Game.Modding;
 using Game.Settings;
 using Game.UI;
+using Game.UI.Widgets;
+using UnityEngine.InputSystem;
 
 namespace ExtendedTooltip
 {
@@ -31,20 +34,26 @@ namespace ExtendedTooltip
 
 		}
 
-		[SettingsUIHidden]
-		public bool HiddenSetting { get; set; } = true;
-
 		[SettingsUISection(TAB_GENERAL, "")]
 		public bool UseExtendedLayout { get; set; }
 		[SettingsUISection(TAB_GENERAL, "")]
 		public DisplayMode DisplayMode { get; set; } = DisplayMode.Instant;
+
+		[SettingsUIDropdown(typeof(ModSettings), nameof(GetModifierDropdownItems))]
+		// Hide by condition is not updating properly, disabling that for now
+		[SettingsUIDisableByCondition(typeof(ModSettings), nameof(HideDisplayModeHotkey))]
+		[SettingsUISection(TAB_GENERAL, "")]
+		public int DisplayModeHotkey { get; set; } = 3;
+		private bool HideDisplayModeHotkey() => DisplayMode != DisplayMode.Hotkey;
+
+		[SettingsUIDisableByCondition(typeof(ModSettings), nameof(HideDisplayDelay))]
 		[SettingsUISection(TAB_GENERAL, "")]
 		[SettingsUISlider(min = 50, max = 2000, step = 50, scalarMultiplier = 1, unit = Unit.kInteger)]
 		public int DisplayModeDelay { get; set; } = 250;
-		[SettingsUISection(TAB_GENERAL, "")]
-		public string DisplayModeHotkey { get; set; } = "ALT";
+		[SettingsUIDisableByCondition(typeof(ModSettings), nameof(HideDisplayDelay))]
 		[SettingsUISection(TAB_GENERAL, "")]
 		public bool DisplayModeDelayOnMoveables { get; set; } = false;
+		private bool HideDisplayDelay() => DisplayMode != DisplayMode.Delayed;
 
 		// GENERAL
 		[SettingsUISection(TAB_TOOLTIPS, GRP_GENERAL)]
@@ -75,6 +84,9 @@ namespace ExtendedTooltip
 		public bool ShowNetToolSystem { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_TOOLS)]
 		public bool ShowNetToolUnits { get; set; } = false;
+		[SettingsUISection(TAB_TOOLTIPS, GRP_TOOLS)]
+		[SettingsUIKeyboardBinding(BindingKeyboard.U, "ToggleShowNetToolUnits", shift:true)]
+		public ProxyBinding ToggleShowNetToolUnits { get; set; }
 		[SettingsUISection(TAB_TOOLTIPS, GRP_TOOLS)]
 		public bool ShowNetToolMode { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_TOOLS)]
@@ -168,9 +180,32 @@ namespace ExtendedTooltip
 		[SettingsUISection(TAB_TOOLTIPS, GRP_VEHICLES)]
 		public bool ShowVehiclePassengerDetails { get; set; } = true;
 
+		public DropdownItem<int>[] GetModifierDropdownItems()
+		{
+			var items = new List<DropdownItem<int>>
+			{
+				new()
+				{
+					value = 1,
+					displayName = "CTRL"
+				},
+				new()
+				{
+					value = 2,
+					displayName = "SHIFT"
+				},
+				new()
+				{
+					value = 3,
+					displayName = "ALT"
+				}
+			};
+			return items.ToArray();
+		}
+
 		public override void SetDefaults()
 		{
-			HiddenSetting = true;
+
 		}
 	}
 }

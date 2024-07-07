@@ -4,11 +4,13 @@ using Colossal.Logging;
 using ExtendedTooltip.Systems;
 
 using Game;
+using Game.Input;
 using Game.Modding;
 using Game.SceneFlow;
 using Game.UI.Tooltip;
 
 using HarmonyLib;
+using UnityEngine.InputSystem;
 
 namespace ExtendedTooltip
 {
@@ -20,6 +22,7 @@ namespace ExtendedTooltip
 
 		public static ILog Log { get; } = LogManager.GetLogger(nameof(ExtendedTooltip)).SetShowsErrorsInUI(false);
 		public static ModSettings Settings { get; private set; }
+		public static ProxyAction ToggleShowNetToolUnitsAction;
 
 		public void OnLoad(UpdateSystem updateSystem)
 		{
@@ -34,7 +37,11 @@ namespace ExtendedTooltip
 			}
 
 			AssetDatabase.global.LoadSettings(nameof(ExtendedTooltip), Settings, new ModSettings(this));
-			Settings.HiddenSetting = false;
+			Settings.RegisterKeyBindings();
+			ToggleShowNetToolUnitsAction = Settings.GetAction("ToggleShowNetToolUnits");
+			ToggleShowNetToolUnitsAction.shouldBeEnabled = true;
+			ToggleShowNetToolUnitsAction.onInteraction += (_, phase) =>
+				Settings.ShowNetToolUnits = !Settings.ShowNetToolUnits;
 
 			updateSystem.UpdateAt<CustomTranslationSystem>(SystemUpdatePhase.UIUpdate);
 			updateSystem.UpdateAt<ExtendedTooltipUISystem>(SystemUpdatePhase.UIUpdate);
