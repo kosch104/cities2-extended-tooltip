@@ -107,7 +107,7 @@ namespace ExtendedTooltip
 	{
 		private static void Postfix(NetCourseTooltipSystem __instance)
 		{
-			if (!Mod.Settings.ShowNetToolSystem || !Mod.Settings.ShowNetToolUnits)
+			if (!Mod.Settings.ShowNetToolSystem)
 			{
 				return;
 			}
@@ -116,12 +116,18 @@ namespace ExtendedTooltip
 
 			if (m_Length != null)
 			{
-				m_Length.value /= 8f;
-				m_Length.unit = "floatTwoFractions";
 				if (Mod.Settings.ShowNetToolUnits)
+				{
+					m_Length.value /= 8f;
+					m_Length.unit = "floatTwoFractions";
 					m_Length.label = LocalizedString.Value("U");
+				}
 				else
+				{
+					m_Length.unit = "length";
 					m_Length.label = default;
+				}
+
 			}
 		}
 	}
