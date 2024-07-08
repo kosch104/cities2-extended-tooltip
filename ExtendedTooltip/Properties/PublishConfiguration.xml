@@ -39,10 +39,11 @@ Thanks to TDW for their efforts to migrate this mod and apply various improvemen
 	<Screenshot Value="Properties/Screenshot_08.png" />
 	<Tag Value="Code Mod" />
 	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/extendedtooltip.1657861/" />
-	<ModVersion Value="1.1.2" />
+	<ModVersion Value="1.2.0" />
 	<GameVersion Value="1.1.*" />
 	<ChangeLog>
 - Vehicle Tooltip now shows action of the driver
+- Vehicle Tooltip now shows occupants of the vehicle
 - Display Mode Hotkey is now changeable
 - Toggle Unit Display keybind can now be changed (Default: CTRL + U)
 - Cleaned up settings page to disable inactive settings

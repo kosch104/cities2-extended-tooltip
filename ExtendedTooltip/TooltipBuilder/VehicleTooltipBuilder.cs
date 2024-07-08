@@ -148,8 +148,10 @@ namespace ExtendedTooltip.TooltipBuilder
 				var maxPassengers = 0;
 				var vehiclePassengerLocaleKey = VehiclePassengerLocaleKey.Passenger;
 
+				// Vehicle compositions (e.g. vehicles with trailers)
 				if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<LayoutElement> dynamicBuffer))
 				{
+					// For each part of the vehicle composition: Normal vehicles: 1, vehicles with trailers: 2
 					for (var i = 0; i < dynamicBuffer.Length; i++)
 					{
 						var vehicle = dynamicBuffer[i].m_Vehicle;
@@ -174,6 +176,7 @@ namespace ExtendedTooltip.TooltipBuilder
 				}
 				else
 				{
+					// Single vehicles
 					if (m_EntityManager.TryGetBuffer(selectedEntity, true, out DynamicBuffer<Passenger> dynamicBuffer3))
 					{
 						for (var k = 0; k < dynamicBuffer3.Length; k++)
@@ -204,8 +207,6 @@ namespace ExtendedTooltip.TooltipBuilder
 				if (isPersonalCar)
 				{
 					tooltipTitle = m_CustomTranslationSystem.GetLocalGameTranslation("SelectedInfoPanel.CAR_OCCUPANTS", "Occupants");
-					passengers++;
-					maxPassengers++;
 				}
 
 				StringTooltip vehicleCapacityTooltip = new()
@@ -221,8 +222,7 @@ namespace ExtendedTooltip.TooltipBuilder
 		{
 			if (m_EntityManager.TryGetComponent(prefab, out PersonalCarData personalCarData))
 			{
-				maxPassengers += personalCarData.m_PassengerCapacity - 1;
-				passengers--;
+				maxPassengers += personalCarData.m_PassengerCapacity;
 				return;
 			}
 
