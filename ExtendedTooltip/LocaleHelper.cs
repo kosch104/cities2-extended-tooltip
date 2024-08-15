@@ -1,4 +1,5 @@
-﻿using Colossal;
+﻿using System;
+using Colossal;
 using Colossal.Json;
 
 using Game.SceneFlow;
@@ -43,9 +44,16 @@ namespace ExtendedTooltip
 				}
 
 				using var reader = new StreamReader(resourceStream, Encoding.UTF8);
-				JSON.MakeInto<Dictionary<string, string>>(JSON.Load(reader.ReadToEnd()), out var dictionary);
+				try
+				{
+					JSON.MakeInto<Dictionary<string, string>>(JSON.Load(reader.ReadToEnd()), out var dictionary);
+					return dictionary;
+				}
+				catch (Exception)
+				{
+				}
 
-				return dictionary;
+				return new Dictionary<string, string>();
 			}
 		}
 

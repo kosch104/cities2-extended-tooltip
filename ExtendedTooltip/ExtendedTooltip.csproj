@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<LangVersion>9</LangVersion>
+		<LangVersion>latest</LangVersion>
 		<TargetFramework>net472</TargetFramework>
 		<Configurations>Debug;Release</Configurations>
 		<Version>1.1.0</Version>
-		<FileVersion>1.2.2</FileVersion>
-		<AssemblyVersion>1.2.2</AssemblyVersion>
+		<FileVersion>1.3.0</FileVersion>
+		<AssemblyVersion>1.3.0</AssemblyVersion>
 		<Copyright>@2024 MIT license</Copyright>
 		<Product>Extended Tooltip</Product>
 	</PropertyGroup>
@@ -14,14 +14,7 @@
 	<PropertyGroup>
 		<!--The folder where Game.dll is located. Set it only if the game is not installed in the default location, otherwise keep it empty-->
 		<CustomManagedPath></CustomManagedPath>
-
-		<!--Path to the text file where PDX account data is stored which is required to publish the mod-->
-		<!--Keep it outside of project in order to not commit it or share accidentally-->
-		<!--The file should contain 2 lines:-->
-		<!--Your.PDX@Account.login-->
-		<!--Your-PDX-Account-Pa$$word-->
-		<PDXAccountDataPath>$(USERPROFILE)/pdx_account.txt</PDXAccountDataPath>
-
+		
 		<!--The file where mod information which is required for publishing mod on PDX mods are stored-->
 		<PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
 	</PropertyGroup>

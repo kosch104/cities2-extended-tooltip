@@ -61,7 +61,7 @@ namespace ExtendedTooltip.TooltipBuilder
 				string finalZoneName;
 
 				// Offices and industrial zones have a different naming convention
-				if (zoneData.m_AreaType == AreaType.Industrial) // Offices are technically industrial zones
+				/*if (zoneData.m_AreaType == AreaType.Industrial) // Offices are technically industrial zones
 				{
 					finalZoneName = m_CustomTranslationSystem.GetLocalGameTranslation($"Assets.NAME[{rawZoneName}]", rawZoneName);
 				}
@@ -75,7 +75,8 @@ namespace ExtendedTooltip.TooltipBuilder
 					}
 
 					finalZoneName = string.Join(", ", zoneInfos);
-				}
+				}*/
+				finalZoneName = m_CustomTranslationSystem.GetLocalGameTranslation($"Assets.NAME[{rawZoneName}]", rawZoneName);
 
 				StringTooltip zoneTooltip = new()
 				{
