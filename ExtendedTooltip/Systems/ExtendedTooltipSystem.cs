@@ -249,7 +249,7 @@ namespace ExtendedTooltip.Systems
 			}
 
 			// PUBLIC TRANSPORTATION TOOLTIP
-			if (Mod.Settings.ShowPublicTransport && (EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity) || EntityManager.HasComponent<Game.Buildings.TransportStation>(selectedEntity)))
+			if (Mod.Settings.ShowPublicTransport && (EntityManager.HasComponent<WaitingPassengers>(selectedEntity) || EntityManager.HasBuffer<ConnectedRoute>(selectedEntity) || EntityManager.HasComponent<Game.Buildings.PublicTransportStation>(selectedEntity)))
 			{
 				m_PublicTransportationTooltipBuilder.Build(selectedEntity, m_PrimaryETGroup);
 				return; // don't have any other info. No need to check for other components
