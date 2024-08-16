@@ -44,6 +44,7 @@ Thanks to TDW for their efforts to migrate this mod and apply various improvemen
 	<ChangeLog>
 - Waiting passengers are now only displayed when there are passengers waiting
 - Changed display format of residential zones
+- Signature buildings are now displayed more prominently
 	</ChangeLog>
 	<ExternalLink Type="discord" Url="https://discord.com/invite/HTav7ARPs2" />
 	<ExternalLink Type="github" Url="https://github.com/kosch104/cities2-extended-tooltip" />

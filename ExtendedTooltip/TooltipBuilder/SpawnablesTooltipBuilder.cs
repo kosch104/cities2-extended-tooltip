@@ -77,6 +77,10 @@ namespace ExtendedTooltip.TooltipBuilder
 					finalZoneName = string.Join(", ", zoneInfos);
 				}*/
 				finalZoneName = m_CustomTranslationSystem.GetLocalGameTranslation($"Assets.NAME[{rawZoneName}]", rawZoneName);
+				if (m_EntityManager.HasComponent<Signature>(entity))
+				{
+					finalZoneName += " - Signature";
+				}
 
 				StringTooltip zoneTooltip = new()
 				{
