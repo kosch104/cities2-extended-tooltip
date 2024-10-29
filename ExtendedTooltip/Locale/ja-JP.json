@@ -1,5 +1,5 @@
 {
-  "extendedtooltip.common.range_minmax_value_money": "[min. {SIGN0} <unk>{VALUE0}] — [max. {SIGN1} <unk>{VALUE1}]",
+  "extendedtooltip.common.range_minmax_value_money": "[min. {SIGN0} ¢{VALUE0}] — [max. {SIGN1} ¢{VALUE1}]",
   "extendedtooltip.common.range_value_money": "{SIGN0} ¢{VALUE0} — {SIGN1} ¢{VALUE1}",
   "extendedtooltip.anarchyMode": "無政府",
   "extendedtooltip.historical": "Historical",
