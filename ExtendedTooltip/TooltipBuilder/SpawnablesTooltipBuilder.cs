@@ -40,7 +40,7 @@ namespace ExtendedTooltip.TooltipBuilder
 			Mod.Log.Info($"Created SpawnablesTooltipBuilder.");
 		}
 
-		public void Build(ToolBaseSystem activeTool, bool IsMixed, Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
+		public void Build(ToolBaseSystem activeTool, bool isMixed, Entity entity, Entity prefab, int buildingLevel, int currentCondition, int levelingCost, SpawnableBuildingData spawnableBuildingData, CitizenHappinessParameterData citizenHappinessParameters, TooltipGroup tooltipGroup, TooltipGroup secondaryTooltipGroup)
 		{
 			var model = Mod.Settings;
 
@@ -126,7 +126,7 @@ namespace ExtendedTooltip.TooltipBuilder
 					value = $"{buildingLevelLabel}: {buildingLevelValue}",
 					color = buildingLevelColor
 				};
-				(model.UseExtendedLayout && IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(levelTooltip);
+				(model.UseExtendedLayout && isMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(levelTooltip);
 			}
 
 			// LAND VALUE TOOLTIP
@@ -148,7 +148,23 @@ namespace ExtendedTooltip.TooltipBuilder
 						icon = "Media/Game/Icons/LandValue.svg",
 						color = landValueTooltipColor
 					};
-					(model.UseExtendedLayout && IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(landValueTooltip);
+					(model.UseExtendedLayout && isMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(landValueTooltip);
+				}
+			}
+
+			// PLOT SIZE TOOLTIP
+			if (model.ShowLotSize && m_EntityManager.TryGetComponent(entity, out PrefabRef prefabRef))
+			{
+				//var reference = m_EntityManager.GetComponentData<PrefabRef>(entity);
+				if (m_EntityManager.TryGetComponent(prefabRef.m_Prefab, out BuildingData buildingData))
+				{
+					var lotSize = buildingData.m_LotSize;
+					var plotSizeTooltip = new StringTooltip
+					{
+						icon = "Media/Game/Icons/LotTool.svg",
+						value = $"{lotSize.x}x{lotSize.y}",
+					};
+					(model.UseExtendedLayout && isMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(plotSizeTooltip);
 				}
 			}
 
@@ -173,7 +189,7 @@ namespace ExtendedTooltip.TooltipBuilder
 						value = finalInfoString,
 						color = householdTooltipColor
 					};
-					(model.UseExtendedLayout && IsMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(householdTooltip);
+					(model.UseExtendedLayout && isMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(householdTooltip);
 				}
 
 				if (model.ShowGrowablesHouseholdWealth && activeTool is DefaultToolSystem && householdsResult.Length > 0)
