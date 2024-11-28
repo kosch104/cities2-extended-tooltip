@@ -53,10 +53,18 @@ namespace ExtendedTooltip.TooltipBuilder
 
 			if (model.ShowGrowablesZoneInfo)
 			{
-				var zoneData = m_EntityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);
-				var rawZone = m_PrefabSystem.GetPrefab<PrefabBase>(spawnableBuildingData.m_ZonePrefab);
-				if (rawZone == null)
+				//var zoneData = m_EntityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);
+				PrefabBase rawZone;
+				try
+				{
+					rawZone = m_PrefabSystem.GetPrefab<PrefabBase>(spawnableBuildingData.m_ZonePrefab);
+					if (rawZone == null)
+						return;
+				}
+				catch (Exception e)
+				{
 					return;
+				}
 				var rawZoneName = rawZone.name;
 				string finalZoneName;
 
