@@ -30,6 +30,7 @@
   "extendedtooltip.setting.toolSystem.anarchyMode": "Anarchy Status",
   "extendedtooltip.setting.toolSystem.anarchyMode.description": "Shows an indicator if you build with anarchy mode enabled.",
   "SelectedInfoPanel.CAR_OCCUPANTS": "Occupants",
+  "SelectedInfoPanel.LOT_SIZE": "Lot Size",
 
   "Options.SECTION[ExtendedTooltip.ExtendedTooltip.Mod]": "Extended Tooltip",
   "Options.TAB[ExtendedTooltip.ExtendedTooltip.Mod.TAB_GENERAL]": "General Settings",
@@ -65,6 +66,8 @@
 
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowEfficiency]": "Building Efficiency",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowEfficiency]": "Shows the efficiency of building in %.",
+  "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowLotSize]": "Lot size",
+  "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowLotSize]": "Shows the lot size of building.",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowLandValue]": "Building Land Value",
   "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.ShowLandValue]": "Shows land value of buildings.",
 

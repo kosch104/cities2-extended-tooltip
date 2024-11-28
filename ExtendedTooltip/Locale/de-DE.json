@@ -113,5 +113,6 @@
   "extendedtooltip.ui.tab.about": "Über",
   "extendedtooltip.setting.growables.description": "Verwalte Tooltips für Gebäudezonen wie Wohn-, Gewerbe-, Büro- und Industriebauten.",
   "Options.OPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayModeDelayOnMoveables]": "Auf bewegliche Objekte",
-  "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayModeDelayOnMoveables]": "Aktiviert die Verzögerung auch bei beweglichen Objekten wie Bürgern oder Fahrzeugen."
+  "Options.OPTION_DESCRIPTION[ExtendedTooltip.ExtendedTooltip.Mod.ModSettings.DisplayModeDelayOnMoveables]": "Aktiviert die Verzögerung auch bei beweglichen Objekten wie Bürgern oder Fahrzeugen.",
+  "SelectedInfoPanel.LOT_SIZE": "Grundstück"
 }

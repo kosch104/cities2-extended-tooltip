@@ -152,22 +152,6 @@ namespace ExtendedTooltip.TooltipBuilder
 				}
 			}
 
-			// PLOT SIZE TOOLTIP
-			if (model.ShowLotSize && m_EntityManager.TryGetComponent(entity, out PrefabRef prefabRef))
-			{
-				//var reference = m_EntityManager.GetComponentData<PrefabRef>(entity);
-				if (m_EntityManager.TryGetComponent(prefabRef.m_Prefab, out BuildingData buildingData))
-				{
-					var lotSize = buildingData.m_LotSize;
-					var plotSizeTooltip = new StringTooltip
-					{
-						icon = "Media/Game/Icons/LotTool.svg",
-						value = $"{lotSize.x}x{lotSize.y}",
-					};
-					(model.UseExtendedLayout && isMixed ? secondaryTooltipGroup : tooltipGroup).children.Add(plotSizeTooltip);
-				}
-			}
-
 			// Add residential info if available
 			var residentCount = 0;
 			var householdCount = 0;

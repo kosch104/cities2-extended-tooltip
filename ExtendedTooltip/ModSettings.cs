@@ -59,7 +59,7 @@ namespace ExtendedTooltip
 		[SettingsUISection(TAB_TOOLTIPS, GRP_GENERAL)]
 		public bool ShowEfficiency { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_GENERAL)]
-		public bool ShowLandValue { get; set; } = true;
+		public bool ShowLotSize { get; set; } = true;
 
 		// COMPANY
 		[SettingsUISection(TAB_TOOLTIPS, GRP_COMPANY)]
@@ -151,6 +151,8 @@ namespace ExtendedTooltip
 		// GROWABLES
 		[SettingsUISection(TAB_TOOLTIPS, GRP_GROWABLES)]
 		public bool ShowGrowables { get; set; } = true;
+		[SettingsUISection(TAB_TOOLTIPS, GRP_GROWABLES)]
+		public bool ShowLandValue { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_GROWABLES)]
 		public bool ShowGrowablesHousehold { get; set; } = true;
 		[SettingsUISection(TAB_TOOLTIPS, GRP_GROWABLES)]

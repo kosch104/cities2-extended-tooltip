@@ -50,6 +50,7 @@ namespace ExtendedTooltip.Systems
 		private CitizenTooltipBuilder m_CitizenTooltipBuilder;
 		private VehicleTooltipBuilder m_VehicleTooltipBuilder;
 		private SpawnablesTooltipBuilder m_SpawnablesTooltipBuilder;
+		private LotSizeTooltipBuilder m_LotSizeTooltipBuilder;
 		private RoadTooltipBuilder m_RoadTooltipBuilder;
 		private EfficiencyTooltipBuilder m_EfficiencyTooltipBuilder;
 		private ParkTooltipBuilder m_ParkTooltipBuilder;
@@ -82,6 +83,7 @@ namespace ExtendedTooltip.Systems
 			m_VehicleTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
 			m_RoadTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
 			m_SpawnablesTooltipBuilder = new(EntityManager, m_CustomTranslationSystem, m_PrefabSystem);
+			m_LotSizeTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
 			m_EfficiencyTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
 			m_ParkTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
 			m_ParkingFacilityTooltipBuilder = new(EntityManager, m_CustomTranslationSystem);
@@ -226,6 +228,11 @@ namespace ExtendedTooltip.Systems
 			{
 				var citizenHappinessParameters = m_CitizenHappinessParameterDataQuery.GetSingleton<CitizenHappinessParameterData>();
 				m_SpawnablesTooltipBuilder.Build(m_DefaultTool, IsMixed, selectedEntity, prefab, buildingLevel, currentCondition, levelingCost, spawnableData, citizenHappinessParameters, m_PrimaryETGroup, m_SecondaryETGroup);
+			}
+
+			if (Mod.Settings.ShowLotSize && EntityManager.HasComponent<PrefabRef>(selectedEntity))
+			{
+				m_LotSizeTooltipBuilder.Build(selectedEntity, m_PrimaryETGroup);
 			}
 
 			// EFFICIENCY TOOLTIP
