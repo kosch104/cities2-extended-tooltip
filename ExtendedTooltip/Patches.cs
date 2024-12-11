@@ -64,13 +64,13 @@ namespace ExtendedTooltip
 				{
 					case GuideLinesSystem.TooltipType.Angle:
 						child.icon = "Media/Glyphs/Angle.svg";
-						child.value = tooltipInfo.m_IntValue;
+						child.value = tooltipInfo.m_Value;
 						child.unit = "angle";
 						break;
 
 					case GuideLinesSystem.TooltipType.Length:
 						child.icon = "Media/Glyphs/Length.svg";
-						child.value = useUnits ? tooltipInfo.m_IntValue / 8f : tooltipInfo.m_IntValue;
+						child.value = useUnits ? tooltipInfo.m_Value / 8f : tooltipInfo.m_Value;
 						child.unit = useUnits ? "floatTwoFractions" : "length";
 						child.label = useUnits ? LocalizedString.Value("U") : default;
 						break;

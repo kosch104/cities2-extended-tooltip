@@ -31,7 +31,6 @@ namespace Game.UI.Tooltip
 		protected override void OnCreate()
 		{
 			base.OnCreate();
-
 			m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
 			m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
 			m_BulldozeTool = World.GetOrCreateSystemManaged<BulldozeToolSystem>();
